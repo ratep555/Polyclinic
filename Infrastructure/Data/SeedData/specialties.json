@@ -1,0 +1,28 @@
+[
+    {
+      "SpecialtyName": "Family Medicine",
+      "TypeOfExamination": "General Examination"
+    },
+    {
+      "SpecialtyName": "Dermatology",
+      "TypeOfExamination": "Dermatological Examination"
+    },
+    {
+      "SpecialtyName": "Neurology",
+      "TypeOfExamination": "Neurological Examination"
+    },
+    {
+      "SpecialtyName": "Pediatrics",
+      "TypeOfExamination": "Pediatric Examination"
+    },
+    {
+      "SpecialtyName": "Urology",
+      "TypeOfExamination": "Urology Examination"
+    },
+    {
+      "SpecialtyName": "Medical Genetics",
+      "TypeOfExamination": "Genetical Examination"
+
+    }
+    
+  ]
