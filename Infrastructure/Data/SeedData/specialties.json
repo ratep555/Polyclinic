@@ -22,7 +22,10 @@
     {
       "SpecialtyName": "Medical Genetics",
       "TypeOfExamination": "Genetical Examination"
-
+    },
+    {
+      "SpecialtyName": "Hematology",
+      "TypeOfExamination": "Hematological Examination"
     }
     
   ]

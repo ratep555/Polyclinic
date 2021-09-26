@@ -1,0 +1,19 @@
+[
+    {
+      "CityName": "Zagreb",
+      "CountryId": 1
+    },
+    {
+      "CityName": "Split",
+      "CountryId": 1
+    },
+    {
+      "CityName": "Rijeka",
+      "CountryId": 1
+    },
+    {
+      "CityName": "Ljubljana",
+      "CountryId": 2
+    }
+ 
+  ]

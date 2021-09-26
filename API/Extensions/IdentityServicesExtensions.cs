@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Core.Entities;
 using Core.Entities.Identity;
@@ -15,28 +16,42 @@ namespace API.Extensions
         public static IServiceCollection AddIdentityServices(this IServiceCollection services,
         IConfiguration config)
         {
-            services.AddIdentityCore<ApplicationUser>(opt =>
+            services.AddIdentityCore<ApplicationUser>(options =>
             {
-                // ovdje možeš svašta staviti, on je ovo samo kao example
-                opt.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+
+                options.User.RequireUniqueEmail = true;
+
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;  
             })
                 .AddRoles<ApplicationRole>()
                 .AddRoleManager<RoleManager<ApplicationRole>>()
                 .AddSignInManager<SignInManager<ApplicationUser>>()
                 .AddRoleValidator<RoleValidator<ApplicationRole>>()
                 .AddEntityFrameworkStores<PolyclinicContext>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => 
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Token:Key"])),
-                        ValidIssuer = config["Token:Issuer"],
-                        ValidateIssuer = true,
-                        ValidateAudience = false
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"])),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
                     };
                 });  
+
+        services.AddAuthorization(opt => 
+            {
+                opt.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+            });
 
             return services;
         }

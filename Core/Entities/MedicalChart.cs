@@ -8,12 +8,6 @@ namespace Core.Entities
 
         [ForeignKey("PatientId")]
         public Patient Patient { get; set; }
-
-
-        public int? DoctorId { get; set; }
-
-        [ForeignKey("DoctorId")]
-        public Doctor Doctor { get; set; }
         
 
         public string Summary { get; set; }

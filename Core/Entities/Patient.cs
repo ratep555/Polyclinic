@@ -10,17 +10,18 @@ namespace Core.Entities
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }   
 
-        public DateTime DateOfBirth { get; set; }
-        public string PhoneNumber { get; set; }
+        public DateTime? DateOfBirth { get; set; }
+        public string Height { get; set; }
+        public string Weight { get; set; }
         public string Occupation { get; set; }
         public string Residence { get; set; }
 
-        public int GenderId { get; set; }
+        public int? GenderId { get; set; }
         
         [ForeignKey("GenderId")]
         public Gender Gender { get; set; }
 
-        public int EducationId { get; set; }
+        public int? EducationId { get; set; }
 
         [ForeignKey("EducationId")]
         public Education Education { get; set; }

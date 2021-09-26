@@ -1,0 +1,23 @@
+[
+    {
+      "PolyclinicName": "Medical Excellence",
+      "Established": 2001,
+      "AddressId": 1
+    },
+    {
+      "PolyclinicName": "Sunshine Health",
+      "Established": 2007,
+      "AddressId": 2
+    },
+    {
+      "PolyclinicName": "Fiume Medical",
+      "Established": 2013,
+      "AddressId": 3
+    },
+    {
+      "PolyclinicName": "Dragons Bridge Medical Center",
+      "Established": 2002,
+      "AddressId": 4
+    }
+    
+  ]

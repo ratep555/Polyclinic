@@ -1,0 +1,22 @@
+[
+    {
+      "Street": "Palmotićeva",
+      "StreetNumber": "27",
+      "CityId": 2
+    },
+    {
+      "Street": "Supilova",
+      "StreetNumber": "77a",
+      "CityId": 1
+    },
+    {
+      "Street": "Šokačka",
+      "StreetNumber": "17",
+      "CityId": 3
+    },
+    {
+      "Street": "Prešernova",
+      "StreetNumber": "777",
+      "CityId": 4
+    }
+  ]
