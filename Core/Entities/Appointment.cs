@@ -10,9 +10,9 @@ namespace Core.Entities
         [ForeignKey("PatientId")]
         public Patient Patient { get; set; }
 
-        public int ApplicationUserId { get; set; } 
-        [ForeignKey("ApplicationUserId")]
-        public ApplicationUser ApplicationUser { get; set; }   
+        public int DoctorId { get; set; } 
+        [ForeignKey("DoctorId")]
+        public Doctor Doctor { get; set; }   
 
         [DataType(DataType.Date)]
         public DateTime DateAndTimeOfAppointment { get; set; }

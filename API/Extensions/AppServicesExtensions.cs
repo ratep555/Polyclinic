@@ -19,6 +19,7 @@ namespace API.Extensions
         {
             services.AddScoped<ISpecialtyService, SpecialtyService>();
             services.AddScoped<IGenderService, GenderService>();
+            services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<ISubmissionFormService, SubmissionFormService>();
             services.AddScoped<ITokenService, TokenService>();
 

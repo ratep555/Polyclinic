@@ -33,8 +33,8 @@ namespace Infrastructure.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction); 
 
-            modelBuilder.Entity<PolyclinicDepartment>()
-                .HasKey(x => new { x.PolyclinicId, x.DepartmentId });
+           /*  modelBuilder.Entity<PolyclinicDepartment>()
+                .HasKey(x => new { x.PolyclinicId, x.DepartmentId }); */
 
            /*  modelBuilder.Entity<Appointment>()
                 .HasKey(x => new { x.PatientId, x.ApplicationUserId }); */
@@ -47,6 +47,7 @@ namespace Infrastructure.Data
         public DbSet<City> Cities { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Examination> Examinations { get; set; }
         public DbSet<Gender> Genders { get; set; }
         public DbSet<MedicalChart> MedicalCharts { get; set; }

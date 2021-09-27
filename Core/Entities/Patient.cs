@@ -10,6 +10,7 @@ namespace Core.Entities
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }   
 
+        public string Name { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string Height { get; set; }
         public string Weight { get; set; }

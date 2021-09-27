@@ -22,10 +22,8 @@ namespace Core.Dtos
         public string Password { get; set; }
 
         public int SpecialtyId { get; set; }
-
-        public int DepartmentId { get; set; }
-
-        public int PolyclinicId { get; set; }
+        
+        public int PolyclinicDepartmentId { get; set; }
 
     }
 }

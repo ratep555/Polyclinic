@@ -22,10 +22,10 @@ namespace Core.Entities
         [ForeignKey("PolyclinicId")]
         public Polyclinic LocationOfExamination { get; set; }
 
-        public int SpecialtyId { get; set; }
+        public int DepartmentId { get; set; }
 
-        [ForeignKey("SpecialtyId")]
-        public Specialty TypeOfExamination { get; set; }
+        [ForeignKey("DepartmentId")]
+        public Department TypeOfService { get; set; }
 
         public int PrefferedTimeOfExaminationId { get; set; }
 

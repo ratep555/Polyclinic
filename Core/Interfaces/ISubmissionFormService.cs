@@ -10,5 +10,8 @@ namespace Core.Interfaces
         Task UpdateSubmissionForm(int id);
         Task<Appointment> MakeAppointment(int id, AppointmentDto appointmentDto);
         Task<Patient> FindPatientById(int id);
+        Task MakeExamination(int userId, ExaminationToCreateDto examinationToCreateDto);
+
+
     }
 }

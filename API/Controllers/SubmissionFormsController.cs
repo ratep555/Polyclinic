@@ -37,6 +37,7 @@ namespace API.Controllers
 
             return _mapper.Map<SubmissionFormDto>(submissionForm);
         }
+        [AllowAnonymous]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateSubmissionForm(int id)
         {
@@ -48,7 +49,8 @@ namespace API.Controllers
         
         [AllowAnonymous]
         [HttpPost("appointment/{id}")]
-        public async Task<ActionResult<AppointmentToReturnDto>> MakeAppointmentStock(int id, AppointmentDto appointmentDto)
+        public async Task<ActionResult<AppointmentToReturnDto>> MakeAppointmentStock(int id, 
+            AppointmentDto appointmentDto)
         {     
             var patient = await _submissionFormService.FindPatientById(id);
 
@@ -59,6 +61,21 @@ namespace API.Controllers
             var appointmentToReturn = _mapper.Map<AppointmentToReturnDto>(appointment);
 
             return Ok(appointmentToReturn);
+        }
+
+        [HttpPost("examination")]
+        public async Task<ActionResult<ExaminationToReturnDto>> CreateExamination(
+            [FromBody] ExaminationToCreateDto examinationToCreateDto)
+        {
+            var userId = User.GetUserId();
+
+            var examination = _mapper.Map<Examination>(examinationToCreateDto);
+
+            examination.DoctorId = userId;
+
+            await _submissionFormService.MakeExamination(userId, examinationToCreateDto);
+
+            return _mapper.Map<ExaminationToReturnDto>(examination);
         }
 
     }

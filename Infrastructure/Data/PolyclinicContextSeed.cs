@@ -38,10 +38,7 @@ namespace Infrastructure.Data
                 FirstName = "Bob",
                 LastName = "Bobbity",
                 Email = "bob@test.com",
-                UserName = "admin",
-                SpecialtyId = null,
-                PolyclinicId = null,
-                DepartmentId = null                
+                UserName = "admin"
             };
 
             await userManager.CreateAsync(admin, "Pa$$w0rd");               
@@ -104,7 +101,7 @@ namespace Infrastructure.Data
                     await context.SaveChangesAsync();
                 }
 
-                if (!context.Departments.Any())
+               /*  if (!context.Departments.Any())
                 {
                     var departmentsData = File.ReadAllText("../Infrastructure/Data/SeedData/departments.json");
                     var departments = JsonSerializer.Deserialize<List<Department>>(departmentsData);
@@ -115,7 +112,7 @@ namespace Infrastructure.Data
                     }
 
                     await context.SaveChangesAsync();
-                }
+                } */
 
                 if (!context.PrefferedTimeOfExaminations.Any())
                 {
@@ -130,7 +127,7 @@ namespace Infrastructure.Data
                     await context.SaveChangesAsync();
                 }
 
-                if (!context.Specialties.Any())
+              /*   if (!context.Specialties.Any())
                 {
                     var specialtiesData = File.ReadAllText("../Infrastructure/Data/SeedData/specialties.json");
                     var specialties = JsonSerializer.Deserialize<List<Specialty>>(specialtiesData);
@@ -141,7 +138,7 @@ namespace Infrastructure.Data
                     }
 
                     await context.SaveChangesAsync();
-                }
+                } */
 
             
             }

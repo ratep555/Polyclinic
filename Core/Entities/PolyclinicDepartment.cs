@@ -1,6 +1,6 @@
 namespace Core.Entities
 {
-    public class PolyclinicDepartment
+    public class PolyclinicDepartment : BaseEntity
     {
         public int PolyclinicId { get; set; }
         public Polyclinic Polyclinic { get; set; }

@@ -17,7 +17,7 @@ namespace Core.Dtos
 
         public int PolyclinicId { get; set; }
 
-        public int SpecialtyId { get; set; }
+        public int DepartmentId { get; set; }
 
         public int PrefferedTimeOfExaminationId { get; set; }
 

@@ -10,9 +10,16 @@ namespace API
         {
             CreateMap<Specialty, SpecialtyDto>().ReverseMap();
             CreateMap<Appointment, AppointmentDto>().ReverseMap();
+
             CreateMap<Appointment, AppointmentToReturnDto>()
-            .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.ApplicationUser.LastName))
-            .ForMember(d => d.Doctor, o => o.MapFrom(s => s.ApplicationUser.LastName));
+            .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name))
+            .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Doctor.Name)); 
+
+            CreateMap<ExaminationToCreateDto, Examination>().ReverseMap();
+
+            CreateMap<Examination, ExaminationToReturnDto>()
+            .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name))
+            .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Doctor.Name)); 
 
 
             CreateMap<Gender, GenderDto>().ReverseMap();

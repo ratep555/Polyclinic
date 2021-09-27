@@ -12,16 +12,19 @@ namespace API.Controllers
      public class AccountController : BaseApiController
     {
         private readonly ITokenService _tokenService;
+        private readonly IDoctorService _doctorService;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         public AccountController(UserManager<ApplicationUser> userManager, 
-            SignInManager<ApplicationUser> signInManager, ITokenService tokenService, IMapper mapper)
+            SignInManager<ApplicationUser> signInManager, ITokenService tokenService, 
+            IMapper mapper, IDoctorService doctorService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _mapper = mapper;
             _tokenService = tokenService;
+            _doctorService = doctorService;
         }
 
         [HttpPost("register")]
@@ -55,12 +58,14 @@ namespace API.Controllers
             var user = _mapper.Map<ApplicationUser>(registerDoctorDto);
 
             var result = await _userManager.CreateAsync(user, registerDoctorDto.Password);
-
+            
             if (!result.Succeeded) return BadRequest(result.Errors);
 
             var roleResult = await _userManager.AddToRoleAsync(user, "Doctor");
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
+
+            await _doctorService.CreateDoctor(user.Id, registerDoctorDto, user.FirstName, user.LastName);
 
             return new DoctorToReturnDto
             {

@@ -6,7 +6,7 @@ namespace Core.Dtos
     public class AppointmentDto
     {
         public int PatientId { get; set; }
-        public int ApplicationUserId { get; set; }     
+        public int DoctorId { get; set; }     
 
         [DataType(DataType.Date)]
         public DateTime DateAndTimeOfAppointment { get; set; }

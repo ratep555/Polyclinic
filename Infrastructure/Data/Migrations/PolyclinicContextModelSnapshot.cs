@@ -56,9 +56,6 @@ namespace Infrastructure.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DepartmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -95,14 +92,8 @@ namespace Infrastructure.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("PolyclinicId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("SpecialtyId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -113,8 +104,6 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -122,10 +111,6 @@ namespace Infrastructure.Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PolyclinicId");
-
-                    b.HasIndex("SpecialtyId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -137,11 +122,11 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateAndTimeOfAppointment")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
@@ -151,7 +136,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
@@ -203,9 +188,45 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("DepartmentName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TypeOfService")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Departments");
+                });
+
+            modelBuilder.Entity("Core.Entities.Doctor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PolyclinicDepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Residence")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SpecialtyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("PolyclinicDepartmentId");
+
+                    b.HasIndex("SpecialtyId");
+
+                    b.ToTable("Doctors");
                 });
 
             modelBuilder.Entity("Core.Entities.Education", b =>
@@ -233,11 +254,11 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Anamnesis")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Diagnosis")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
@@ -247,7 +268,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
@@ -374,6 +395,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Height")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Occupation")
                         .HasColumnType("nvarchar(max)");
 
@@ -419,15 +443,22 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.PolyclinicDepartment", b =>
                 {
-                    b.Property<int>("PolyclinicId")
-                        .HasColumnType("int");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
-                    b.HasKey("PolyclinicId", "DepartmentId");
+                    b.Property<int>("PolyclinicId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("PolyclinicId");
 
                     b.ToTable("PolyclinicDepartments");
                 });
@@ -457,9 +488,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("SpecialtyName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TypeOfExamination")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Specialties");
@@ -473,6 +501,9 @@ namespace Infrastructure.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Phone")
@@ -490,9 +521,6 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("PrefferedTimeOfExaminationId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SpecialtyId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -500,11 +528,11 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
+                    b.HasIndex("DepartmentId");
+
                     b.HasIndex("PolyclinicId");
 
                     b.HasIndex("PrefferedTimeOfExaminationId");
-
-                    b.HasIndex("SpecialtyId");
 
                     b.ToTable("SubmissionForms");
                 });
@@ -606,32 +634,11 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("City");
                 });
 
-            modelBuilder.Entity("Core.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("Core.Entities.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId");
-
-                    b.HasOne("Core.Entities.Polyclinic", "Polyclinic")
-                        .WithMany()
-                        .HasForeignKey("PolyclinicId");
-
-                    b.HasOne("Core.Entities.Specialty", "Specialty")
-                        .WithMany()
-                        .HasForeignKey("SpecialtyId");
-
-                    b.Navigation("Department");
-
-                    b.Navigation("Polyclinic");
-
-                    b.Navigation("Specialty");
-                });
-
             modelBuilder.Entity("Core.Entities.Appointment", b =>
                 {
-                    b.HasOne("Core.Entities.ApplicationUser", "ApplicationUser")
+                    b.HasOne("Core.Entities.Doctor", "Doctor")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId")
+                        .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -641,7 +648,7 @@ namespace Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("ApplicationUser");
+                    b.Navigation("Doctor");
 
                     b.Navigation("Patient");
                 });
@@ -657,11 +664,38 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("Core.Entities.Examination", b =>
+            modelBuilder.Entity("Core.Entities.Doctor", b =>
                 {
-                    b.HasOne("Core.Entities.ApplicationUser", "Doctor")
+                    b.HasOne("Core.Entities.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.PolyclinicDepartment", "PolyclinicDepartment")
+                        .WithMany()
+                        .HasForeignKey("PolyclinicDepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Specialty", "Specialty")
+                        .WithMany()
+                        .HasForeignKey("SpecialtyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("PolyclinicDepartment");
+
+                    b.Navigation("Specialty");
+                });
+
+            modelBuilder.Entity("Core.Entities.Examination", b =>
+                {
+                    b.HasOne("Core.Entities.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -775,6 +809,12 @@ namespace Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("Core.Entities.Department", "TypeOfService")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Core.Entities.Polyclinic", "LocationOfExamination")
                         .WithMany()
                         .HasForeignKey("PolyclinicId")
@@ -787,19 +827,13 @@ namespace Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.Specialty", "TypeOfExamination")
-                        .WithMany()
-                        .HasForeignKey("SpecialtyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("LocationOfExamination");
 
                     b.Navigation("PrefferedTime");
 
-                    b.Navigation("TypeOfExamination");
+                    b.Navigation("TypeOfService");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
