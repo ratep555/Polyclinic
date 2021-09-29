@@ -4,15 +4,20 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-// import { PagerComponent } from './components/pager/pager.component';
+import { PagerComponent } from './components/pager/pager.component';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 // import { TextInputComponent } from './components/text-input/text-input.component';
 // import { GoogleChartsModule } from 'angular-google-charts';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import { TextInputComponent } from './components/text-input/text-input.component';
 // import { DateInputComponent } from './components/date-input/date-input.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+
+    PagerComponent,
+     TextInputComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -27,10 +32,10 @@ import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
     PaginationModule,
     TypeaheadModule,
     BsDropdownModule,
-   // PagerComponent,
+    PagerComponent,
     CarouselModule,
     ReactiveFormsModule,
-    // TextInputComponent,
+    TextInputComponent,
     // DateInputComponent,
     // GoogleChartsModule,
     BsDatepickerModule

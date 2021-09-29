@@ -4,6 +4,5 @@ namespace Core.Dtos
     {
         public int Id { get; set; }
         public string SpecialtyName { get; set; }
-        public string TypeOfExamination { get; set; }   
     }
 }

@@ -44,9 +44,11 @@ namespace Infrastructure.Data
 
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Employee> Employees { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Examination> Examinations { get; set; }
         public DbSet<Gender> Genders { get; set; }
@@ -54,7 +56,9 @@ namespace Infrastructure.Data
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Polyclinic> Polyclinics { get; set; }
         public DbSet<PolyclinicDepartment> PolyclinicDepartments { get; set; }
+        public DbSet<PolyclinicDepartmentService> PolyclinicDepartmentServices { get; set; }
         public DbSet<PrefferedTimeOfExamination> PrefferedTimeOfExaminations { get; set; }
+        public DbSet<Service> Services { get; set; }
         public DbSet<Specialty> Specialties { get; set; }
         public DbSet<SubmissionForm> SubmissionForms { get; set; }
     }

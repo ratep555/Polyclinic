@@ -37,6 +37,20 @@ namespace API.Controllers
 
             return _mapper.Map<SubmissionFormDto>(submissionForm);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<SubmissionFormDto>> UpdateSubmissionForm1(int id,
+                [FromBody] SubmissionFormDto submissionFormDto)
+        {
+            var submissionForm = _mapper.Map<SubmissionForm>(submissionFormDto);
+
+            if (id != submissionForm.Id) return BadRequest();
+
+            await _submissionFormService.UpdateSubmissionForm1(submissionForm);
+
+            return NoContent();
+        }
+
         [AllowAnonymous]
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateSubmissionForm(int id)

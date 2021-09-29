@@ -12,9 +12,10 @@ namespace Core.Entities
         public ApplicationUser ApplicationUser { get; set; }   
 
         [DataType(DataType.Date)]
-        public DateTime PrefferedDateOfExamination { get; set; }
+        public DateTime? PrefferedDateOfExamination { get; set; }
         public string PrefferedMethodOfContacting { get; set; }
         public string Phone { get; set; }
+        public DateTime? DateAndTimeOfAppointment { get; set; }
         public bool Status { get; set; }
 
         public int PolyclinicId { get; set; }
@@ -26,6 +27,11 @@ namespace Core.Entities
 
         [ForeignKey("DepartmentId")]
         public Department TypeOfService { get; set; }
+
+        public int? DoctorId { get; set; }
+
+        [ForeignKey("DoctorId")]
+        public Doctor PrefferedDoctor { get; set; }
 
         public int PrefferedTimeOfExaminationId { get; set; }
 

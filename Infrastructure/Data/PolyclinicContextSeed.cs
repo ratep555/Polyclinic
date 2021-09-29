@@ -24,6 +24,7 @@ namespace Infrastructure.Data
                 new ApplicationRole{Name = "Patient"},
                 new ApplicationRole{Name = "Admin"},
                 new ApplicationRole{Name = "Doctor"},
+                new ApplicationRole{Name = "Employee"},
             };
 
             foreach (var role in roles)
@@ -57,6 +58,19 @@ namespace Infrastructure.Data
                     foreach (var item in countries)
                     {
                         context.Countries.Add(item);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                if (!context.Categories.Any())
+                {
+                    var categoriesData = File.ReadAllText("../Infrastructure/Data/SeedData/categories.json");
+                    var categories = JsonSerializer.Deserialize<List<Category>>(categoriesData);
+
+                    foreach (var item in categories)
+                    {
+                        context.Categories.Add(item);
                     }
 
                     await context.SaveChangesAsync();

@@ -14,7 +14,7 @@
     <div class="collapse navbar-collapse" id="navbarNav" id="navbarSupportedContent" [collapse]="isCollapsed">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link text-uppercase" routerLink="/usertransactions" routerLinkActive="active" >List of Stocks</a> 
+          <a class="nav-link text-uppercase" routerLink="/specialties" routerLinkActive="active" >Specialties</a> 
         </li>  
         <li class="nav-item">
           <a class="nav-link text-uppercase"  routerLink="/myportfolio" routerLinkActive="active">My Portfolio</a>  
@@ -22,13 +22,15 @@
         <li class="nav-item">
           <a class="nav-link text-uppercase" routerLink="/transactions" routerLinkActive="active">Transactions</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-uppercase" routerLink="/transactions" routerLinkActive="active">Contact</a>
+        </li>
         <div class="dropdown mr-5" dropdown>
-          <a class="nav-link text-uppercase dropdown-toggle text-white" dropdownToggle (click)="false" 
-          routerLink="/annual/taxliability" 
+          <a class="pero nav-link text-uppercase dropdown-toggle text-white" dropdownToggle (click)="false" 
           routerLinkActive="active">Tax Liability</a>
           <div class="dropdown-menu" *dropdownMenu>    
-              <a class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Logout</a>
+              <a routerLink="/specialties" class="dropdown-item">
+                <i class="fa fa-sign-out mr-3"></i> Specialties</a>
               <a class="dropdown-item">
                 <i class="fa fa-sign-out mr-3"></i> Logout</a>
                 <div class="dropdown-divider"></div>
@@ -40,24 +42,37 @@
         </div>
        
       </ul>
-  
-      <div>
-      <ul class="nav navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/account/register"
-          routerLinkActive="active"
-          >Register</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link"
-          routerLink="/account/login"
-          routerLinkActive="active"
-          >Login</a>
-        </li>
-  
-    
-      </ul>
-    </div>
+      <ng-container *ngIf="(currentUser$ | async) ===null">
+        <div>
+          <ul class="nav navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link"
+              routerLink="/account/register"
+              routerLinkActive="active"
+              >Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"
+              routerLink="/account/login"
+              routerLinkActive="active"
+              >Login</a>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+      
+      <ng-container *ngIf="(accountService.currentUser$ | async) !== null">
+        <div >
+        <ul class="nav navbar-nav">
+          <li class="nav-item" >
+            <a (click)='logout()' class="nav-link"
+            routerLink="/account/login"
+            routerLinkActive="active"
+            >Logout</a>
+          </li>  
+        </ul>
+      </div>
+</ng-container>
+     
   </div>
   </nav>

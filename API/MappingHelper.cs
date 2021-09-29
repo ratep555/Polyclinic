@@ -26,6 +26,7 @@ namespace API
             CreateMap<SubmissionFormDto, SubmissionForm>().ReverseMap();
             CreateMap<RegisterDto, ApplicationUser>().ReverseMap();
             CreateMap<RegisterDoctorDto, ApplicationUser>().ReverseMap();
+            CreateMap<RegisterEmployeeDto, ApplicationUser>().ReverseMap();
 
 
         }

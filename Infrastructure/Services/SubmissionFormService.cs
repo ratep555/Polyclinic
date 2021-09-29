@@ -34,6 +34,28 @@ namespace Infrastructure.Services
             _context.Entry(user).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateSubmissionForm1(SubmissionForm submissionForm)
+        {
+            _context.Entry(submissionForm).State = EntityState.Modified;        
+             await _context.SaveChangesAsync();       
+
+            await CreatePatient(submissionForm.Id);             
+
+        }
+
+        private async Task MakeAppointment1(SubmissionForm submissionForm)
+        {
+            var appointment = new Appointment();
+            appointment.DoctorId = submissionForm.DoctorId;
+            appointment.DateAndTimeOfAppointment = submissionForm.DateAndTimeOfAppointment;
+            appointment.PatientId = submissionForm.ApplicationUserId;
+
+            _context.Appointments.Add(appointment);
+            await _context.SaveChangesAsync();
+
+        }
+
         public async Task UpdateSubmissionForm(int id)
         {
             var submissionForm = await _context.SubmissionForms.Where(x => x.Id == id).FirstOrDefaultAsync();

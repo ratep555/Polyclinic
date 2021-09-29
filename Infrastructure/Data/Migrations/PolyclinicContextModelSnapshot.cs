@@ -122,7 +122,7 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateAndTimeOfAppointment")
+                    b.Property<DateTime?>("DateAndTimeOfAppointment")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("DoctorId")
@@ -141,6 +141,21 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("Core.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Core.Entities.City", b =>
@@ -206,6 +221,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("CurrentlyEmployed")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -217,6 +235,9 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<int>("SpecialtyId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -242,6 +263,45 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Education");
+                });
+
+            modelBuilder.Entity("Core.Entities.Employee", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("CurrentlyEmployed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PolyclinicDepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Residence")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("PolyclinicDepartmentId");
+
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("Core.Entities.Examination", b =>
@@ -463,6 +523,33 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("PolyclinicDepartments");
                 });
 
+            modelBuilder.Entity("Core.Entities.PolyclinicDepartmentService", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PolyclinicId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("PolyclinicId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("PolyclinicDepartmentServices");
+                });
+
             modelBuilder.Entity("Core.Entities.PrefferedTimeOfExamination", b =>
                 {
                     b.Property<int>("Id")
@@ -476,6 +563,21 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PrefferedTimeOfExaminations");
+                });
+
+            modelBuilder.Entity("Core.Entities.Service", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ServiceName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("Core.Entities.Specialty", b =>
@@ -503,7 +605,13 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("DateAndTimeOfAppointment")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DoctorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Phone")
@@ -512,7 +620,7 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("PolyclinicId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("PrefferedDateOfExamination")
+                    b.Property<DateTime?>("PrefferedDateOfExamination")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PrefferedMethodOfContacting")
@@ -529,6 +637,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("DoctorId");
 
                     b.HasIndex("PolyclinicId");
 
@@ -691,6 +801,33 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Specialty");
                 });
 
+            modelBuilder.Entity("Core.Entities.Employee", b =>
+                {
+                    b.HasOne("Core.Entities.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.PolyclinicDepartment", "PolyclinicDepartment")
+                        .WithMany()
+                        .HasForeignKey("PolyclinicDepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("PolyclinicDepartment");
+                });
+
             modelBuilder.Entity("Core.Entities.Examination", b =>
                 {
                     b.HasOne("Core.Entities.Doctor", "Doctor")
@@ -801,6 +938,33 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Polyclinic");
                 });
 
+            modelBuilder.Entity("Core.Entities.PolyclinicDepartmentService", b =>
+                {
+                    b.HasOne("Core.Entities.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Polyclinic", "Polyclinic")
+                        .WithMany()
+                        .HasForeignKey("PolyclinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Polyclinic");
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("Core.Entities.SubmissionForm", b =>
                 {
                     b.HasOne("Core.Entities.ApplicationUser", "ApplicationUser")
@@ -814,6 +978,10 @@ namespace Infrastructure.Data.Migrations
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Core.Entities.Doctor", "PrefferedDoctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId");
 
                     b.HasOne("Core.Entities.Polyclinic", "LocationOfExamination")
                         .WithMany()
@@ -830,6 +998,8 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("LocationOfExamination");
+
+                    b.Navigation("PrefferedDoctor");
 
                     b.Navigation("PrefferedTime");
 

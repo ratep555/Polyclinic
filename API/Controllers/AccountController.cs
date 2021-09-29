@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using API.ErrorHandling;
 using AutoMapper;
 using Core.Dtos;
 using Core.Entities;
@@ -38,7 +39,7 @@ namespace API.Controllers
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
-            if (!result.Succeeded) return BadRequest(result.Errors);
+            if (!result.Succeeded) return BadRequest(new ServerResponse(400));
 
             var roleResult = await _userManager.AddToRoleAsync(user, "Visitor");
 
@@ -66,6 +67,28 @@ namespace API.Controllers
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
             await _doctorService.CreateDoctor(user.Id, registerDoctorDto, user.FirstName, user.LastName);
+
+            return new DoctorToReturnDto
+            {
+                FirstName = user.FirstName,
+                Token = await _tokenService.CreateToken(user)
+            };
+        }
+
+        [HttpPost("registeremployee")]
+        public async Task<ActionResult<DoctorToReturnDto>> RegisterEmployee(RegisterEmployeeDto registerEmployeeDto)
+        {
+            var user = _mapper.Map<ApplicationUser>(registerEmployeeDto);
+
+            var result = await _userManager.CreateAsync(user, registerEmployeeDto.Password);
+            
+            if (!result.Succeeded) return BadRequest(new ServerResponse(400));
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Employee");
+
+            if (!roleResult.Succeeded) return BadRequest(result.Errors);
+
+            await _doctorService.CreateEmployee(user.Id, registerEmployeeDto, user.FirstName, user.LastName);
 
             return new DoctorToReturnDto
             {

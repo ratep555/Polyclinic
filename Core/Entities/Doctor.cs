@@ -11,10 +11,10 @@ namespace Core.Entities
         [ForeignKey("ApplicationUserId")]
         public ApplicationUser ApplicationUser { get; set; }   
 
-        public string Name { get; set; }
-                     
+        public string Name { get; set; }     
         public string Residence { get; set; }
-
+        public string Summary { get; set; }
+        public bool? CurrentlyEmployed { get; set; }
         public int SpecialtyId { get; set; }
 
         [ForeignKey("SpecialtyId")]
