@@ -15,7 +15,6 @@ namespace Core.Dtos
         public string Phone { get; set; }
 
 
-        public int PolyclinicId { get; set; }
 
         public int DepartmentId { get; set; }
 

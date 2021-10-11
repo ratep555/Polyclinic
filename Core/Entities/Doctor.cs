@@ -20,9 +20,9 @@ namespace Core.Entities
         [ForeignKey("SpecialtyId")]
         public Specialty Specialty { get; set; }
 
-        public int PolyclinicDepartmentId { get; set; }
-        [ForeignKey("PolyclinicDepartmentId")]
-        public PolyclinicDepartment PolyclinicDepartment { get; set; }
+        public int DepartmentId { get; set; }
+        [ForeignKey("DepartmentId")]
+        public Department Department { get; set; }
 
     }
 }

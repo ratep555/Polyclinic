@@ -20,11 +20,9 @@ namespace Infrastructure.Data
         {
             var roles = new List<ApplicationRole>
             {
-                new ApplicationRole{Name = "Visitor"},
                 new ApplicationRole{Name = "Patient"},
                 new ApplicationRole{Name = "Admin"},
                 new ApplicationRole{Name = "Doctor"},
-                new ApplicationRole{Name = "Employee"},
             };
 
             foreach (var role in roles)
@@ -50,83 +48,8 @@ namespace Infrastructure.Data
         {
             try
             {
-                if (!context.Countries.Any())
-                {
-                    var countriesData = File.ReadAllText("../Infrastructure/Data/SeedData/countries.json");
-                    var countries = JsonSerializer.Deserialize<List<Country>>(countriesData);
+                
 
-                    foreach (var item in countries)
-                    {
-                        context.Countries.Add(item);
-                    }
-
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.Categories.Any())
-                {
-                    var categoriesData = File.ReadAllText("../Infrastructure/Data/SeedData/categories.json");
-                    var categories = JsonSerializer.Deserialize<List<Category>>(categoriesData);
-
-                    foreach (var item in categories)
-                    {
-                        context.Categories.Add(item);
-                    }
-
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.Cities.Any())
-                {
-                    var citiesData = File.ReadAllText("../Infrastructure/Data/SeedData/cities.json");
-                    var cities = JsonSerializer.Deserialize<List<City>>(citiesData);
-
-                    foreach (var item in cities)
-                    {
-                        context.Cities.Add(item);
-                    }
-
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.Addresses.Any())
-                {
-                    var addressesData = File.ReadAllText("../Infrastructure/Data/SeedData/addresses.json");
-                    var addresses = JsonSerializer.Deserialize<List<Address>>(addressesData);
-
-                    foreach (var item in addresses)
-                    {
-                        context.Addresses.Add(item);
-                    }
-
-                    await context.SaveChangesAsync();
-                }
-
-                if (!context.Polyclinics.Any())
-                {
-                    var polyclinicsData = File.ReadAllText("../Infrastructure/Data/SeedData/polyclinics.json");
-                    var polyclinics = JsonSerializer.Deserialize<List<Polyclinic>>(polyclinicsData);
-
-                    foreach (var item in polyclinics)
-                    {
-                        context.Polyclinics.Add(item);
-                    }
-
-                    await context.SaveChangesAsync();
-                }
-
-               /*  if (!context.Departments.Any())
-                {
-                    var departmentsData = File.ReadAllText("../Infrastructure/Data/SeedData/departments.json");
-                    var departments = JsonSerializer.Deserialize<List<Department>>(departmentsData);
-
-                    foreach (var item in departments)
-                    {
-                        context.Departments.Add(item);
-                    }
-
-                    await context.SaveChangesAsync();
-                } */
 
                 if (!context.PrefferedTimeOfExaminations.Any())
                 {

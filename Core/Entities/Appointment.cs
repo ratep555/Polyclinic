@@ -14,8 +14,15 @@ namespace Core.Entities
         [ForeignKey("DoctorId")]
         public Doctor Doctor { get; set; }   
 
+        public int DepartmentId { get; set; }
+        [ForeignKey("DepartmentId")]
+        public Department Department { get; set; }
+
         [DataType(DataType.Date)]
-        public DateTime? DateAndTimeOfAppointment { get; set; }
+        public DateTime? StartDateAndTimeOfAppointment { get; set; }
+        
+        [DataType(DataType.Date)]
+        public DateTime? EndDateAndTimeOfAppointment { get; set; }
         public string Remark { get; set; }
 
     }

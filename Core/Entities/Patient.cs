@@ -17,15 +17,9 @@ namespace Core.Entities
         public string Occupation { get; set; }
         public string Residence { get; set; }
 
-        public int? GenderId { get; set; }
         
-        [ForeignKey("GenderId")]
-        public Gender Gender { get; set; }
 
-        public int? EducationId { get; set; }
 
-        [ForeignKey("EducationId")]
-        public Education Education { get; set; }
 
        
 

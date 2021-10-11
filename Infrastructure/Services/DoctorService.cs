@@ -21,28 +21,25 @@ namespace Infrastructure.Services
             doctor.ApplicationUserId = userId;
             doctor.Name = string.Format("{0} {1}", firstname, lastname);
 
-            doctor.PolyclinicDepartmentId = registerDoctorDto.PolyclinicDepartmentId;
+            doctor.DepartmentId = registerDoctorDto.DepartmentId;
             doctor.SpecialtyId = registerDoctorDto.SpecialtyId;
 
             _context.Doctors.Add(doctor);
             await _context.SaveChangesAsync();
 
         }
-
-        public async Task CreateEmployee(int userId, RegisterEmployeeDto registerEmployeeDto,
-            string firstname, string lastname)
+        public async Task CreateDoctor1(int userId, string lastname, string firstname)
         {
-            var employee = new Employee();
-            employee.ApplicationUserId = userId;
-            employee.Name = string.Format("{0} {1}", firstname, lastname);
+            var doctor = new Doctor1();
+            doctor.ApplicationUserId = userId;
+            doctor.Name = string.Format("{0} {1}", lastname, firstname);
 
-            employee.PolyclinicDepartmentId = registerEmployeeDto.PolyclinicDepartmentId;
-            employee.CategoryId = registerEmployeeDto.CategoryId;
-
-            _context.Employees.Add(employee);
+            _context.Doctors1.Add(doctor);
             await _context.SaveChangesAsync();
 
         }
+
+       
     }
 }
 

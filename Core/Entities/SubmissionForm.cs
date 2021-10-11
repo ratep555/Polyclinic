@@ -15,23 +15,11 @@ namespace Core.Entities
         public DateTime? PrefferedDateOfExamination { get; set; }
         public string PrefferedMethodOfContacting { get; set; }
         public string Phone { get; set; }
-        public DateTime? DateAndTimeOfAppointment { get; set; }
         public bool Status { get; set; }
 
-        public int PolyclinicId { get; set; }
-
-        [ForeignKey("PolyclinicId")]
-        public Polyclinic LocationOfExamination { get; set; }
-
         public int DepartmentId { get; set; }
-
         [ForeignKey("DepartmentId")]
         public Department TypeOfService { get; set; }
-
-        public int? DoctorId { get; set; }
-
-        [ForeignKey("DoctorId")]
-        public Doctor PrefferedDoctor { get; set; }
 
         public int PrefferedTimeOfExaminationId { get; set; }
 

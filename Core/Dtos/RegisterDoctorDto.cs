@@ -23,7 +23,7 @@ namespace Core.Dtos
 
         public int SpecialtyId { get; set; }
         
-        public int PolyclinicDepartmentId { get; set; }
+        public int DepartmentId { get; set; }
 
     }
 }

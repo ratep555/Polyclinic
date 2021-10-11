@@ -18,9 +18,13 @@ namespace API.Extensions
             IConfiguration config)
         {
             services.AddScoped<ISpecialtyService, SpecialtyService>();
-            services.AddScoped<IGenderService, GenderService>();
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<ISubmissionFormService, SubmissionFormService>();
+            services.AddScoped<IPatientService, PatientService>();
+            services.AddScoped<IOfficeService, OfficeService>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IPatient1Service, Patient1Service>();
+            
             services.AddScoped<ITokenService, TokenService>();
 
             services.AddAutoMapper(typeof(MappingHelper).Assembly);

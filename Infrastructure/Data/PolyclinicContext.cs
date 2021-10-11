@@ -41,24 +41,29 @@ namespace Infrastructure.Data
 
             base.OnModelCreating(modelBuilder);
         }
+        // ovo je za novi
+        #region 
+        public DbSet<Appointment1> Appointments1 { get; set; }
+        public DbSet<Doctor1> Doctors1 { get; set; }
+        public DbSet<DoctorSpecialization1> DoctorSpecializations { get; set; }
+        public DbSet<Office1> Offices { get; set; }
+        public DbSet<Publication1> Publications { get; set; }
+        public DbSet<Patient1> Patients1 { get; set; }
+        public DbSet<Specialization1> Specializations { get; set; }
+        public DbSet<Subspecialization1> Subspecializations { get; set; }
+        #endregion 
 
-        public DbSet<Address> Addresses { get; set; }
+
+
+
+
         public DbSet<Appointment> Appointments { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<City> Cities { get; set; }
-        public DbSet<Country> Countries { get; set; }
         public DbSet<Department> Departments { get; set; }
-        public DbSet<Employee> Employees { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Examination> Examinations { get; set; }
-        public DbSet<Gender> Genders { get; set; }
         public DbSet<MedicalChart> MedicalCharts { get; set; }
         public DbSet<Patient> Patients { get; set; }
-        public DbSet<Polyclinic> Polyclinics { get; set; }
-        public DbSet<PolyclinicDepartment> PolyclinicDepartments { get; set; }
-        public DbSet<PolyclinicDepartmentService> PolyclinicDepartmentServices { get; set; }
         public DbSet<PrefferedTimeOfExamination> PrefferedTimeOfExaminations { get; set; }
-        public DbSet<Service> Services { get; set; }
         public DbSet<Specialty> Specialties { get; set; }
         public DbSet<SubmissionForm> SubmissionForms { get; set; }
     }

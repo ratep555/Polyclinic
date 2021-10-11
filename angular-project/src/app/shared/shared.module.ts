@@ -10,13 +10,18 @@ import { CarouselModule } from 'ngx-bootstrap/carousel';
 // import { GoogleChartsModule } from 'angular-google-charts';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { TextInputComponent } from './components/text-input/text-input.component';
+import { DateInputComponent } from './components/date-input/date-input.component';
+import { Date1InputComponent } from './components/date1-input/date1-input.component';
 // import { DateInputComponent } from './components/date-input/date-input.component';
+
 
 @NgModule({
   declarations: [
 
     PagerComponent,
-     TextInputComponent
+     TextInputComponent,
+     DateInputComponent,
+     Date1InputComponent
   ],
   imports: [
     CommonModule,
@@ -36,7 +41,8 @@ import { TextInputComponent } from './components/text-input/text-input.component
     CarouselModule,
     ReactiveFormsModule,
     TextInputComponent,
-    // DateInputComponent,
+     DateInputComponent,
+     Date1InputComponent,
     // GoogleChartsModule,
     BsDatepickerModule
   ]

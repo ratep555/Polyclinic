@@ -22,6 +22,6 @@ namespace Core.Dtos
 
         public int CategoryId { get; set; }
         
-        public int PolyclinicDepartmentId { get; set; }
+        public int DepartmentId { get; set; }
     }
 }

@@ -14,18 +14,20 @@ namespace API.Controllers
     {
         private readonly ITokenService _tokenService;
         private readonly IDoctorService _doctorService;
+        private readonly IPatientService _patientService;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         public AccountController(UserManager<ApplicationUser> userManager, 
             SignInManager<ApplicationUser> signInManager, ITokenService tokenService, 
-            IMapper mapper, IDoctorService doctorService)
+            IMapper mapper, IDoctorService doctorService, IPatientService patientService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _mapper = mapper;
             _tokenService = tokenService;
             _doctorService = doctorService;
+            _patientService = patientService;
         }
 
         [HttpPost("register")]
@@ -41,9 +43,12 @@ namespace API.Controllers
 
             if (!result.Succeeded) return BadRequest(new ServerResponse(400));
 
-            var roleResult = await _userManager.AddToRoleAsync(user, "Visitor");
+            var roleResult = await _userManager.AddToRoleAsync(user, "Patient");
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
+
+            await _patientService.CreatePatient1(user.Id, user.LastName, user.FirstName);
+
 
             return new UserDto
             {
@@ -75,6 +80,31 @@ namespace API.Controllers
             };
         }
 
+        [HttpPost("registerdoctor1")]
+        public async Task<ActionResult<UserDto>> RegisterDoctor1(RegisterDto registerDto)
+        {
+            var user = _mapper.Map<ApplicationUser>(registerDto);
+            
+            user.UserName = registerDto.Username.ToLower();
+
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Doctor");
+
+            if (!roleResult.Succeeded) return BadRequest(result.Errors);
+
+            await _doctorService.CreateDoctor1(user.Id, user.LastName, user.FirstName);
+
+           return new UserDto
+            {
+                Username = user.UserName,
+                Token = await _tokenService.CreateToken(user),
+                Email = user.Email
+            };
+        }
+
         [HttpPost("registeremployee")]
         public async Task<ActionResult<DoctorToReturnDto>> RegisterEmployee(RegisterEmployeeDto registerEmployeeDto)
         {
@@ -87,8 +117,6 @@ namespace API.Controllers
             var roleResult = await _userManager.AddToRoleAsync(user, "Employee");
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
-
-            await _doctorService.CreateEmployee(user.Id, registerEmployeeDto, user.FirstName, user.LastName);
 
             return new DoctorToReturnDto
             {

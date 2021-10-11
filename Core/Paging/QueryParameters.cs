@@ -10,6 +10,8 @@ namespace Core.Entities
             get { return _pageCount; }
             set { _pageCount = (value > MaxPageCount) ? MaxPageCount : value; }
         }
+        public int? SpecializationId { get; set; }
+        public string Sort { get; set; }
         private string _query;
         public string Query
         {

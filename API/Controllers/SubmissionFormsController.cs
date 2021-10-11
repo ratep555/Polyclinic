@@ -10,6 +10,7 @@ using Core.Interfaces;
 using Core.Paging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 namespace API.Controllers
 {
     [Authorize]
@@ -37,44 +38,66 @@ namespace API.Controllers
 
             return _mapper.Map<SubmissionFormDto>(submissionForm);
         }
-
+        
+        [AllowAnonymous]
         [HttpPut("{id}")]
         public async Task<ActionResult<SubmissionFormDto>> UpdateSubmissionForm1(int id,
                 [FromBody] SubmissionFormDto submissionFormDto)
         {
+
             var submissionForm = _mapper.Map<SubmissionForm>(submissionFormDto);
 
             if (id != submissionForm.Id) return BadRequest();
 
-            await _submissionFormService.UpdateSubmissionForm1(submissionForm);
+            await _submissionFormService.UpdateSubmissionForm(submissionForm);
+          //  await _submissionFormService. CreatePatient(submissionForm.Id);       
+           // await _submissionFormService.MakeAppointment1(submissionForm);      
 
             return NoContent();
         }
 
         [AllowAnonymous]
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateSubmissionForm(int id)
+        [HttpPut("sellimo/{id}")]
+        public async Task<ActionResult<int>> UpdateSubmissionForm2(int id,
+                [FromBody] SubmissionFormDto submissionFormDto)
         {
 
-            await _submissionFormService.UpdateSubmissionForm(id);
+            var submissionForm = _mapper.Map<SubmissionForm>(submissionFormDto);
 
-            return Ok();
+            if (id != submissionForm.Id) return BadRequest();
+
+            await _submissionFormService.UpdateSubmissionForm(submissionForm);
+          //  await _submissionFormService. CreatePatient(submissionForm.Id);       
+           var appointment = await _submissionFormService.MakeAppointment1(submissionForm);   
+           if (appointment == null) return NotFound();
+
+           await _submissionFormService.DeleteSubmissionform(submissionForm);   
+
+            return appointment.Id;
+        }
+
+        [AllowAnonymous]
+        [HttpPut("sell/{id}")]
+        public async Task<ActionResult<AppointmentDto>> UpdateAppointment(int id,
+                [FromBody] AppointmentDto appointmentDto)
+        {
+
+            var appointment = _mapper.Map<Appointment>(appointmentDto);
+
+            if (id != appointment.Id) return BadRequest();
+
+            await _submissionFormService.UpdateAppointment(appointment);
+
+            return NoContent();
         }
         
         [AllowAnonymous]
-        [HttpPost("appointment/{id}")]
-        public async Task<ActionResult<AppointmentToReturnDto>> MakeAppointmentStock(int id, 
-            AppointmentDto appointmentDto)
-        {     
-            var patient = await _submissionFormService.FindPatientById(id);
+        [HttpGet("list/{id}")]
+        public async Task<ActionResult<List<Doctor>>> ShowList(int id)
+        {
+            var list = await _submissionFormService.ShowListOfDoctors(id);
 
-            if (patient == null) return NotFound();
-
-            var appointment = await _submissionFormService.MakeAppointment(id, appointmentDto);                                                                                                
-
-            var appointmentToReturn = _mapper.Map<AppointmentToReturnDto>(appointment);
-
-            return Ok(appointmentToReturn);
+            return Ok(list);
         }
 
         [HttpPost("examination")]

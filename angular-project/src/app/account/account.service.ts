@@ -38,6 +38,16 @@ export class AccountService {
     );
   }
 
+  registerDoctor(values: any) {
+    return this.http.post(this.baseUrl + 'account/registerdoctor1', values).pipe(
+      map((user: User) => {
+        if (user) {
+          this.setCurrentUser(user);
+        }
+      })
+    );
+  }
+
   setCurrentUser(user: User) {
     user.roles = [];
     const roles = this.getDecodedToken(user.token).role;
