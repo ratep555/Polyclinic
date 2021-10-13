@@ -15,7 +15,7 @@ namespace API.Controllers
 {
     public class Patients1Controller : BaseApiController
     {
-         private readonly IPatient1Service _patient1Service;
+        private readonly IPatient1Service _patient1Service;
         private readonly IMapper _mapper;
         public Patients1Controller(IPatient1Service patient1Service, IMapper mapper)
         {

@@ -40,6 +40,26 @@ namespace API.Controllers
             (queryParameters.Page, queryParameters.PageCount, count, data));
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AppointmentSingleDto>> GetAppointmentById(int id)
+        {
+            var appointment = await _appointmentService.FindAppointmentById(id);
+
+            if (appointment == null) return NotFound();
+
+            return _mapper.Map<AppointmentSingleDto>(appointment);
+        }
+
+        [HttpGet("app/{id}")]
+        public async Task<ActionResult<Appointment1Dto>> GetAppointmentForEditById(int id)
+        {
+            var appointment = await _appointmentService.FindAppointmentById(id);
+
+            if (appointment == null) return NotFound();
+
+            return _mapper.Map<Appointment1Dto>(appointment);
+        }
+
         [HttpGet("allpatients")]
          public async Task<ActionResult<Pagination<Appointment1ToReturnDto>>> GetAllAppointmentsForAllPatients(
             [FromQuery] QueryParameters queryParameters)
@@ -55,7 +75,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Appointment1Dto>> CreateAppointment([FromBody] Appointment1Dto appointmentDto)
+        public async Task<ActionResult<Appointment1Dto>> CreateAppointmentByDoctor([FromBody] Appointment1Dto appointmentDto)
         {
             var appointment = _mapper.Map<Appointment1>(appointmentDto);
              
@@ -68,17 +88,31 @@ namespace API.Controllers
         }
         
         [HttpPut("{id}")]
-        public async Task<ActionResult<Appointment1Dto>> UpdateAppointment(int id,
+        public async Task<ActionResult<Appointment1Dto>> UpdateAppointmentByPatient(int id,
              [FromBody] Appointment1Dto appointmentDto)
         {
             var userId = User.GetUserId();
             var patient = await _appointmentService.FindPatientById(userId);
 
-            var appointment = _mapper.Map<Appointment1>(appointmentDto);
+            var appointment = await _appointmentService.FindAppointmentById(id);
 
-            if (id != appointment.Id) return BadRequest();
+            if (appointment == null) return NotFound();
             
             appointment.Patient1Id = patient.Id;
+            appointment.Remarks = appointmentDto.Remarks;
+
+            await _appointmentService.UpdateAppointment(appointment);
+
+            return NoContent();
+        }
+
+        [HttpPut("doc/{id}")]
+        public async Task<ActionResult<Appointment1Dto>> UpdateAppointmentByDoctorNew(int id,
+             [FromBody] Appointment1Dto appointmentDto)
+        {
+           var appointment = _mapper.Map<Appointment1>(appointmentDto);
+
+            if (id != appointment.Id) return BadRequest();
 
             await _appointmentService.UpdateAppointment(appointment);
 

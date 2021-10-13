@@ -2,7 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { IAppointment, IAppointmentSingle, INewAppointmentToCreateOrEdit } from '../shared/models/appointment';
 import { MyParams } from '../shared/models/myparams';
+import { IOffice } from '../shared/models/office';
 import { IPaginationForAppointments} from '../shared/models/pagination';
 import { ISpecialization } from '../shared/models/specialization';
 
@@ -10,8 +12,8 @@ import { ISpecialization } from '../shared/models/specialization';
   providedIn: 'root'
 })
 export class PatientAppointmentsService {
-
   baseUrl = environment.apiUrl;
+  formData: INewAppointmentToCreateOrEdit = new INewAppointmentToCreateOrEdit();
 
   constructor(private http: HttpClient) { }
 
@@ -35,4 +37,24 @@ export class PatientAppointmentsService {
   bookAppointment(id: number) {
     return this.http.put(`${this.baseUrl}appointments/updatissimo/${id}`, {});
 }
+
+editAppointment(formData) {
+  return this.http.put(environment.apiUrl + 'appointments/' + formData.id, formData);
 }
+
+getApointmentForEdit(id: number) {
+  return this.http.get<INewAppointmentToCreateOrEdit>(this.baseUrl + 'appointments/' + id);
+}
+
+getAppointmentById(id: number) {
+  return this.http.get<IAppointmentSingle>(this.baseUrl + 'appointments/' + id);
+}
+
+getOffices() {
+  return this.http.get<IOffice[]>(this.baseUrl + 'appointments/offices');
+}
+
+}
+
+
+

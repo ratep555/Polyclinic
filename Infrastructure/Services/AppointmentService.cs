@@ -43,6 +43,30 @@ namespace Infrastructure.Services
                 .Where(x => x.Office.Street.Contains(queryParameters.Query));
             }
 
+            if (queryParameters.Status == "notbooked")
+            {
+                appointment = appointment
+                .Where(x => x.Status == null && x.Patient1Id == null);
+            }
+
+            if (queryParameters.Status == "confirmed")
+            {
+                appointment = appointment
+                .Where(x => x.Status == true);
+            }
+
+            if (queryParameters.Status == "rejected")
+            {
+                appointment = appointment
+                .Where(x => x.Status == false);
+            }
+
+            if (queryParameters.Status == "pending")
+            {
+                appointment = appointment
+                .Where(x => x.Status == null);
+            }
+
             appointment = appointment.Skip(queryParameters.PageCount * (queryParameters.Page - 1))
                            .Take(queryParameters.PageCount);
             
@@ -54,10 +78,13 @@ namespace Infrastructure.Services
             var doctor = await _context.Doctors1.Where(x => x.ApplicationUserId == userId)
                                .FirstOrDefaultAsync();
             
-            var office = await _context.Offices.Where(x => x.Doctor1Id == doctor.Id)
-                         .FirstOrDefaultAsync();            
+            var offices = await _context.Offices.Where(x => x.Doctor1Id == doctor.Id)
+                         .ToListAsync();      
 
-            return await _context.Appointments1.Where(x => x.Office1Id == office.Id).CountAsync();
+            IEnumerable<int> ids = offices.Select(x => x.Id);
+
+
+            return await _context.Appointments1.Where(x => ids.Contains(x.Office1Id)).CountAsync();
         }
         public async Task<List<Appointment1>> GetAppointmentsForAllPatientsWithSearchingAndPaging(
                 QueryParameters queryParameters)
@@ -135,13 +162,16 @@ namespace Infrastructure.Services
 
         public async Task<Appointment1> FindAppointmentById(int id)
         {
-            return await _context.Appointments1.Where(x => x.Id == id)
+            return await _context.Appointments1.Include(x => x.Office).ThenInclude(x => x.Doctor)
+                         .Include(x => x.Patient)
+                         .Where(x => x.Id == id)
                          .FirstOrDefaultAsync();
         }
 
         public async Task BookAppointmentByUser(int id, int userId)
         {
-            var appointment = await _context.Appointments1.Where(x => x.Id == id)
+            var appointment = await _context.Appointments1.Include(x => x.Office).ThenInclude(x => x.Doctor)
+                                    .Where(x => x.Id == id)
                                     .FirstOrDefaultAsync();
             
             

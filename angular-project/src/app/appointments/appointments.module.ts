@@ -6,12 +6,14 @@ import { SharedModule } from '../shared/shared.module';
 import { AppointmentsRoutingModule } from './appointments-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import { AppointmentEditComponent } from './appointment-edit/appointment-edit.component';
 
 
 @NgModule({
   declarations: [
     AppointmentsComponent,
-    AppointmentAddComponent
+    AppointmentAddComponent,
+    AppointmentEditComponent
   ],
   imports: [
     CommonModule,

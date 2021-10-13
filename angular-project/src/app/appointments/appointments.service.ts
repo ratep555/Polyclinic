@@ -40,4 +40,8 @@ export class AppointmentsService {
     return this.http.post(this.baseUrl + 'appointments', formData);
   }
 
+  editAppointment(formData) {
+    return this.http.put(environment.apiUrl + 'appointments/doc/' + formData.id, formData);
+  }
+
 }

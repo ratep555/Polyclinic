@@ -42,7 +42,18 @@ namespace API
 
 
             CreateMap<Appointment1Dto, Appointment1>().ReverseMap();
+            CreateMap<Appointment1, Appointment1Dto>().ReverseMap()
+            .ForMember(d => d.Status, o => o.MapFrom(s => s.Status
+            ));
 
+
+            CreateMap<Appointment1, AppointmentSingleDto>()
+            .ForMember(d => d.Office, o => o.MapFrom(s => s.Office.Street))
+            .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Office.Doctor.Name))
+            .ForMember(d => d.City, o => o.MapFrom(s => s.Office.City))
+            .ForMember(d => d.Country, o => o.MapFrom(s => s.Office.Country))
+            .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name))
+            .ForMember(d => d.Status, o => o.MapFrom(s => s.Status));
             #endregion
 
 
