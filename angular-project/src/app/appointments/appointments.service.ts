@@ -21,6 +21,8 @@ export class AppointmentsService {
     if (myparams.query) {
       params = params.append('query', myparams.query);
     }
+
+    params = params.append('sort', myparams.sort);
     params = params.append('page', myparams.page.toString());
     params = params.append('pageCount', myparams.pageCount.toString());
     return this.http.get<IPaginationForAppointments>(this.baseUrl + 'appointments', {observe: 'response', params})

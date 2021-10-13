@@ -12,7 +12,9 @@ namespace Core.Entities
         }
         public int? SpecializationId { get; set; }
         public string Sort { get; set; }
-        public string Status { get; set; }
+
+        // ovo izbriši kasnije
+        public int? Status { get; set; }
         private string _query;
         public string Query
         {

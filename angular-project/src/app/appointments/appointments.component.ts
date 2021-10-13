@@ -11,9 +11,18 @@ import { AppointmentsService } from './appointments.service';
 })
 export class AppointmentsComponent implements OnInit {
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
+  @ViewChild('filter', {static: false}) filterTerm: ElementRef;
   appointments: IAppointment[];
   myParams = new MyParams();
   totalCount: number;
+
+  sortOptions = [
+    {name: 'All Appointments', value: 'city'},
+    {name: 'Pending', value: 'pending'},
+    {name: 'Booked', value: 'booked'},
+    {name: 'Confirmed', value: 'confirmed'},
+    {name: 'Cancelled', value: 'cancelled'}
+  ];
 
   constructor(private appointmentsService: AppointmentsService,
               private  router: Router) { }
@@ -40,6 +49,11 @@ export class AppointmentsComponent implements OnInit {
     this.getAppointments();
   }
 
+  onFilter() {
+    this.myParams.status = this.filterTerm.nativeElement.value;
+    this.getAppointments();
+  }
+
   onReset() {
     this.searchTerm.nativeElement.value = '';
     this.myParams = new MyParams();
@@ -53,4 +67,8 @@ export class AppointmentsComponent implements OnInit {
     }
 }
 
+onSortSelected(sort: string) {
+  this.myParams.sort = sort;
+  this.getAppointments();
+}
 }

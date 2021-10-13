@@ -20,7 +20,6 @@ export class PatientOfficesComponent implements OnInit {
 
   sortOptions = [
     {name: 'Sort Alphabetical by City', value: 'city'},
-  // value is what we are sending as a query string parameter
     {name: 'Initial Fee Price: Low to High', value: 'priceAsc'},
     {name: 'Initial Fee Price: High to Low', value: 'priceDesc'},
     {name: 'Follow Up Fee Price: Low to High', value: 'priceAscFollowUp'},

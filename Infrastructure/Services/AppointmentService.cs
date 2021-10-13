@@ -40,32 +40,30 @@ namespace Infrastructure.Services
             if (queryParameters.HasQuery())
             {
                 appointment = appointment
-                .Where(x => x.Office.Street.Contains(queryParameters.Query));
+                .Where(x => x.Patient.Name.Contains(queryParameters.Query));
             }
 
-            if (queryParameters.Status == "notbooked")
+             if (!string.IsNullOrEmpty(queryParameters.Sort))
             {
-                appointment = appointment
-                .Where(x => x.Status == null && x.Patient1Id == null);
-            }
-
-            if (queryParameters.Status == "confirmed")
-            {
-                appointment = appointment
-                .Where(x => x.Status == true);
-            }
-
-            if (queryParameters.Status == "rejected")
-            {
-                appointment = appointment
-                .Where(x => x.Status == false);
-            }
-
-            if (queryParameters.Status == "pending")
-            {
-                appointment = appointment
-                .Where(x => x.Status == null);
-            }
+                switch (queryParameters.Sort)
+                {
+                    case "pending":
+                        appointment = appointment.Where(p => p.Status == null & p.Patient1Id == null);
+                        break;
+                    case "booked":
+                        appointment = appointment.Where(p => p.Status == null && p.Patient1Id != null);
+                        break;
+                    case "confirmed":
+                        appointment = appointment.Where(p => p.Status == true && p.Patient1Id != null);
+                        break;
+                    case "cancelled":
+                        appointment = appointment.Where(p => p.Status == false && p.Patient1Id != null);
+                        break;
+                    default:
+                        appointment = appointment.OrderBy(n => n.Id);
+                        break;
+                }
+            }    
 
             appointment = appointment.Skip(queryParameters.PageCount * (queryParameters.Page - 1))
                            .Take(queryParameters.PageCount);
@@ -102,7 +100,7 @@ namespace Infrastructure.Services
             appointment = appointment.Skip(queryParameters.PageCount * (queryParameters.Page - 1))
                            .Take(queryParameters.PageCount);
             
-             if (!string.IsNullOrEmpty(queryParameters.Sort))
+            if (!string.IsNullOrEmpty(queryParameters.Sort))
             {
                 switch (queryParameters.Sort)
                 {
