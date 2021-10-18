@@ -1,0 +1,9 @@
+<div class="container-fluid" style="margin-top: 200px;">  
+    <h2 class="text-center text-primary">Edit Office</h2>
+    <hr>
+    <app-form-office
+    *ngIf="model"
+    [model]="model" (SaveChangesy)="saveChanges($event)"></app-form-office>
+</div>
+
+

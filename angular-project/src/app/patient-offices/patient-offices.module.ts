@@ -3,12 +3,18 @@ import { CommonModule } from '@angular/common';
 import { PatientOfficesComponent } from './patient-offices.component';
 import { SharedModule } from '../shared/shared.module';
 import { PatientOfficesRoutingModule } from './patient-offices-routing.module';
+import { PatientOfficeDetailComponent } from './patient-office-detail/patient-office-detail.component';
+import { DoctorDetailComponent } from './doctor-detail/doctor-detail.component';
+import { OfficeInfoComponent } from './office-info/office-info.component';
 
 
 
 @NgModule({
   declarations: [
-    PatientOfficesComponent
+    PatientOfficesComponent,
+    PatientOfficeDetailComponent,
+    DoctorDetailComponent,
+    OfficeInfoComponent
   ],
   imports: [
     CommonModule,

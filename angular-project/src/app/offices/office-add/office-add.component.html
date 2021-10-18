@@ -14,6 +14,13 @@
                     [label]='"Initial Examination Fee"'></app-text-input>
                 <app-text-input [formControl]='officeForm.controls["followUpExaminationFee"]' 
                     [label]='"Follow Up Examination Fee"'></app-text-input>
+                    
+                    <label style="font-size: small;"><strong>Select Location:</strong></label>  
+                    <div class="mb-15" style="position: relative; width: 600px;">
+                        <app-map 
+                        (selectedLocation)="onSelectedLocation($event)"
+                        ></app-map>
+                    </div>
                 
                 <div class="row" *ngIf="errors?.length > 0">
                     <ul class="text-danger">
@@ -23,7 +30,7 @@
                     </ul>
                 </div>
             
-                <div class="form-group text-center">
+                <div style="margin-top: 530px;" class="form-group text-center">
                     <button [disabled]='!officeForm.valid' class="btn btn-success mr-2" type="submit">Save</button>
                 </div>
             </form>

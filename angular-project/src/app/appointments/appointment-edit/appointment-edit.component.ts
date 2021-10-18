@@ -36,11 +36,11 @@ export class AppointmentEditComponent implements OnInit {
     this.appointmentForms.push(this.fb.group({
               id: [this.id],
               office1Id: [appointment.office1Id, Validators.required],
-              patient1Id: [appointment.patient1Id, Validators.required],
+              patient1Id: [appointment.patient1Id],
               startDateAndTimeOfAppointment: [appointment.startDateAndTimeOfAppointment, Validators.required],
               endDateAndTimeOfAppointment: [new Date(appointment.endDateAndTimeOfAppointment), Validators.required],
               remarks: [appointment.remarks],
-              status: [appointment.status, Validators.required]
+              status: [appointment.status]
             }));
       });
   }

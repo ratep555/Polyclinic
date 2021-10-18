@@ -12,7 +12,12 @@ import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { TextInputComponent } from './components/text-input/text-input.component';
 import { DateInputComponent } from './components/date-input/date-input.component';
 import { Date1InputComponent } from './components/date1-input/date1-input.component';
-// import { DateInputComponent } from './components/date-input/date-input.component';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { ToastrModule } from 'ngx-toastr';
+import { LeafletModule} from '@asymmetrik/ngx-leaflet';
+import 'leaflet/dist/images/marker-shadow.png';
+// import './assets/downloadLea.jpg';
+import { MapComponent } from './components/map/map.component';
 
 
 @NgModule({
@@ -21,28 +26,38 @@ import { Date1InputComponent } from './components/date1-input/date1-input.compon
     PagerComponent,
      TextInputComponent,
      DateInputComponent,
-     Date1InputComponent
+     Date1InputComponent,
+     MapComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    LeafletModule,
     PaginationModule.forRoot(),
     TypeaheadModule.forRoot(),
     BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right'
+    }),
     CarouselModule.forRoot(),
     BsDatepickerModule.forRoot()
   ],
   exports: [
     PaginationModule,
+    ToastrModule,
+    TabsModule,
     TypeaheadModule,
     BsDropdownModule,
     PagerComponent,
     CarouselModule,
     ReactiveFormsModule,
+    LeafletModule,
     TextInputComponent,
      DateInputComponent,
      Date1InputComponent,
+     MapComponent,
     // GoogleChartsModule,
     BsDatepickerModule
   ]

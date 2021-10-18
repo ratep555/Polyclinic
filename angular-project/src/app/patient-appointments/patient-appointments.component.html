@@ -49,10 +49,7 @@
                 Remarks
             </th>                                                 
               <th>
-              </th>      
-              <th>
-
-              </th>        
+              </th>            
           </tr>
               </thead>
               <tbody>
@@ -66,21 +63,31 @@
           <td>{{item.endDateAndTimeOfAppointment | date:"dd.MM.yyyy HH:mm"}}</td>
           <td>{{item.status}}</td>
           <td>{{item.remarks}}</td>
-          <td>  
+        <!--   <td>  
             <div class="text-center">
-                <button (click)="bookAppointment(item.id)" 
-                type="button" class="btn btn-success mr-5">
-                <i class="fa fa-edit mr-1"></i>
-                Book Appointment</button>                     
-              </div>
-              <div>
+                 <button (click)="bookAppointment(item.id)" 
+                type="button" class="btn btn-success d-inline">
+                Book</button>                      
+                <button (click)="cancelAppointment(item.id)" 
+                type="button" class="btn btn-danger d-inline">
+                Cancel</button>                     
                 <button routerLink="/patient-appointments/editappointment/{{item.id}}" 
-                type="button" class="btn btn-success mr-5">
-                <i class="fa fa-edit mr-1"></i>
-                Edit</button>      
-                
+                type="button" class="btn btn-success d-inline">
+                Edit</button>                    
               </div>
-        </td>
+        </td> -->
+        <td class="text-center" *ngIf="item.patient === null else elseBlock">
+          <button routerLink="/patient-appointments/editappointment/{{item.id}}" 
+          type="button" class="btn btn-success d-inline">
+          <i class="fa fa-ticket"></i>
+          Book</button>  
+      </td>
+          <ng-template #elseBlock><td class="text-center">
+            <button (click)="cancelAppointment(item.id)" 
+                type="button" class="btn btn-danger d-inline">
+                <i class="fa fa-times-circle"></i>
+                Cancel</button> 
+          </td></ng-template>
       </tr>
               </tbody>    
     </table>

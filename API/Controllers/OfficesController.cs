@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-         public async Task<ActionResult<Pagination<OfficeToReturnDto>>> GetAllOfficesForDoctor(
+        public async Task<ActionResult<Pagination<OfficeToReturnDto>>> GetAllOfficesForDoctor(
             [FromQuery] QueryParameters queryParameters)
         {
             var userId = User.GetUserId();
@@ -75,6 +75,26 @@ namespace API.Controllers
             office.Doctor1Id = docor.Id;
 
             await _officeService.UpdateOffice(office);
+
+            return NoContent();
+        }
+
+        [HttpPut("first/{id}")]
+        public async Task<ActionResult> UpdateOffice1(int id,
+             [FromBody] OfficeCreationDto officeDto)
+        {
+            var userId = User.GetUserId();
+            var docor = await _officeService.FindDoctorById(userId);
+
+            var office = await _officeService.GetOfficeByIdAsync(id);
+
+            if (office == null) return NotFound();
+            
+            office.Doctor1Id = docor.Id;
+
+            office = _mapper.Map(officeDto, office);
+
+            await _officeService.Save();
 
             return NoContent();
         }

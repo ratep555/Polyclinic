@@ -30,6 +30,11 @@ namespace API
             #region 
             CreateMap<RegisterDoctorDto1, ApplicationUser>().ReverseMap();
             CreateMap<OfficeDto, Office1>().ReverseMap();
+            CreateMap<OfficeCreationDto, Office1>();
+            CreateMap<Specialization1, SpecializationDto>().ReverseMap();
+            CreateMap<Subspecialization1, SubspecializationDto>().ReverseMap();
+            CreateMap<ProfessionalAssociation, ProfessionalAssociationDto>().ReverseMap();
+            CreateMap<Publication1, PublicationDto>().ReverseMap();
 
             CreateMap<Office1, OfficeToReturnDto>()
             .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Doctor.Name));
@@ -54,6 +59,9 @@ namespace API
             .ForMember(d => d.Country, o => o.MapFrom(s => s.Office.Country))
             .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name))
             .ForMember(d => d.Status, o => o.MapFrom(s => s.Status));
+
+            CreateMap<Doctor1, Doctor1Dto>().ReverseMap();
+
             #endregion
 
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CoordinatesMap } from 'src/app/shared/models/coordinate';
 import { INewOfficeToCreateOrEdit } from 'src/app/shared/models/office';
 import { OfficesService } from '../offices.service';
 
@@ -12,8 +13,9 @@ import { OfficesService } from '../offices.service';
 export class OfficeAddComponent implements OnInit {
   officeForm: FormGroup;
   errors: string[] = [];
+  initialCoordinates: CoordinatesMap[] = [];
 
-  constructor(private officesService: OfficesService,
+  constructor(public officesService: OfficesService,
               private router: Router,
               private fb: FormBuilder) { }
 
@@ -27,7 +29,9 @@ export class OfficeAddComponent implements OnInit {
       city: ['', [Validators.required]],
       country: ['', [Validators.required]],
       initialExaminationFee: ['', [Validators.required]],
-      followUpExaminationFee: ['', [Validators.required]]
+      followUpExaminationFee: ['', [Validators.required]],
+      longitude: [''],
+      latitude: ['']
     });
   }
 
@@ -46,5 +50,11 @@ export class OfficeAddComponent implements OnInit {
     form.reset();
     this.officesService.formData = new INewOfficeToCreateOrEdit();
   }
+
+  onSelectedLocation(coordinates: CoordinatesMap) {
+    this.officeForm.patchValue(coordinates);
+    /* this.initialCoordinates.push({latitude: this.officesService.formData.latitude,
+      longitude: this.officesService.formData.longitude}); */
+ }
 
 }

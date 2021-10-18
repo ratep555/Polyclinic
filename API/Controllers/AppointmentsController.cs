@@ -74,6 +74,32 @@ namespace API.Controllers
             (queryParameters.Page, queryParameters.PageCount, count, data));
         }
 
+        [HttpGet("officeappointments/{id}")]
+         public async Task<ActionResult<Pagination<Appointment1ToReturnDto>>> GetAllAvailableAppointmentsFroOfficeForPatients(
+            int id, [FromQuery] QueryParameters queryParameters)
+        {
+            var count = await _appointmentService.GetCountForAvailableAppointmentsForOfficesForAllPatients(id);
+            var list = await _appointmentService
+                             .GetAvailableAppointmentsForOfficeForPatientsWithSearchingAndPaging(
+                                 id, queryParameters);
+
+            var data = _mapper.Map<IEnumerable<Appointment1ToReturnDto>>(list);
+
+            return Ok(new Pagination<Appointment1ToReturnDto>
+            (queryParameters.Page, queryParameters.PageCount, count, data));
+        }
+
+        [HttpGet("first/{id}")]
+        public async Task<ActionResult<OfficeDto>> GetOfficeById(int id)
+        {
+            var office = await _appointmentService.FindOfficeById(id);
+
+            if (office == null) return NotFound();
+
+            return _mapper.Map<OfficeDto>(office);
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<Appointment1Dto>> CreateAppointmentByDoctor([FromBody] Appointment1Dto appointmentDto)
         {
@@ -143,6 +169,24 @@ namespace API.Controllers
             if (appointment == null) return NotFound();
 
             appointment.Patient1Id = patient.Id;
+
+            await _appointmentService.UpdateAppointment(appointment);
+
+            return NoContent();
+        }
+
+        [HttpPut("updatissimocancel/{id}")]
+        public async Task<ActionResult> CancelAppointmentAsPatient(int id)
+        {
+            var userId = User.GetUserId();
+            var patient = await _appointmentService.FindPatientById(userId);
+
+            var appointment = await _appointmentService.FindAppointmentById(id);
+
+            if (appointment == null) return NotFound();
+
+            appointment.Patient1Id = null;
+            appointment.Remarks = "";
 
             await _appointmentService.UpdateAppointment(appointment);
 

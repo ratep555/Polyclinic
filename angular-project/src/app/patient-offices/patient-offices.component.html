@@ -45,7 +45,7 @@ Reset</button>
               </th> 
               <th style="font-size: large;">
                 Doctor
-                  </th>                                                                                                                                          
+                  </th>                                                                                                                                                                                                                                                                                  
               <th style="font-size: large;">
                 Initial Fee
             </th>                                                               
@@ -66,11 +66,11 @@ Reset</button>
           <td>{{item.followUpExaminationFee | number: '1.2-2'}} kn</td>
           <td>  
             <div class="text-center">
-                <button routerLink="/offices/editoffice/{{item.id}}" 
+                <button routerLink="/patient-offices/doctor/{{item.doctorId}}" 
                 type="button" class="btn btn-info mr-5">
                 <i class="fa fa-info-circle mr-1"></i>
-                Doctor Details</button>      
-                <button routerLink="/offices/editoffice/{{item.id}}" 
+                Doctor Info</button>      
+                <button routerLink="/patient-offices/{{item.id}}" 
                 type="button" class="btn btn-info mr-5">
                 <i class="fa fa-info-circle mr-1"></i>
                 Availability</button>      

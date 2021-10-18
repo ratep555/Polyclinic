@@ -38,6 +38,10 @@ export class PatientAppointmentsService {
     return this.http.put(`${this.baseUrl}appointments/updatissimo/${id}`, {});
 }
 
+  cancelAppointment(id: number) {
+    return this.http.put(`${this.baseUrl}appointments/updatissimocancel/${id}`, {});
+}
+
 editAppointment(formData) {
   return this.http.put(environment.apiUrl + 'appointments/' + formData.id, formData);
 }

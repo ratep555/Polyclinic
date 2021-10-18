@@ -29,7 +29,9 @@ ngOnInit(): void {
     city: ['', [Validators.required]],
     country: ['', [Validators.required]],
     initialExaminationFee: ['', [Validators.required]],
-    followUpExaminationFee: ['', [Validators.required]]
+    followUpExaminationFee: ['', [Validators.required]],
+    longitude: [''],
+    latitude: ['']
   });
 
   this.officesService.getOfficeById(this.id)

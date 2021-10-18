@@ -14,6 +14,8 @@ namespace Core.Entities
         public string Name { get; set; }
         public string Resume { get; set; }
         public ICollection<Office1> Offices { get; set; }
+        
         public ICollection<DoctorSpecialization1> DoctorSpecializations { get; set; }
+        public ICollection<DoctorProfessionalAssociation> DoctorProfessionalAssociations { get; set; }
     }
 }

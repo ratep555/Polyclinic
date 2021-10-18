@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 import { MyParams } from '../shared/models/myparams';
 import { IPaginationForOffices } from '../shared/models/pagination';
 import { map } from 'rxjs/operators';
-import { INewOfficeToCreateOrEdit, IOffice } from '../shared/models/office';
+import { INewOfficeToCreate, INewOfficeToCreateOrEdit, IOffice } from '../shared/models/office';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +34,16 @@ export class OfficesService {
     return this.http.post(this.baseUrl + 'offices', formData);
   }
 
+  createOffice1(office: INewOfficeToCreate) {
+    return this.http.post(this.baseUrl + 'offices', office);
+  }
+
   updateOffice(id: number, params: any) {
     return this.http.put(`${this.baseUrl}offices/${id}`, params);
+  }
+
+  updateOffice1(id: number, office: INewOfficeToCreate) {
+    return this.http.put(`${this.baseUrl}offices/first/${id}`, office);
   }
 
   getOfficeById(id: number) {

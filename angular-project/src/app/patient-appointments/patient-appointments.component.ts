@@ -87,4 +87,26 @@ bookAppointment(id: number) {
       }
     });
     }
+
+cancelAppointment(id: number) {
+  Swal.fire({
+    title: 'Are you sure want to cancel this appointment?',
+    text: 'You can book it again until it is booked by other patient.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, cancel it!',
+    confirmButtonColor: '#DD6B55',
+    cancelButtonText: 'No, forget about it'
+  }).then((result) => {
+    if (result.value) {
+    this.patientappointmentsService.cancelAppointment(id)
+      .subscribe(
+        res => {
+          this.getAppointments();
+        },
+        err => { console.log(err);
+        });
+      }
+    });
+    }
 }

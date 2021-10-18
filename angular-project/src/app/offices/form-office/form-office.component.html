@@ -1,0 +1,31 @@
+<div class="container-fluid">   
+    <div class="d-flex justify-content-center mt-5">
+        <div class="col-3">
+            <form [formGroup]='form' (submit)="saveChanges()">           
+                <app-text-input [formControl]='form.controls["street"]' 
+                    [label]='"Street"'></app-text-input>
+                <app-text-input [formControl]='form.controls["city"]' 
+                    [label]='"City"'></app-text-input>
+                <app-text-input [formControl]='form.controls["country"]' 
+                    [label]='"Country"'></app-text-input>
+                <app-text-input [formControl]='form.controls["initialExaminationFee"]' 
+                    [label]='"Initial Examination Fee"'></app-text-input>
+                <app-text-input [formControl]='form.controls["followUpExaminationFee"]' 
+                    [label]='"Follow Up Examination Fee"'></app-text-input>
+                
+                <div class="row" *ngIf="errors?.length > 0">
+                    <ul class="text-danger">
+                        <li *ngFor="let error of errors">
+                            {{error}}
+                        </li>
+                    </ul>
+                </div>
+            
+                <div class="form-group text-center">
+                    <button [disabled]='!form.valid' class="btn btn-success mr-2" type="submit">Save</button>
+                </div>
+            </form>
+            </div>
+            </div>
+            </div>
+

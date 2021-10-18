@@ -242,6 +242,50 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Doctors1");
                 });
 
+            modelBuilder.Entity("Core.Entities.DoctorProfessionalAssociation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Doctor1Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProfessionalAssociationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Doctor1Id");
+
+                    b.HasIndex("ProfessionalAssociationId");
+
+                    b.ToTable("DoctorProfessionalAssociations");
+                });
+
+            modelBuilder.Entity("Core.Entities.DoctorPublication", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Doctor1Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Publication1Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Doctor1Id");
+
+                    b.HasIndex("Publication1Id");
+
+                    b.ToTable("DoctorPublications");
+                });
+
             modelBuilder.Entity("Core.Entities.DoctorSpecialization1", b =>
                 {
                     b.Property<int>("Id")
@@ -400,17 +444,12 @@ namespace Infrastructure.Data.Migrations
                     b.Property<decimal>("InitialExaminationFee")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("Office1Id")
-                        .HasColumnType("int");
-
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Doctor1Id");
-
-                    b.HasIndex("Office1Id");
 
                     b.ToTable("Offices");
                 });
@@ -494,6 +533,21 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("PrefferedTimeOfExaminations");
                 });
 
+            modelBuilder.Entity("Core.Entities.ProfessionalAssociation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProfessionalAssociations");
+                });
+
             modelBuilder.Entity("Core.Entities.Publication1", b =>
                 {
                     b.Property<int>("Id")
@@ -501,18 +555,10 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("Doctor1Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PublicationName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PublishingYear")
+                    b.Property<string>("PublicationAuthorsTitleDate")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Doctor1Id");
 
                     b.ToTable("Publications");
                 });
@@ -720,7 +766,7 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Core.Entities.Appointment1", b =>
                 {
                     b.HasOne("Core.Entities.Office1", "Office")
-                        .WithMany()
+                        .WithMany("Appointments")
                         .HasForeignKey("Office1Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -770,6 +816,44 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Core.Entities.DoctorProfessionalAssociation", b =>
+                {
+                    b.HasOne("Core.Entities.Doctor1", "Doctor")
+                        .WithMany("DoctorProfessionalAssociations")
+                        .HasForeignKey("Doctor1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.ProfessionalAssociation", "ProfessionalAssociation")
+                        .WithMany()
+                        .HasForeignKey("ProfessionalAssociationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("ProfessionalAssociation");
+                });
+
+            modelBuilder.Entity("Core.Entities.DoctorPublication", b =>
+                {
+                    b.HasOne("Core.Entities.Doctor1", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("Doctor1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Publication1", "Publication")
+                        .WithMany()
+                        .HasForeignKey("Publication1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Publication");
                 });
 
             modelBuilder.Entity("Core.Entities.DoctorSpecialization1", b =>
@@ -856,10 +940,6 @@ namespace Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.Office1", null)
-                        .WithMany("Offices")
-                        .HasForeignKey("Office1Id");
-
                     b.Navigation("Doctor");
                 });
 
@@ -883,15 +963,6 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("Core.Entities.Publication1", b =>
-                {
-                    b.HasOne("Core.Entities.Doctor1", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("Doctor1Id");
-
-                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("Core.Entities.SubmissionForm", b =>
@@ -970,6 +1041,8 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Doctor1", b =>
                 {
+                    b.Navigation("DoctorProfessionalAssociations");
+
                     b.Navigation("DoctorSpecializations");
 
                     b.Navigation("Offices");
@@ -982,7 +1055,7 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Office1", b =>
                 {
-                    b.Navigation("Offices");
+                    b.Navigation("Appointments");
                 });
 
             modelBuilder.Entity("Core.Entities.Patient1", b =>

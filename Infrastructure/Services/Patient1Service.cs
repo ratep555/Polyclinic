@@ -115,7 +115,7 @@ namespace Infrastructure.Services
         public async Task<List<Specialization1>> GetSpecializationsAsync()
         {
             var doctorSpecializations = await _context.DoctorSpecializations.ToListAsync();
-            IEnumerable<int> ids = doctorSpecializations.Select(x => x.Id);
+            IEnumerable<int> ids = doctorSpecializations.Select(x => x.Specialization1Id);
 
             var specializations = await _context.Specializations.Where(x => ids.Contains(x.Id)).ToListAsync();
             return specializations;

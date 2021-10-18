@@ -91,6 +91,11 @@ namespace Infrastructure.Services
                          .FirstOrDefaultAsync();
         }
 
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
+        }
+
 
     }
 }

@@ -54,7 +54,6 @@ namespace API.Controllers
 
             var list = await _patient1Service.GetSpecializationsAsync();
 
-
             return Ok(list);
         }
     }
