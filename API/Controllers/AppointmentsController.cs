@@ -25,7 +25,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-         public async Task<ActionResult<Pagination<Appointment1ToReturnDto>>> GetAllAppointmentsForDoctor(
+         public async Task<ActionResult<Pagination<Appointment1ToReturnDto>>> GetAllAppointmentsForDoctors(
             [FromQuery] QueryParameters queryParameters)
         {
             var userId = User.GetUserId();
@@ -73,6 +73,22 @@ namespace API.Controllers
             return Ok(new Pagination<Appointment1ToReturnDto>
             (queryParameters.Page, queryParameters.PageCount, count, data));
         }
+        
+        [HttpGet("specificpatient")]
+         public async Task<ActionResult<Pagination<Appointment1ToReturnDto>>> GetAllAppointmentsForSpecificPatient(
+            [FromQuery] QueryParameters queryParameters)
+        {
+            var userId = User.GetUserId();
+
+            var count = await _appointmentService.GetCountForAppointmentsForSpecificPatient(userId);
+            var list = await _appointmentService
+                             .GetAppointmentsForSpecificPatient(userId, queryParameters);
+
+            var data = _mapper.Map<IEnumerable<Appointment1ToReturnDto>>(list);
+
+            return Ok(new Pagination<Appointment1ToReturnDto>
+            (queryParameters.Page, queryParameters.PageCount, count, data));
+        }
 
         [HttpGet("officeappointments/{id}")]
          public async Task<ActionResult<Pagination<Appointment1ToReturnDto>>> GetAllAvailableAppointmentsFroOfficeForPatients(
@@ -90,13 +106,13 @@ namespace API.Controllers
         }
 
         [HttpGet("first/{id}")]
-        public async Task<ActionResult<OfficeDto>> GetOfficeById(int id)
+        public async Task<ActionResult<OfficeToReturnDto>> GetOfficeById(int id)
         {
             var office = await _appointmentService.FindOfficeById(id);
 
             if (office == null) return NotFound();
 
-            return _mapper.Map<OfficeDto>(office);
+            return _mapper.Map<OfficeToReturnDto>(office);
         }
 
 
@@ -139,6 +155,9 @@ namespace API.Controllers
            var appointment = _mapper.Map<Appointment1>(appointmentDto);
 
             if (id != appointment.Id) return BadRequest();
+            
+            appointment.StartDateAndTimeOfAppointment = appointmentDto.StartDateAndTimeOfAppointment.AddHours(2);
+            appointment.EndDateAndTimeOfAppointment = appointmentDto.EndDateAndTimeOfAppointment.AddHours(2);
 
             await _appointmentService.UpdateAppointment(appointment);
 
@@ -194,13 +213,13 @@ namespace API.Controllers
         }
 
         [HttpGet("offices")]
-        public async Task<ActionResult<IEnumerable<Office1>>> GetDoctorsOffices()
+        public async Task<ActionResult<List<OfficeToReturnDto>>> GetDoctorsOffices()
         {
             var userId = User.GetUserId();
 
             var list = await _appointmentService.GetDoctorOffices(userId);
+            return _mapper.Map<List<OfficeToReturnDto>>(list);
 
-            return Ok(list);
         }
     }
 }

@@ -1,12 +1,13 @@
 using AutoMapper;
 using Core.Entities;
 using Core.Dtos;
+using NetTopologySuite.Geometries;
 
 namespace API
 {
     public class MappingHelper : Profile
     {
-        public MappingHelper()
+        public MappingHelper(GeometryFactory geometryFactory)
         {
             CreateMap<Specialty, SpecialtyDto>().ReverseMap();
             CreateMap<Appointment, AppointmentDto>().ReverseMap();
@@ -29,15 +30,23 @@ namespace API
 
             #region 
             CreateMap<RegisterDoctorDto1, ApplicationUser>().ReverseMap();
-            CreateMap<OfficeDto, Office1>().ReverseMap();
-            CreateMap<OfficeCreationDto, Office1>();
             CreateMap<Specialization1, SpecializationDto>().ReverseMap();
             CreateMap<Subspecialization1, SubspecializationDto>().ReverseMap();
             CreateMap<ProfessionalAssociation, ProfessionalAssociationDto>().ReverseMap();
             CreateMap<Publication1, PublicationDto>().ReverseMap();
 
             CreateMap<Office1, OfficeToReturnDto>()
-            .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Doctor.Name));
+            .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Doctor.Name))
+            .ForMember(d => d.Latitude, o => o.MapFrom(s => s.Location.Y))
+            .ForMember(d => d.Longitude, o => o.MapFrom(s => s.Location.X));
+
+            CreateMap<OfficeDto, Office1>()
+             .ForMember(x => x.Location, x => x.MapFrom(dto =>
+                geometryFactory.CreatePoint(new Coordinate(dto.Longitude, dto.Latitude))));
+
+          
+
+            CreateMap<OfficeCreationDto, Office1>();
 
             CreateMap<Appointment1, Appointment1ToReturnDto>()
             .ForMember(d => d.OfficeAddress, o => o.MapFrom(s => s.Office.Street))
@@ -61,6 +70,9 @@ namespace API
             .ForMember(d => d.Status, o => o.MapFrom(s => s.Status));
 
             CreateMap<Doctor1, Doctor1Dto>().ReverseMap();
+
+            CreateMap<MedicalRecordDto, MedicalRecord>().ReverseMap();
+
 
             #endregion
 

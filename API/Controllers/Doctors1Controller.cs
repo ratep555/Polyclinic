@@ -92,7 +92,7 @@ namespace API.Controllers
         }
 
         [HttpGet("offices/{id}")]
-        public async Task<ActionResult<List<OfficeDto>>> GetOfficesForDoctor(int id)
+        public async Task<ActionResult<List<OfficeToReturnDto>>> GetOfficesForDoctor(int id)
         {
             var doctor = await _doctorService.FindDoctorById(id);
 
@@ -100,7 +100,7 @@ namespace API.Controllers
 
             var offices = await _doctorService.GetOfficesForDoctor(id);
 
-            var officeToReturn = _mapper.Map<List<OfficeDto>>(offices);
+            var officeToReturn = _mapper.Map<List<OfficeToReturnDto>>(offices);
           
             return Ok(officeToReturn);
         }

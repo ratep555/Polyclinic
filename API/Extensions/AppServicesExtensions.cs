@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 
 namespace API.Extensions
 {
@@ -24,14 +26,25 @@ namespace API.Extensions
             services.AddScoped<IOfficeService, OfficeService>();
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IPatient1Service, Patient1Service>();
+            services.AddScoped<IMedicalRecordService, MedicalRecordService>();
             
             services.AddScoped<ITokenService, TokenService>();
 
-            services.AddAutoMapper(typeof(MappingHelper).Assembly);
-
             services.AddDbContext<PolyclinicContext>(options =>
                options.UseSqlServer(
-                   config.GetConnectionString("DefaultConnection")));
+                   config.GetConnectionString("DefaultConnection"),
+                    sqlOptions => sqlOptions.UseNetTopologySuite()));
+            
+            services.AddAutoMapper(typeof(MappingHelper).Assembly);
+
+            services.AddSingleton(provider => new MapperConfiguration(config =>
+            {
+                var geometryFactory = provider.GetRequiredService<GeometryFactory>();
+                config.AddProfile(new MappingHelper(geometryFactory));
+            }).CreateMapper());
+
+            services.AddSingleton<GeometryFactory>(NtsGeometryServices
+               .Instance.CreateGeometryFactory(srid: 4326));
 
             services.Configure<ApiBehaviorOptions>(options =>
             {

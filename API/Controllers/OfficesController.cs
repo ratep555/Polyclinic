@@ -40,25 +40,30 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<OfficeDto>> GetOfficeById(int id)
+        public async Task<ActionResult<OfficeToReturnDto>> GetOfficeById(int id)
         {
             var office = await _officeService.GetOfficeByIdAsync(id);
 
             if (office == null) return NotFound();
 
-            return _mapper.Map<OfficeDto>(office);
+            return _mapper.Map<OfficeToReturnDto>(office);
         }
         
         [HttpPost]
-        public async Task<ActionResult<OfficeDto>> CreateOffice([FromBody] OfficeDto officeDto)
+        public async Task<ActionResult> CreateOffice([FromBody] OfficeDto officeDto)
         {
             var userId = User.GetUserId();
 
+            var doctor = await _officeService.FindDoctorById(userId);
+
             var office = _mapper.Map<Office1>(officeDto);
 
-            await _officeService.CreateOffice(userId, officeDto);
+            office.Doctor1Id = doctor.Id;
 
-            return _mapper.Map<OfficeDto>(office);
+            await _officeService.CreateOffice(office);
+            // vraćaj uvijek nocontent na post osim kod vježbe u postmanu, ovo te zezalo, ispravi to u myportfolio
+            // ako možeš naravno:)
+            return NoContent();
         }
 
         [HttpPut("{id}")]
@@ -103,11 +108,15 @@ namespace API.Controllers
         [HttpPost("appointment")]
         public async Task<ActionResult<OfficeDto>> CreateAppointment([FromBody] OfficeDto officeDto)
         {
-            var userId = User.GetUserId();
+             var userId = User.GetUserId();
+
+            var doctor = await _officeService.FindDoctorById(userId);
 
             var office = _mapper.Map<Office1>(officeDto);
 
-            await _officeService.CreateOffice(userId, officeDto);
+            office.Doctor1Id = doctor.Id;
+
+            await _officeService.CreateOffice(office);
 
             return _mapper.Map<OfficeDto>(office);
         }
