@@ -38,6 +38,7 @@ namespace API.Controllers
             var user = _mapper.Map<ApplicationUser>(registerDto);
 
             user.UserName = registerDto.Username.ToLower();
+            user.PhoneNumber = registerDto.PhoneNumber;
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
 
@@ -47,7 +48,7 @@ namespace API.Controllers
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
-            await _patientService.CreatePatient1(user.Id, user.LastName, user.FirstName);
+            await _patientService.CreatePatient1(user.Id, user.LastName, user.FirstName, registerDto.DateOfBirth);
 
 
             return new UserDto
@@ -133,12 +134,12 @@ namespace API.Controllers
             var user = await _userManager.Users
                 .FirstOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
-            if (user == null) return Unauthorized("Invalid username");
+            if (user == null) return BadRequest("Invalid username");
 
             var result = await _signInManager
                 .CheckPasswordSignInAsync(user, loginDto.Password, false);
 
-            if (!result.Succeeded) return Unauthorized();
+            if (!result.Succeeded) return Unauthorized(new ServerResponse(401));
 
             return new UserDto
             {

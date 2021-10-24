@@ -22,20 +22,10 @@ namespace Infrastructure.Services
         public async Task<List<Appointment1>> GetAppointmentsForDoctorWithSearchingAndPaging(QueryParameters queryParameters, 
             int userId)
         {
-            var doctor = await _context.Doctors1.Where(x => x.ApplicationUserId == userId)
-                               .FirstOrDefaultAsync();
-
-            var office = await _context.Offices.Where(x => x.Doctor1Id == doctor.Id)
-                         .FirstOrDefaultAsync();
-
-            var offices = await _context.Offices.Where(x => x.Doctor1Id == doctor.Id)
-                         .ToListAsync();
-            
-            IEnumerable<int> ids = offices.Select(x => x.Id);
-
             IQueryable<Appointment1> appointment = _context.Appointments1.Include(x => x.Patient)
-                                                   .Where(x => ids.Contains(office.Id))
-                                                   .AsQueryable().OrderBy(x => x.Id);
+                                                   .Include(x => x.Office).ThenInclude(x => x.Doctor)
+                                                   .Where(x => x.Office.Doctor.ApplicationUserId == userId)
+                                                   .AsQueryable().OrderBy(x => x.StartDateAndTimeOfAppointment);
             
             if (queryParameters.HasQuery())
             {
@@ -44,10 +34,13 @@ namespace Infrastructure.Services
                 || x.Patient.Name.Contains(queryParameters.Query));
             }
 
-             if (!string.IsNullOrEmpty(queryParameters.Sort))
+            if (!string.IsNullOrEmpty(queryParameters.Sort))
             {
                 switch (queryParameters.Sort)
                 {
+                    case "all":
+                        appointment = appointment.OrderBy(p => p.StartDateAndTimeOfAppointment);
+                        break;
                     case "pending":
                         appointment = appointment.Where(p => p.Status == null & p.Patient1Id == null);
                         break;
@@ -61,7 +54,8 @@ namespace Infrastructure.Services
                         appointment = appointment.Where(p => p.Status == false && p.Patient1Id != null);
                         break;
                     default:
-                        appointment = appointment.OrderBy(n => n.Id);
+                        appointment = appointment
+                            .Where(n => n.StartDateAndTimeOfAppointment > DateTime.Now && n.Patient1Id != null);
                         break;
                 }
             }    
@@ -72,18 +66,15 @@ namespace Infrastructure.Services
             return await appointment.ToListAsync();        
         }
 
-         public async Task<int> GetCountForAppointmentsForDoctor(int userId)
+        public async Task<Doctor1> FindDoctorById1(int userId)
         {
-            var doctor = await _context.Doctors1.Where(x => x.ApplicationUserId == userId)
-                               .FirstOrDefaultAsync();
-            
-            var offices = await _context.Offices.Where(x => x.Doctor1Id == doctor.Id)
-                         .ToListAsync();      
-
-            IEnumerable<int> ids = offices.Select(x => x.Id);
-
-
-            return await _context.Appointments1.Where(x => ids.Contains(x.Office1Id)).CountAsync();
+            return await _context.Doctors1.Where(x => x.ApplicationUserId == userId)
+                         .FirstOrDefaultAsync();
+        }
+        public async Task<int> GetCountForAppointmentsForDoctor(int userId)
+        {
+            return await _context.Appointments1.Include(x => x.Office).ThenInclude(x => x.Doctor)
+                        .Where(x => x.Office.Doctor.ApplicationUserId == userId).CountAsync();
         }
 
         public async Task<List<Appointment1>> GetAppointmentsForAllPatientsWithSearchingAndPaging(
@@ -129,6 +120,56 @@ namespace Infrastructure.Services
             return await _context.Appointments1.CountAsync();
         }
 
+        public async Task<List<Appointment1>> GetAppointmentsForSpecificPatient(int userId,
+                QueryParameters queryParameters)
+        {
+            IQueryable<Appointment1> appointment = _context.Appointments1.Include(x => x.Patient)
+                                                   .Include(x => x.Office).ThenInclude(x => x.Doctor)
+                                                   .Where(x => x.Patient.ApplicationUserId == userId)
+                                                   .AsQueryable().OrderBy(x => x.StartDateAndTimeOfAppointment);
+            
+            if (queryParameters.HasQuery())
+            {
+                appointment = appointment
+                .Where(x => x.Office.Street.Contains(queryParameters.Query));
+            }
+
+            appointment = appointment.Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                           .Take(queryParameters.PageCount);
+            
+            if (!string.IsNullOrEmpty(queryParameters.Sort))
+            {
+                switch (queryParameters.Sort)
+                {
+                     case "booked":
+                        appointment = appointment.Where(p => p.Status == null && p.Patient1Id != null);
+                        break;
+                    case "confirmed":
+                        appointment = appointment.Where(p => p.Status == true && p.Patient1Id != null);
+                        break;
+                    case "previous":
+                        appointment = appointment.
+                            Where(p => p.EndDateAndTimeOfAppointment < DateTime.Now && p.Patient1Id != null);
+                        break;
+                    case "dateDesc":
+                        appointment = appointment.OrderByDescending(p => p.StartDateAndTimeOfAppointment);
+                        break;
+                    default:
+                        appointment = appointment.OrderBy(n => n.StartDateAndTimeOfAppointment);
+                        break;
+                }
+            }    
+            
+            return await appointment.ToListAsync();        
+        }
+
+        public async Task<int> GetCountForAppointmentsForSpecificPatient(int userId)
+        {
+            return await _context.Appointments1.Include(x => x.Patient)
+                        .Where(x => x.Patient.ApplicationUserId == userId).CountAsync();
+        }
+
+
         public async Task<List<Appointment1>> GetAvailableAppointmentsForOfficeForPatientsWithSearchingAndPaging(
                 int id, QueryParameters queryParameters)
         {
@@ -153,12 +194,6 @@ namespace Infrastructure.Services
                 {
                     case "dateDesc":
                         appointment = appointment.OrderByDescending(p => p.StartDateAndTimeOfAppointment);
-                        break;
-                    case "dateAscEnd":
-                        appointment = appointment.OrderBy(p => p.EndDateAndTimeOfAppointment);
-                        break;
-                    case "dateDescEnd":
-                        appointment = appointment.OrderByDescending(p => p.EndDateAndTimeOfAppointment);
                         break;
                     default:
                         appointment = appointment.OrderBy(n => n.StartDateAndTimeOfAppointment);

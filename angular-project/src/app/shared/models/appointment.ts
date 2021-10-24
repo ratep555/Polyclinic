@@ -1,6 +1,7 @@
 export interface IAppointment {
     id: number;
     doctor: string;
+    patientId: number;
     patient: string;
     officeAddress: string;
     city: string;

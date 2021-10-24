@@ -15,6 +15,10 @@ namespace Core.Interfaces
         Task<List<ProfessionalAssociation>> GetAllProfessionalAssociationsForDoctor(int id);
         Task<List<Publication1>> GetAllPublicationsForDoctor(int id);
         Task<List<Office1>> GetOfficesForDoctor(int id);
+        Task<bool> ChechIfAny(int id);
+        Task<double> AverageVote(int id);
+
+
 
     }
 }

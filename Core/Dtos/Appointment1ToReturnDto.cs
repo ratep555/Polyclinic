@@ -7,6 +7,7 @@ namespace Core.Dtos
     {
         public int Id { get; set; }
         public string Patient { get; set; } 
+        public int PatientId { get; set; } 
         public string Doctor { get; set; } 
         public string OfficeAddress { get; set; }     
         public string City { get; set; }     

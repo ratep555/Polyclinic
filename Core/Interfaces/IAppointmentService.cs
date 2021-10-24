@@ -16,11 +16,16 @@ namespace Core.Interfaces
         Task<int> GetCountForAppointmentsForDoctor(int userId);
         Task<List<Appointment1>> GetAppointmentsForAllPatientsWithSearchingAndPaging(QueryParameters queryParameters);
         Task<int> GetCountForAppointmentsForAllPatients();
+        Task<List<Appointment1>> GetAppointmentsForSpecificPatient(int userId, QueryParameters queryParameters);
+        Task<int> GetCountForAppointmentsForSpecificPatient(int userId);
         Task<Appointment1> FindAppointmentById(int id);
         Task<List<Appointment1>> GetAvailableAppointmentsForOfficeForPatientsWithSearchingAndPaging(
                 int id, QueryParameters queryParameters);
         Task<int> GetCountForAvailableAppointmentsForOfficesForAllPatients(int id);
         Task<Office1> FindOfficeById(int id);
+
+        Task<Doctor1> FindDoctorById1(int userId);
+
 
 
 

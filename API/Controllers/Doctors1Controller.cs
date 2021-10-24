@@ -17,8 +17,10 @@ namespace API.Controllers
     {
         private readonly IDoctorService _doctorService;
         private readonly IMapper _mapper;
-        public Doctors1Controller(IDoctorService doctorService, IMapper mapper)
+        private readonly IRatingService _ratingService;
+        public Doctors1Controller(IDoctorService doctorService, IMapper mapper, IRatingService ratingService)
         {
+            _ratingService = ratingService;
             _doctorService = doctorService;
             _mapper = mapper;
         }
@@ -30,8 +32,31 @@ namespace API.Controllers
 
             if (doctor == null) return NotFound();
 
+            var averageVote = 0.0;
+            var userVote = 0;
+
+            if (await _doctorService.ChechIfAny(id))
+            {
+                averageVote = await _doctorService.AverageVote(id);
+            }
+
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                var userId = User.GetUserId();
+
+                var ratingDb = await _ratingService.FindCurrentRate(id, userId);
+
+                if (ratingDb != null)
+                {
+                    userVote = ratingDb.Rate;
+                }
+            }
+
             var doctorToReturn = _mapper.Map<Doctor1Dto>(doctor);
-            
+
+            doctorToReturn.AverageVote = averageVote;
+            doctorToReturn.UserVote = userVote;
+
             return Ok(doctorToReturn);
         }
 
@@ -45,7 +70,7 @@ namespace API.Controllers
             var specialization = await _doctorService.GetAllSpecializationsForDoctor(id);
 
             var specializationToReturn = _mapper.Map<List<SpecializationDto>>(specialization);
-          
+
             return Ok(specializationToReturn);
         }
 
@@ -59,7 +84,7 @@ namespace API.Controllers
             var subspecialization = await _doctorService.GetAllSubSpecializationsForDoctor(id);
 
             var subspecializationToReturn = _mapper.Map<List<SubspecializationDto>>(subspecialization);
-          
+
             return Ok(subspecializationToReturn);
         }
 
@@ -73,7 +98,7 @@ namespace API.Controllers
             var professionalAssociations = await _doctorService.GetAllProfessionalAssociationsForDoctor(id);
 
             var associationToReturn = _mapper.Map<List<ProfessionalAssociationDto>>(professionalAssociations);
-          
+
             return Ok(associationToReturn);
         }
 
@@ -87,7 +112,7 @@ namespace API.Controllers
             var publications = await _doctorService.GetAllPublicationsForDoctor(id);
 
             var publicationToReturn = _mapper.Map<List<PublicationDto>>(publications);
-          
+
             return Ok(publicationToReturn);
         }
 
@@ -101,7 +126,7 @@ namespace API.Controllers
             var offices = await _doctorService.GetOfficesForDoctor(id);
 
             var officeToReturn = _mapper.Map<List<OfficeToReturnDto>>(offices);
-          
+
             return Ok(officeToReturn);
         }
     }

@@ -8,6 +8,7 @@ import { ISubspecialization } from 'src/app/shared/models/subspecialization';
 import { IProfessionalAssociation } from 'src/app/shared/models/professionalAssociation';
 import { IPublication } from 'src/app/shared/models/publication';
 import { IOffice } from 'src/app/shared/models/office';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-doctor-detail',
@@ -85,5 +86,12 @@ export class DoctorDetailComponent implements OnInit {
     console.log(error);
     });
     }
+
+    onRating(rate: number){
+      this.patientOfficesService.rate(this.doctor.id, rate).subscribe(() => {
+       Swal.fire('Success', 'Your vote has been received', 'success');
+       this.loadDoctor();
+     });
+   }
 
   }

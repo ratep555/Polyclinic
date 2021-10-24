@@ -116,7 +116,17 @@ namespace Infrastructure.Services
             return offices;
         }
 
-       
+        public async Task<bool> ChechIfAny(int id)
+        {
+           return await _context.Ratings.AnyAsync(x => x.Doctor1Id == id);          
+        }
+
+        public async Task<double> AverageVote(int id)
+        {
+            var average = await _context.Ratings.Where(x => x.Doctor1Id == id).AverageAsync(x => x.Rate);
+
+            return average;
+        }
     }
 }
 

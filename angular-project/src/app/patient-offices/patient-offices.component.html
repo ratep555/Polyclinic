@@ -34,22 +34,22 @@ Reset</button>
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
           <tr>  
-            <th style="font-size: large;">
+            <th>
                 City
             </th>               
-               <th style="font-size: large;">
+               <th>
             Country
               </th>                                                                     
-              <th style="font-size: large;">
+              <th>
                   Street
-              </th> 
-              <th style="font-size: large;">
-                Doctor
+              </th>                                                                                                                                                                                                                                                                             
+              <th>
+                Doctor (Info)
                   </th>                                                                                                                                                                                                                                                                                  
-              <th style="font-size: large;">
+              <th>
                 Initial Fee
             </th>                                                               
-            <th style="font-size: large;">
+            <th>
                 Follow Up Fee
             </th>                                                 
               <th>
@@ -61,19 +61,26 @@ Reset</button>
         <td>{{item.city}}</td>
         <td>{{item.country}}</td>
           <td>{{item.street}}</td>
-          <td>{{item.doctor}}</td>
+          <td>  <a class="done" href="" routerLink="/patient-offices/doctor/{{item.doctorId}}" >{{item.doctor}}</a>  
+          </td>
           <td>{{item.initialExaminationFee | number: '1.2-2'}} kn</td>
           <td>{{item.followUpExaminationFee | number: '1.2-2'}} kn</td>
           <td>  
             <div class="text-center">
-                <button routerLink="/patient-offices/doctor/{{item.doctorId}}" 
+              <button routerLink="/patient-offices/office/{{item.id}}" 
+              type="button" class="btn btn-info mr-3">
+              <i class="fa fa-info-circle mr-1"></i>
+              Office Info</button>
+                <!-- <button routerLink="/patient-offices/doctor/{{item.doctorId}}" 
                 type="button" class="btn btn-info mr-5">
                 <i class="fa fa-info-circle mr-1"></i>
-                Doctor Info</button>      
-                <button routerLink="/patient-offices/{{item.id}}" 
+                Doctor Info</button>   -->    
+              <!--   <button routerLink="/patient-offices/{{item.id}}" 
                 type="button" class="btn btn-info mr-5">
                 <i class="fa fa-info-circle mr-1"></i>
-                Availability</button>      
+                Availability</button>     -->
+                                                      
+              
                 
               </div>
         </td>

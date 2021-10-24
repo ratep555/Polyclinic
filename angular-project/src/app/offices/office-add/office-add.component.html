@@ -14,12 +14,33 @@
                     [label]='"Initial Examination Fee"'></app-text-input>
                 <app-text-input [formControl]='officeForm.controls["followUpExaminationFee"]' 
                     [label]='"Follow Up Examination Fee"'></app-text-input>
+                
+                    <div class="form-group row">
+                        <div class="col-md-12">  
+                            <textarea type="text"
+                            placeholder="Description"
+                            class="form-control"
+                            formControlName="description"
+                            rows="6"></textarea>
+                         </div>    
+                         <span style="font-size: 14px;" class="text-danger ml-3" *ngIf="officeForm.get('description').invalid
+                         && officeForm.get('description').touched
+                         && officeForm.get('description').errors['required']">
+                         Please enter a Description
+                    </span>
+        
+                     </div>   
                     
                     <label style="font-size: small;"><strong>Select Location:</strong></label>  
                     <div class="mb-15" style="position: relative; width: 600px;">
                         <app-map 
                         (selectedLocation)="onSelectedLocation($event)"
                         ></app-map>
+                       <!--  <span style="font-size: 14px;" class="text-danger ml-3" *ngIf="officeForm.get('longitude').invalid
+                         && officeForm.get('longitude').touched
+                         && officeForm.get('longitude').errors['required']">
+                         Please choose location
+                    </span> -->
                     </div>
                 
                 <div class="row" *ngIf="errors?.length > 0">

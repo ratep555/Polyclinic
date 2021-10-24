@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Core.Dtos
@@ -16,9 +17,21 @@ namespace Core.Dtos
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
+        public string PhoneNumber { get; set; }
         
         [Required]
         public string Password { get; set; }
+        
+        [DataType(DataType.Date)]
+        public DateTime DateOfBirth { get; set; }
 
     }
 }
+
+
+
+
+
+

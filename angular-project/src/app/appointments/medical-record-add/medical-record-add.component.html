@@ -1,0 +1,71 @@
+<div class="container-fluid" style="margin-top: 200px;">   
+    <div class="d-flex justify-content-center mt-5">
+        <div class="col-3">
+            <h2 class="text-center text-primary">Add Medical Record</h2>
+            <hr>    
+            <div class="form-group row">
+                <div class="col-md-12">           
+                   <input type="text"
+                   style="color: black;"
+                   placeholder="Patient: {{(patient?.name)}}"
+                   class="form-control"
+                   readonly="readonly"                     
+                  >
+                 </div>       
+             </div>   
+            <form [formGroup]="medicalrecordForm" (ngSubmit)="onSubmit()">
+                <div class="form-group row">
+                    <div class="col-md-12">           
+                       <input type="text"
+                       formControlName= "created"
+                       placeholder="Created"
+                       class="form-control"
+                       bsDatepicker
+                       [bsConfig]="{
+                        containerClass: 'theme-green',
+                        dateInputFormat: 'DD.MM.YYYY  HH:mm'
+                      }">
+                     </div>       
+                 </div> 
+                 <div class="form-group row">
+                    <div class="col-md-12">           
+                         <select class="form-control" formControlName="office1Id">
+                             <option value= 0>--Select Office--</option>
+                             <option *ngFor="let office of officeList" value={{office.id}}>
+                                 {{office.street}}
+                             </option>
+                         </select>
+                     </div>       
+                 </div>      
+                 <div class="form-group row">
+                    <div class="col-md-12">  
+                        <label style="font-size: small;"><strong>Anamnesys, Diagnosys, and Therapy:</strong></label>  
+                        <textarea type="text"
+                        class="form-control"
+                        formControlName="anamnesisDiagnosisTherapy"
+                        rows="10"></textarea>
+                     </div>    
+                     <span style="font-size: 14px;" class="text-danger ml-3" 
+                     *ngIf="medicalrecordForm.get('anamnesisDiagnosisTherapy').invalid
+                     && medicalrecordForm.get('anamnesisDiagnosisTherapy').touched
+                     && medicalrecordForm.get('anamnesisDiagnosisTherapy').errors['required']">
+                     Please enter Anamnesys, Diagnosys, and Therapy
+                </span>
+    
+                 </div>               
+                <div class="row" *ngIf="errors?.length > 0">
+                    <ul class="text-danger">
+                        <li *ngFor="let error of errors">
+                            {{error}}
+                        </li>
+                    </ul>
+                </div>
+            
+                <div class="form-group text-center">
+                    <button [disabled]='!medicalrecordForm.valid' class="btn btn-success mr-2" type="submit">Save</button>
+                </div>
+            </form>
+            </div>
+            </div>
+            </div>
+

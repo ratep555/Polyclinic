@@ -26,7 +26,7 @@ export class PatientAppointmentsService {
     params = params.append('sort', myparams.sort);
     params = params.append('page', myparams.page.toString());
     params = params.append('pageCount', myparams.pageCount.toString());
-    return this.http.get<IPaginationForAppointments>(this.baseUrl + 'appointments/allpatients', {observe: 'response', params})
+    return this.http.get<IPaginationForAppointments>(this.baseUrl + 'appointments/specificpatient', {observe: 'response', params})
     .pipe(
       map(response  => {
         return response.body;

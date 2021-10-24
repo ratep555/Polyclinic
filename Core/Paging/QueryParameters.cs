@@ -11,6 +11,7 @@ namespace Core.Entities
             set { _pageCount = (value > MaxPageCount) ? MaxPageCount : value; }
         }
         public int? SpecializationId { get; set; }
+        public int? OfficeId { get; set; }
         public string Sort { get; set; }
 
         // ovo izbriši kasnije

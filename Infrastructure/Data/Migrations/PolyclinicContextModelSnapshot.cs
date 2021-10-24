@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 
 namespace Infrastructure.Data.Migrations
 {
@@ -393,33 +394,37 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Core.Entities.MedicalChart", b =>
+            modelBuilder.Entity("Core.Entities.MedicalRecord", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Diagnosys")
+                    b.Property<string>("AnamnesisDiagnosisTherapy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HistoryOfIllness")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("PatientId")
+                    b.Property<int>("Office1Id")
                         .HasColumnType("int");
 
-                    b.Property<string>("Summary")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("Office1Id1")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Therapy")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Patient1Id")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PatientId");
+                    b.HasIndex("Office1Id");
 
-                    b.ToTable("MedicalCharts");
+                    b.HasIndex("Office1Id1");
+
+                    b.HasIndex("Patient1Id");
+
+                    b.ToTable("MedicalRecords");
                 });
 
             modelBuilder.Entity("Core.Entities.Office1", b =>
@@ -435,6 +440,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Doctor1Id")
                         .HasColumnType("int");
 
@@ -443,6 +451,9 @@ namespace Infrastructure.Data.Migrations
 
                     b.Property<decimal>("InitialExaminationFee")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<Point>("Location")
+                        .HasColumnType("geography");
 
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
@@ -561,6 +572,31 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Publications");
+                });
+
+            modelBuilder.Entity("Core.Entities.Rating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Doctor1Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Patient1Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Doctor1Id");
+
+                    b.HasIndex("Patient1Id");
+
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("Core.Entities.Specialization1", b =>
@@ -921,13 +957,25 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Core.Entities.MedicalChart", b =>
+            modelBuilder.Entity("Core.Entities.MedicalRecord", b =>
                 {
-                    b.HasOne("Core.Entities.Patient", "Patient")
+                    b.HasOne("Core.Entities.Office1", "Office")
                         .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("Office1Id")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("Core.Entities.Office1", null)
+                        .WithMany("MedicalRecords")
+                        .HasForeignKey("Office1Id1");
+
+                    b.HasOne("Core.Entities.Patient1", "Patient")
+                        .WithMany()
+                        .HasForeignKey("Patient1Id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Office");
 
                     b.Navigation("Patient");
                 });
@@ -963,6 +1011,25 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("ApplicationUser");
+                });
+
+            modelBuilder.Entity("Core.Entities.Rating", b =>
+                {
+                    b.HasOne("Core.Entities.Doctor1", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("Doctor1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Patient1", "Patient")
+                        .WithMany()
+                        .HasForeignKey("Patient1Id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Core.Entities.SubmissionForm", b =>
@@ -1056,6 +1123,8 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Core.Entities.Office1", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("MedicalRecords");
                 });
 
             modelBuilder.Entity("Core.Entities.Patient1", b =>

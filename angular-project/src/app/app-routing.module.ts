@@ -12,6 +12,8 @@ const routes: Routes = [
   loadChildren: () => import('./offices/offices.module').then(mod => mod.OfficesModule)},
   {path: 'appointments', canActivate: [AuthGuard],
   loadChildren: () => import('./appointments/appointments.module').then(mod => mod.AppointmentsModule)},
+  {path: 'medicalrecords', canActivate: [AuthGuard],
+  loadChildren: () => import('./medical-records/medical-records.module').then(mod => mod.MedicalRecordsModule)},
   {path: 'patient-offices', canActivate: [AuthGuard],
   loadChildren: () => import('./patient-offices/patient-offices.module').then(mod => mod.PatientOfficesModule)},
   {path: 'patient-appointments', canActivate: [AuthGuard],

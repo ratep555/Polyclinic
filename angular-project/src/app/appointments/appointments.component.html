@@ -23,7 +23,6 @@
             {{sort.name}}</li>                       
         
 </ul>
-
 </div>
        
    
@@ -49,6 +48,9 @@
                <th style="font-size: large;">
             Patient
               </th>      
+               <th style="font-size: large;">
+            PatientId
+              </th>      
               <th style="font-size: large;">
                 Address
             </th>                                                       
@@ -70,7 +72,8 @@
               </thead>
               <tbody>
       <tr *ngFor="let item of appointments" style="color: black;">        
-        <td>{{item.patient}}</td>
+        <td>  <a class="done" href="" routerLink="/appointments/patient/{{item.patientId}}" >{{item.patient}}</a>  
+            <td>{{item.patientId}}</td>
         <td>{{item.officeAddress}}</td>
           <td>{{item.city}}</td>
           <td>{{item.startDateAndTimeOfAppointment | date:"dd.MM.yyyy HH:mm"}}</td>

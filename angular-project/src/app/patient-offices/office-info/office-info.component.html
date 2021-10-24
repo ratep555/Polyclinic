@@ -13,7 +13,10 @@
                         <strong>Office:</strong>
                         <p>{{office.street}}, {{office.city}}, {{office.country}}</p>
                     </div>
-                    <hr>
+                    <div>
+                        <strong>Doctor:</strong>
+                        <p>{{office.doctor}}<button routerLink="/patient-offices/doctor/{{office.doctorId}}" class="btn btn-sm btn-info ml-2">Info</button></p>
+                    </div>
                     <div>
                         <strong>Initial Examination Fee: </strong>
                         <p>{{office.initialExaminationFee | number: '1.2-2'}} kn</p>
@@ -27,12 +30,74 @@
             <tabset class="member-tabset">
                 <tab heading='Location'>
                     <hr>
-                    <p><strong>Location: </strong>{{office.street}}, {{office.city}}, {{office.country}} </p>
-                    <app-map></app-map>                
+                    <div *ngIf="coordinates.length > 0">
+                        <p><strong>Location: </strong>{{office.street}}, {{office.city}}, {{office.country}} </p>
+                        <app-map [initialCoordinates]="coordinates" [editMode]="false"></app-map>  
+                    </div>
+                                  
                 </tab>
                 <tab heading='Description'>
-                   
+                   <hr>
+                   {{office.description}}
                 </tab>
+                <tab heading='Availability'>
+                   <hr>
+                   <div class="container" > 
+                       <div class="text-center" *ngIf="totalCount === 0">
+                            <h4 style="color: #6666ff;"> No appointments available!</h4> 
+                       </div>  
+                       <div class="text-center" *ngIf="totalCount > 0">
+                        <div class="form-inline pull-left mt-1">
+                            <select class="custom-select mb-4" (change)="onSortSelected($event.target.value)">
+                              <option *ngFor="let sort of sortOptions"
+                                 [value]="sort.value">
+                                 {{sort.name}}
+                              </option>
+                          </select>
+                        </div>
+                        <table class="table table-bordered table-striped table-condensed table-hover">
+                            <thead>
+                              <tr>                                                                                                                                                  
+                                  <th style="font-size: large;">
+                                    Starts
+                                </th>                                                               
+                                <th style="font-size: large;">
+                                    Ends
+                                </th>                                                                                               
+                                  <th>
+                                  </th>            
+                              </tr>
+                                  </thead>
+                                  <tbody>
+                          <tr *ngFor="let item of appointments" style="color: black;">        
+                              <td>{{item.startDateAndTimeOfAppointment | date:"dd.MM.yyyy HH:mm"}}</td>
+                              <td>{{item.endDateAndTimeOfAppointment | date:"dd.MM.yyyy HH:mm"}}</td>
+                            <td class="text-center" *ngIf="item.patient === null else elseBlock">
+                              <button routerLink="/patient-appointments/editappointment/{{item.id}}" 
+                              type="button" class="btn btn-success d-inline">
+                              <i class="fa fa-ticket"></i>
+                              Book</button>  
+                          </td>
+                              <ng-template #elseBlock><td class="text-center">
+                                <button
+                                    type="button" class="btn btn-danger d-inline">
+                                    <i class="fa fa-times-circle"></i>
+                                    Cancel</button> 
+                              </td></ng-template>
+                          </tr>
+                                  </tbody>    
+                        </table>
+                        <div class="d-flex justify-content-center" *ngIf="totalCount > 0">
+                            <app-pager
+                            [pageCount]="myParams.pageCount"
+                            [totalCount]="totalCount"
+                            (pageChanged)="onPageChanged($event)"
+                            ></app-pager>
+                        </div>
+                
+                       </div>  
+                      </div>
+                                </tab>
             </tabset>
         </div>
     </div></div>

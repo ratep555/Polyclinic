@@ -17,7 +17,8 @@ export class AppointmentsComponent implements OnInit {
   totalCount: number;
 
   sortOptions = [
-    {name: 'All Appointments', value: 'city'},
+    {name: 'Upcoming', value: 'city'},
+    {name: 'All', value: 'all'},
     {name: 'Pending', value: 'pending'},
     {name: 'Booked', value: 'booked'},
     {name: 'Confirmed', value: 'confirmed'},

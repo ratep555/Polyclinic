@@ -7,7 +7,7 @@ namespace Core.Interfaces
 {
     public interface IOfficeService
     {
-        Task CreateOffice(int id, OfficeDto officeDto);
+        Task CreateOffice(Office1 office);
         Task<List<Office1>> GetOfficesWithSearchingAndPaging(QueryParameters queryParameters, int userId);
         Task<int> GetCountForOffices(int userId);
         Task UpdateOffice(Office1 office);

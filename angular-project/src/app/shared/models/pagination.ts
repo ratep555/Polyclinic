@@ -1,4 +1,5 @@
 import { IAppointment } from './appointment';
+import { IMedicalrecord } from './medicalrecord';
 import { IOffice } from './office';
 import { ISpecialty } from './specialty';
 
@@ -21,4 +22,11 @@ export interface IPaginationForAppointments {
     pageCount: number;
     count: number;
     data: IAppointment[];
+  }
+
+export interface IPaginationForMedicalRecords {
+    page: number;
+    pageCount: number;
+    count: number;
+    data: IMedicalrecord[];
   }

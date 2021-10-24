@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { marker, Marker } from 'leaflet';
 import { first } from 'rxjs/operators';
+import { CoordinatesMap } from 'src/app/shared/models/coordinate';
 import { OfficesService } from '../offices.service';
 
 @Component({
@@ -13,6 +15,9 @@ export class OfficeEditComponent implements OnInit {
   officeForm: FormGroup;
   id: number;
   errors: string[] = [];
+  initialCoordinates: CoordinatesMap[] = [];
+  layers: Marker<any>[] = [];
+
 
   constructor(private fb: FormBuilder,
               private activatedRoute: ActivatedRoute,
@@ -21,6 +26,7 @@ export class OfficeEditComponent implements OnInit {
 ) { }
 
 ngOnInit(): void {
+
   this.id = this.activatedRoute.snapshot.params['id'];
 
   this.officeForm = this.fb.group({
@@ -30,8 +36,9 @@ ngOnInit(): void {
     country: ['', [Validators.required]],
     initialExaminationFee: ['', [Validators.required]],
     followUpExaminationFee: ['', [Validators.required]],
-    longitude: [''],
-    latitude: ['']
+    description: ['', [Validators.required]],
+    longitude: ['', [Validators.required]],
+    latitude: ['', [Validators.required]]
   });
 
   this.officesService.getOfficeById(this.id)
@@ -56,5 +63,16 @@ this.officesService.updateOffice(this.id, this.officeForm.value)
         this.errors = error.errors;
       });
     }
+
+    onSelectedLocation(coordinates: CoordinatesMap) {
+      this.officeForm.patchValue(coordinates);
+      this.initialCoordinates.push({latitude: this.officesService.formData.latitude,
+        longitude: this.officesService.formData.longitude});
+   }
 }
+
+
+
+
+
 

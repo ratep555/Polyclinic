@@ -16,8 +16,11 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ToastrModule } from 'ngx-toastr';
 import { LeafletModule} from '@asymmetrik/ngx-leaflet';
 import 'leaflet/dist/images/marker-shadow.png';
+import 'leaflet/dist/images/marker-icon-2x.png';
 // import './assets/downloadLea.jpg';
 import { MapComponent } from './components/map/map.component';
+import { RatingComponent } from './components/rating/rating.component';
+import { RatingModule } from 'ngx-bootstrap/rating';
 
 
 @NgModule({
@@ -27,7 +30,8 @@ import { MapComponent } from './components/map/map.component';
      TextInputComponent,
      DateInputComponent,
      Date1InputComponent,
-     MapComponent
+     MapComponent,
+     RatingComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +46,8 @@ import { MapComponent } from './components/map/map.component';
       positionClass: 'toast-bottom-right'
     }),
     CarouselModule.forRoot(),
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    RatingModule.forRoot()
   ],
   exports: [
     PaginationModule,
@@ -59,7 +64,9 @@ import { MapComponent } from './components/map/map.component';
      Date1InputComponent,
      MapComponent,
     // GoogleChartsModule,
-    BsDatepickerModule
+    BsDatepickerModule,
+    RatingModule,
+    RatingComponent
   ]
 
 })

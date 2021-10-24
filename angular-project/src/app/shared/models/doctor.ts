@@ -3,4 +3,6 @@ export interface IDoctor {
     applicationUserId: number;
     name: string;
     resume: string;
+    averageVote: number;
+    userVote: number;
 }

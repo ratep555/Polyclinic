@@ -84,8 +84,16 @@ export class PatientOfficesService {
     return this.http.get<IOffice>(this.baseUrl + 'appointments/first/' + id);
   }
 
+  getOffice1(id: number) {
+    return this.http.get<IOffice>(this.baseUrl + 'offices/' + id);
+  }
+
   getDoctor(id: number) {
     return this.http.get<IDoctor>(this.baseUrl + 'doctors1/' + id);
+  }
+
+  public rate(doctorId: number, rating: number){
+    return this.http.post(this.baseUrl + 'ratings', {doctorId, rating});
   }
 
 }

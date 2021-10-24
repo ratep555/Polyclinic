@@ -86,8 +86,9 @@
                     </table>
                    
                 </tab>
-                <tab heading='Messages'>
-                    <p>Messages will go here</p>
+                <tab heading='Ratings'>
+                    <p>Average vote: {{doctor.averageVote}} | Your vote: {{doctor.userVote}}</p>
+                    Feel free to vote again: <app-rating (nonRating)="onRating($event)" [selectedRate]="doctor.userVote"></app-rating>
                 </tab>
             </tabset>
         </div>

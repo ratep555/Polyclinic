@@ -37,7 +37,7 @@ export class AppointmentEditComponent implements OnInit {
               id: [this.id],
               office1Id: [appointment.office1Id, Validators.required],
               patient1Id: [appointment.patient1Id],
-              startDateAndTimeOfAppointment: [appointment.startDateAndTimeOfAppointment, Validators.required],
+              startDateAndTimeOfAppointment: [new Date(appointment.startDateAndTimeOfAppointment), Validators.required],
               endDateAndTimeOfAppointment: [new Date(appointment.endDateAndTimeOfAppointment), Validators.required],
               remarks: [appointment.remarks],
               status: [appointment.status]

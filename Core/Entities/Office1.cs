@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using NetTopologySuite.Geometries;
 
 namespace Core.Entities
 {
@@ -14,6 +15,16 @@ namespace Core.Entities
         public string Street { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+        public string Description { get; set; }
+        public Point Location { get; set; }
+
         public ICollection<Appointment1> Appointments { get; set; }
+        public ICollection<MedicalRecord> MedicalRecords { get; set; }
     }
 }
+
+
+
+
+
+

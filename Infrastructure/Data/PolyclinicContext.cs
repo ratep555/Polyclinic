@@ -33,6 +33,21 @@ namespace Infrastructure.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction); 
 
+               modelBuilder.Entity<MedicalRecord>()
+                .HasOne(s => s.Patient)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction); 
+
+              modelBuilder.Entity<MedicalRecord>()
+                .HasOne(s => s.Office)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);   
+
+              modelBuilder.Entity<Rating>()
+                .HasOne(s => s.Patient)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);   
+
             /*  modelBuilder.Entity<DoctorSpecialization1>()
                 .HasKey(x => new { x.Doctor1Id, x.Specialization1Id }); 
  */
@@ -48,10 +63,12 @@ namespace Infrastructure.Data
         public DbSet<DoctorSpecialization1> DoctorSpecializations { get; set; }
         public DbSet<DoctorPublication> DoctorPublications { get; set; }
         public DbSet<DoctorProfessionalAssociation> DoctorProfessionalAssociations { get; set; }
+        public DbSet<MedicalRecord> MedicalRecords { get; set; }
         public DbSet<Office1> Offices { get; set; }
         public DbSet<Publication1> Publications { get; set; }
         public DbSet<ProfessionalAssociation> ProfessionalAssociations { get; set; }
         public DbSet<Patient1> Patients1 { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
         public DbSet<Specialization1> Specializations { get; set; }
         public DbSet<Subspecialization1> Subspecializations { get; set; }
         #endregion 
@@ -64,7 +81,6 @@ namespace Infrastructure.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Examination> Examinations { get; set; }
-        public DbSet<MedicalChart> MedicalCharts { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<PrefferedTimeOfExamination> PrefferedTimeOfExaminations { get; set; }
         public DbSet<Specialty> Specialties { get; set; }

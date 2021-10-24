@@ -13,7 +13,6 @@ import { PatientOfficesService } from '../patient-offices.service';
 export class PatientOfficeDetailComponent implements OnInit {
   office: IOffice;
   appointments: IAppointment[];
-  id: number;
   @ViewChild('search', {static: false}) searchTerm: ElementRef;
   myParams = new MyParams();
   totalCount: number;

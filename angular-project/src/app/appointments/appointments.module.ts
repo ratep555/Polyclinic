@@ -7,13 +7,19 @@ import { AppointmentsRoutingModule } from './appointments-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import { AppointmentEditComponent } from './appointment-edit/appointment-edit.component';
+import { PatientDetailComponent } from './patient-detail/patient-detail.component';
+import { MedicalRecordDetailComponent } from './medical-record-detail/medical-record-detail.component';
+import { MedicalRecordAddComponent } from './medical-record-add/medical-record-add.component';
 
 
 @NgModule({
   declarations: [
     AppointmentsComponent,
     AppointmentAddComponent,
-    AppointmentEditComponent
+    AppointmentEditComponent,
+    PatientDetailComponent,
+    MedicalRecordDetailComponent,
+    MedicalRecordAddComponent
   ],
   imports: [
     CommonModule,

@@ -8,6 +8,7 @@ export interface IOffice {
     city: string;
     country: string;
     latitude: number;
+    description: string;
     longitude: number;
 }
 
@@ -18,6 +19,7 @@ export class INewOfficeToCreateOrEdit {
     street: string;
     city: string;
     country: string;
+    description: string;
     latitude: number;
     longitude: number;
 }

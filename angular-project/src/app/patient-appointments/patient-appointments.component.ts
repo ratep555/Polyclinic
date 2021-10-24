@@ -16,11 +16,16 @@ export class PatientAppointmentsComponent implements OnInit {
   myParams = new MyParams();
   totalCount: number;
 
+  sortOptions1 = [
+    {name: 'All Appointments', value: 'city'},
+    {name: 'Booked', value: 'booked'},
+    {name: 'Confirmed', value: 'confirmed'},
+    {name: 'Previous', value: 'previous'},
+  ];
+
   sortOptions = [
     {name: 'Sort by Start Date Ascending', value: 'dateAsc'},
-    {name: 'Sort by Start Date Descending', value: 'dateDesc'},
-    {name: 'Sort by End Date Ascending', value: 'dateAscEnd'},
-    {name: 'Sort by End Date Descending', value: 'dateDescEnd'}
+    {name: 'Sort by Start Date Descending', value: 'dateDesc'}
   ];
 
   constructor(private patientappointmentsService: PatientAppointmentsService,
@@ -55,6 +60,11 @@ export class PatientAppointmentsComponent implements OnInit {
   }
 
   onSortSelected(sort: string) {
+    this.myParams.sort = sort;
+    this.getAppointments();
+  }
+
+  onSortSelected1(sort: string) {
     this.myParams.sort = sort;
     this.getAppointments();
   }

@@ -27,6 +27,7 @@ namespace API.Extensions
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IPatient1Service, Patient1Service>();
             services.AddScoped<IMedicalRecordService, MedicalRecordService>();
+            services.AddScoped<IRatingService, RatingService>();
             
             services.AddScoped<ITokenService, TokenService>();
 

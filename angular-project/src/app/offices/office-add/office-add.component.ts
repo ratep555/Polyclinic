@@ -30,8 +30,9 @@ export class OfficeAddComponent implements OnInit {
       country: ['', [Validators.required]],
       initialExaminationFee: ['', [Validators.required]],
       followUpExaminationFee: ['', [Validators.required]],
-      longitude: [''],
-      latitude: ['']
+      description: ['', [Validators.required]],
+      longitude: ['', [Validators.required]],
+      latitude: ['', [Validators.required]]
     });
   }
 

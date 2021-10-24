@@ -49,25 +49,25 @@ namespace Infrastructure.Services
 
         public async Task<Office1> GetOfficeByIdAsync(int id)
         {
-            return await _context.Offices         
-            .FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Offices.Include(x => x.Doctor)        
+                         .Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task CreateOffice(int id, OfficeDto officeDto)
+        public async Task CreateOffice(Office1 office)
         {
-            var doctor = await _context.Doctors1.Where(x => x.ApplicationUserId == id)
-                               .FirstOrDefaultAsync();
+            // var doctor = await _context.Doctors1.Where(x => x.ApplicationUserId == id)
+                             //  .FirstOrDefaultAsync();
             
-            var office = new Office1();
-            office.Doctor1Id = doctor.Id;
+           // var office = new Office1();
+           // office.Doctor1Id = doctor.Id;
             // ovo ostalo do add ti nepotrebno zbog mapiranja u controlleru, ne trebaš dto u parametru
             // uostalom pogledaj myportfolio
-            office.InitialExaminationFee = officeDto.InitialExaminationFee;
+            /* office.InitialExaminationFee = officeDto.InitialExaminationFee;
             office.FollowUpExaminationFee = officeDto.FollowUpExaminationFee;
             office.Street = officeDto.Street;
             office.City = officeDto.City;
             office.Country = officeDto.Country;
-
+ */
             _context.Offices.Add(office);
             await _context.SaveChangesAsync();
         }
