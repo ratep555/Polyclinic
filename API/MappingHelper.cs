@@ -50,9 +50,11 @@ namespace API
 
             CreateMap<Appointment1, Appointment1ToReturnDto>()
             .ForMember(d => d.OfficeAddress, o => o.MapFrom(s => s.Office.Street))
+            //.ForMember(d => d.OfficeId, o => o.MapFrom(s => s.Office.Street))
             .ForMember(d => d.City, o => o.MapFrom(s => s.Office.City))
             .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name))
-            .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Office.Doctor.Name));
+            .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Office.Doctor.Name))
+            .ForMember(d => d.DoctorId, o => o.MapFrom(s => s.Office.Doctor1Id));
 
 
             CreateMap<Appointment1Dto, Appointment1>().ReverseMap();

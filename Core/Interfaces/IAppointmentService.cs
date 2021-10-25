@@ -23,11 +23,9 @@ namespace Core.Interfaces
                 int id, QueryParameters queryParameters);
         Task<int> GetCountForAvailableAppointmentsForOfficesForAllPatients(int id);
         Task<Office1> FindOfficeById(int id);
-
         Task<Doctor1> FindDoctorById1(int userId);
-
-
-
+        Task<List<Appointment1>> GetAllAvailableAppointmentsForAllVisitors(QueryParameters queryParameters);
+        Task<int> GetCountForAllAvailableAppointmentsForAllVisitors();
 
     }
 }

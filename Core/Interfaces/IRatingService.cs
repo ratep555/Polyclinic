@@ -10,6 +10,8 @@ namespace Core.Interfaces
         Task<Rating> FindCurrentRate(int doctorId, int userId);
         Task AddRating(RatingDto ratingDto, int userId);
         Task Save();
+        Task<bool> CheckIfThisIsDoctorsPatient(int id, int userId);
+
 
 
     }

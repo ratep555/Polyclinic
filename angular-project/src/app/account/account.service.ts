@@ -66,4 +66,11 @@ export class AccountService {
     return JSON.parse(atob(token.split('.')[1]));
   }
 
+ /*  isAuthenticated(): boolean {
+    const user = localStorage.getItem('user');
+    if (!user){
+      return false;
+    }
+    return true;
+  } */
 }

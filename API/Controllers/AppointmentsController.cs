@@ -219,7 +219,21 @@ namespace API.Controllers
 
             var list = await _appointmentService.GetDoctorOffices(userId);
             return _mapper.Map<List<OfficeToReturnDto>>(list);
+        }
+        
+        [AllowAnonymous]
+        [HttpGet("allvisitors")]
+         public async Task<ActionResult<Pagination<Appointment1ToReturnDto>>> GetAllAvailableAppointmentsForAllVisitors(
+            [FromQuery] QueryParameters queryParameters)
+        {
+            var count = await _appointmentService.GetCountForAllAvailableAppointmentsForAllVisitors();
+            var list = await _appointmentService
+                .GetAllAvailableAppointmentsForAllVisitors(queryParameters);
 
+            var data = _mapper.Map<IEnumerable<Appointment1ToReturnDto>>(list);
+
+            return Ok(new Pagination<Appointment1ToReturnDto>
+            (queryParameters.Page, queryParameters.PageCount, count, data));
         }
     }
 }

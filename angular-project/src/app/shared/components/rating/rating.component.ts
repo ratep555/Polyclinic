@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
 @Component({
   selector: 'app-rating',
   templateUrl: './rating.component.html',
@@ -13,6 +14,7 @@ export class RatingComponent implements OnInit {
 
   stars: number[] = [1, 2, 3, 4, 5];
 
+  constructor() {}
 
   ngOnInit(): void {
     this.maxRatingArr = Array(this.maxRating).fill(0);
@@ -39,5 +41,35 @@ export class RatingComponent implements OnInit {
 
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

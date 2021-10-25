@@ -42,6 +42,20 @@ namespace Infrastructure.Services
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> CheckIfThisIsDoctorsPatient(int id, int userId)
+        {
+            var records = await _context.MedicalRecords.Include(x => x.Office).ThenInclude(x => x.Doctor)
+                .Include(x => x.Patient)
+                .Where(x => x.Office.Doctor.Id == id && x.Patient.ApplicationUserId == userId).ToListAsync();
+
+           if (!records.Any())
+           {
+               return true;
+           }
+
+           return false;
+        }
     }
 }
 

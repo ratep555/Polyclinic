@@ -25,19 +25,24 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateRating([FromBody] RatingDto ratingDtO)
+        public async Task<ActionResult> CreateRating([FromBody] RatingDto ratingDto)
         {
             var userId = User.GetUserId();
 
-            var currentRate = await _ratingService.FindCurrentRate(ratingDtO.DoctorId, userId);
+            if (await _ratingService.CheckIfThisIsDoctorsPatient(ratingDto.DoctorId, userId))
+            {
+                return BadRequest("You have not visited this doctor yet!");            
+            }
+
+            var currentRate = await _ratingService.FindCurrentRate(ratingDto.DoctorId, userId);
 
             if (currentRate == null)
             {
-                await _ratingService.AddRating(ratingDtO, userId);
+                await _ratingService.AddRating(ratingDto, userId);
             }
             else
             {
-                currentRate.Rate = ratingDtO.Rating;
+                currentRate.Rate = ratingDto.Rating;
                 await _ratingService.Save();
             }      
             return NoContent();

@@ -82,12 +82,12 @@ namespace Infrastructure.Services
         {
             IQueryable<Appointment1> appointment = _context.Appointments1.Include(x => x.Patient)
                                                    .Include(x => x.Office).ThenInclude(x => x.Doctor)
-                                                   .AsQueryable().OrderBy(x => x.StartDateAndTimeOfAppointment);
+                                                   .AsQueryable().OrderByDescending(x => x.StartDateAndTimeOfAppointment);
             
             if (queryParameters.HasQuery())
             {
                 appointment = appointment
-                .Where(x => x.Office.Street.Contains(queryParameters.Query));
+                .Where(x => x.Office.City.Contains(queryParameters.Query));
             }
 
             appointment = appointment.Skip(queryParameters.PageCount * (queryParameters.Page - 1))
@@ -97,17 +97,11 @@ namespace Infrastructure.Services
             {
                 switch (queryParameters.Sort)
                 {
-                    case "dateDesc":
-                        appointment = appointment.OrderByDescending(p => p.StartDateAndTimeOfAppointment);
-                        break;
-                    case "dateAscEnd":
-                        appointment = appointment.OrderBy(p => p.EndDateAndTimeOfAppointment);
-                        break;
-                    case "dateDescEnd":
-                        appointment = appointment.OrderByDescending(p => p.EndDateAndTimeOfAppointment);
+                    case "dateAsc":
+                        appointment = appointment.OrderBy(p => p.StartDateAndTimeOfAppointment);
                         break;
                     default:
-                        appointment = appointment.OrderBy(n => n.StartDateAndTimeOfAppointment);
+                        appointment = appointment.OrderByDescending(n => n.StartDateAndTimeOfAppointment);
                         break;
                 }
             }    
@@ -271,6 +265,58 @@ namespace Infrastructure.Services
             return await _context.Offices.Where(x => x.Id == id)
                          .FirstOrDefaultAsync();
         }
+
+        public async Task<List<Appointment1>> GetAllAvailableAppointmentsForAllVisitors(QueryParameters queryParameters)
+        {
+                                 
+            var doctorSpecialization = await _context.DoctorSpecializations.
+                                       Where(x => x.Specialization1Id == queryParameters.SpecializationId) 
+                                       .FirstOrDefaultAsync();
+
+            IQueryable<Appointment1> appointments = _context.Appointments1.Include(x => x.Office)
+                    .ThenInclude(x => x.Doctor)
+                    .Where(x => x.Patient1Id == null && x.StartDateAndTimeOfAppointment > DateTime.Now)
+                    .AsQueryable().OrderByDescending(x => x.StartDateAndTimeOfAppointment);
+            
+            if (queryParameters.HasQuery())
+            {
+                appointments = appointments
+                .Where(x => x.Office.City.Contains(queryParameters.Query));
+            }
+
+            if (queryParameters.SpecializationId.HasValue)
+            {
+                appointments = appointments.Where(x => x.Office.Doctor1Id == doctorSpecialization.Doctor1Id);
+
+            }
+
+            appointments = appointments.Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                           .Take(queryParameters.PageCount);
+
+            if (!string.IsNullOrEmpty(queryParameters.Sort))
+            {
+                switch (queryParameters.Sort)
+                {
+                    case "dateAsc":
+                        appointments = appointments.OrderBy(p => p.StartDateAndTimeOfAppointment);
+                        break;
+                    default:
+                        appointments = appointments.OrderByDescending(n => n.StartDateAndTimeOfAppointment);
+                        break;
+                }
+            }           
+            return await appointments.ToListAsync();        
+        }
+
+        public async Task<int> GetCountForAllAvailableAppointmentsForAllVisitors()
+        {
+            return await _context.Appointments1
+                .Where(x => x.Patient1Id == null && x.StartDateAndTimeOfAppointment > DateTime.Now)
+                .CountAsync();
+        }
+
+
+
 
     }
 }

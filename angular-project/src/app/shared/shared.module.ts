@@ -21,6 +21,7 @@ import 'leaflet/dist/images/marker-icon-2x.png';
 import { MapComponent } from './components/map/map.component';
 import { RatingComponent } from './components/rating/rating.component';
 import { RatingModule } from 'ngx-bootstrap/rating';
+import { HasRoleDirective } from './directives/has-role.directive';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { RatingModule } from 'ngx-bootstrap/rating';
      DateInputComponent,
      Date1InputComponent,
      MapComponent,
-     RatingComponent
+     RatingComponent,
+     HasRoleDirective
   ],
   imports: [
     CommonModule,
@@ -66,7 +68,8 @@ import { RatingModule } from 'ngx-bootstrap/rating';
     // GoogleChartsModule,
     BsDatepickerModule,
     RatingModule,
-    RatingComponent
+    RatingComponent,
+    HasRoleDirective
   ]
 
 })

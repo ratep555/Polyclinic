@@ -18,6 +18,7 @@ const routes: Routes = [
   loadChildren: () => import('./patient-offices/patient-offices.module').then(mod => mod.PatientOfficesModule)},
   {path: 'patient-appointments', canActivate: [AuthGuard],
   loadChildren: () => import('./patient-appointments/patient-appointments.module').then(mod => mod.PatientAppointmentsModule)},
+  {path: 'visitors', loadChildren: () => import('./visitors/visitors.module').then(mod => mod.VisitorsModule)},
   {path: 'account', loadChildren: () => import('./account/account.module').then(mod => mod.AccountModule)},
   {path: '**', redirectTo: '', pathMatch: 'full'}
 ];
