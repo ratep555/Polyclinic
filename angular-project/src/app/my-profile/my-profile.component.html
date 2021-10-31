@@ -1,0 +1,100 @@
+<p>my-profile works!</p>
+<div class="container" style="margin-top: 150px; margin-bottom: 50px;">   
+    <div class="row" *ngIf="doctor">
+        <div class="col-4">
+            <div class="card">
+                <img src='./assets/doggy.jpg' a 
+                    class="card-img">
+                <div class="card-body">
+                    <div>
+                        <strong>Doctor Name:</strong>
+                        <p>{{doctor.name}}</p>
+                    </div>
+                    <div>
+                        <strong>Practicing from:</strong>
+                        <p>{{doctor.startedPracticing | date:"dd.MM.yyyy"}}</p>
+                    </div>
+                    <div>
+                        <strong>Average vote: {{doctor.averageVote}}</strong>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-8">
+            <tabset class="member-tabset">
+                <tab heading='Resume'>
+                    <hr>
+                    <p>{{doctor.resume}}</p>
+                </tab>
+                <tab heading='Qualifications'>
+                    <hr>
+                    <div *ngIf="specializations">
+                        <p><strong>Specializations:</strong></p>
+                        <ul style="list-style-type:none;" *ngFor="let item of specializations">
+                            <li>- {{item.specializationName}}</li>
+                        </ul>
+                    </div>
+                    <hr>
+                    <div *ngIf="subspecializations">
+                        <p><strong>Subspecializations:</strong></p>
+                        <ul style="list-style-type:none;" *ngFor="let item of subspecializations">
+                            <li>- {{item.subspecializationName}}</li>
+                        </ul>
+                    </div>
+                    <hr>
+                    <div *ngIf="associations">
+                        <p><strong>Professional Associations:</strong></p>
+                        <ul style="list-style-type:none;" *ngFor="let item of associations">
+                            <li>- {{item.name}}</li>
+                        </ul>
+                    </div>
+                    <hr>
+                    <div *ngIf="publications">
+                        <p><strong>Research Papers:</strong></p>
+                        <ul style="list-style-type:none;" *ngFor="let item of publications">
+                            <li>- {{item.publicationAuthorsTitleDate}}</li>
+                        </ul>
+                    </div>
+                </tab>
+                <tab heading='Offices'>
+                    <hr>
+                    <table class="table table-bordered table-striped table-condensed table-hover">
+                        <thead>
+                          <tr>          
+                               <th style="font-size: large;">
+                            Country
+                              </th>      
+                              <th style="font-size: large;">
+                                City
+                            </th>                                                       
+                              <th style="font-size: large;">
+                                  Street
+                              </th>                                                                                                                                                                                      
+                              <th>
+                              </th>              
+                          </tr>
+                              </thead>
+                              <tbody>
+                      <tr *ngFor="let item of offices" style="color: black;">        
+                        <td>{{item.country}}</td>
+                        <td>{{item.city}}</td>
+                          <td>{{item.street}}</td>
+                          <td>  
+                            <div class="text-center">
+                                <button routerLink="/patient-offices/office/{{item.id}}" 
+                                type="button" class="btn btn-info">
+                                <i class="fa fa-info-circle mr-1"></i>
+                                Info</button>                                     
+                              </div>
+                        </td>
+                      </tr>
+                              </tbody>    
+                    </table>
+                   
+                </tab>
+            </tabset>
+        </div>
+    </div></div>
+

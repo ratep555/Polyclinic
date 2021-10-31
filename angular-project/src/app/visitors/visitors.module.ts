@@ -4,13 +4,15 @@ import { AllAppointmentsComponent } from './all-appointments/all-appointments.co
 import { AllDoctorsComponent } from './all-doctors/all-doctors.component';
 import { SharedModule } from '../shared/shared.module';
 import { VisitorsRoutingModule } from './visitors-routing.module';
+import { AllDoctorsFelipeComponent } from './all-doctors-felipe/all-doctors-felipe.component';
 
 
 
 @NgModule({
   declarations: [
     AllAppointmentsComponent,
-    AllDoctorsComponent
+    AllDoctorsComponent,
+    AllDoctorsFelipeComponent
   ],
   imports: [
     CommonModule,

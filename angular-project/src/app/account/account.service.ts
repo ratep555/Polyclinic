@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { MultipleSelectorModel } from '../shared/models/multiple-selector.model';
+import { ISpecialization } from '../shared/models/specialization';
 import { User } from '../shared/models/user';
 
 @Injectable({
@@ -38,6 +40,7 @@ export class AccountService {
     );
   }
 
+  // ovo je originalna verzija koja šljaka
   registerDoctor(values: any) {
     return this.http.post(this.baseUrl + 'account/registerdoctor1', values).pipe(
       map((user: User) => {
@@ -47,6 +50,23 @@ export class AccountService {
       })
     );
   }
+
+  // ova dva dolje su pokušaj za multipleselectormodel
+  registerDoctor2(values: any) {
+    return this.http.post(this.baseUrl + 'account/registerdoctor2', values).pipe(
+      map((user: User) => {
+        if (user) {
+          this.setCurrentUser(user);
+        }
+      })
+    );
+  }
+
+  getSpecializations() {
+    return this.http.get<ISpecialization[]>(this.baseUrl + 'doctors1/multiplemodel');
+  }
+
+
 
   setCurrentUser(user: User) {
     user.roles = [];
@@ -66,6 +86,23 @@ export class AccountService {
     return JSON.parse(atob(token.split('.')[1]));
   }
 
+  // ovo nadalje je felipe vježba!
+
+getFieldFromJWT(field: string): string {
+  const token = localStorage.getItem('token');
+  if (!token){return ''; }
+  // we are parsing the data of the token
+  // we are getting the second part of the token, [1], token ima tri dijela sjeti se!
+  // the second part of the token is payload where the claims are
+  // atob is decoding string
+  const dataToken = JSON.parse(atob(token.split('.')[1]));
+  return dataToken[field];
+}
+
+getRole(): string {
+  return this.getFieldFromJWT('role');
+}
+
  /*  isAuthenticated(): boolean {
     const user = localStorage.getItem('user');
     if (!user){
@@ -73,4 +110,17 @@ export class AccountService {
     }
     return true;
   } */
+
+
+
 }
+
+
+
+
+
+
+
+
+
+

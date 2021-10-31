@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Core.Dtos
@@ -19,5 +21,15 @@ namespace Core.Dtos
         
         [Required]
         public string Password { get; set; }
+
+        public string Resume { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? StartedPracticing { get; set; }
+
+
+        public List<int> SpecializationsIds { get; set; }
+
     }
 }
+

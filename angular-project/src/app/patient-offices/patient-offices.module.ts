@@ -6,6 +6,7 @@ import { PatientOfficesRoutingModule } from './patient-offices-routing.module';
 import { PatientOfficeDetailComponent } from './patient-office-detail/patient-office-detail.component';
 import { DoctorDetailComponent } from './doctor-detail/doctor-detail.component';
 import { OfficeInfoComponent } from './office-info/office-info.component';
+import { PatientOfficesTestComponent } from './patient-offices-test/patient-offices-test.component';
 
 
 
@@ -14,7 +15,8 @@ import { OfficeInfoComponent } from './office-info/office-info.component';
     PatientOfficesComponent,
     PatientOfficeDetailComponent,
     DoctorDetailComponent,
-    OfficeInfoComponent
+    OfficeInfoComponent,
+    PatientOfficesTestComponent
   ],
   imports: [
     CommonModule,

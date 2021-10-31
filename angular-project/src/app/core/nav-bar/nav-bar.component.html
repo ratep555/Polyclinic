@@ -14,35 +14,28 @@
     <div class="collapse navbar-collapse" id="navbarNav" id="navbarSupportedContent" [collapse]="isCollapsed">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link text-uppercase" routerLink="/specialties" routerLinkActive="active" >Doctors</a> 
-        </li>  
+          <a class="nav-link text-uppercase" routerLink="/felipe" routerLinkActive="active" >Felipe</a> 
+        </li> 
+<!--   ovo možeš koristiti  <ng-container *ngIf="(currentUser$ | async) && (currentUser$ | async)?.roleName ==='Admin'">
+ -->
+          <li  class="nav-item">
+            <a class="nav-link text-uppercase" routerLink="/patient-offices/test" routerLinkActive="active">Offices</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-uppercase" routerLink="/visitors/alldoctors" routerLinkActive="active" >Doctors</a> 
+          </li> 
+        
         <li class="nav-item">
           <a class="nav-link text-uppercase"  routerLink="/visitors/allapointments" routerLinkActive="active">Appointments</a>  
         </li>  
-        <li class="nav-item">
-          <a class="nav-link text-uppercase" routerLink="/transactions" routerLinkActive="active">Transactions</a>
-        </li>
-        <div class="dropdown" dropdown>
-          <a class="pero nav-link text-uppercase dropdown-toggle text-white" dropdownToggle (click)="false" 
-          routerLinkActive="active">Tax Liability</a>
-          <div class="dropdown-menu" *dropdownMenu>    
-              <a routerLink="/specialties" class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Specialties</a>
-              <a class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Logout</a>
-                <div class="dropdown-divider"></div>
-              <a class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Logout</a>
-              <a class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Logout</a>
-          </div>
-        </div>
         <div class="dropdown" dropdown>
           <a class="pero nav-link text-uppercase dropdown-toggle text-white" dropdownToggle (click)="false" 
           routerLinkActive="active">Doctor</a>
           <div class="dropdown-menu" *dropdownMenu>    
               <a routerLink="/account/register-doctor" class="dropdown-item">
                 <i class="fa fa-sign-out mr-3"></i> Register Doctor</a>
+              <a routerLink="/myprofile" class="dropdown-item">
+                <i class="fa fa-sign-out mr-3"></i> My Profile</a>
               <a routerLink="/offices" class="dropdown-item">
                 <i class="fa fa-sign-out mr-3"></i> Offices</a>
               <a routerLink="/appointments" class="dropdown-item">
@@ -62,6 +55,8 @@
           <div class="dropdown-menu" *dropdownMenu>    
               <a routerLink="/patient-offices" class="dropdown-item">
                 <i class="fa fa-sign-out mr-3"></i> Offices</a>
+              <a routerLink="/patient-offices/test" class="dropdown-item">
+                <i class="fa fa-sign-out mr-3"></i> Offices/Test</a>
               <a routerLink="/patient-appointments" class="dropdown-item">
                 <i class="fa fa-sign-out mr-3"></i>My Appointments</a>
                 <a routerLink="/medicalrecords/patientrecords" class="dropdown-item">

@@ -236,6 +236,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<string>("Resume")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("StartedPracticing")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
@@ -307,6 +310,21 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("Specialization1Id");
 
                     b.ToTable("DoctorSpecializations");
+                });
+
+            modelBuilder.Entity("Core.Entities.DoctorSpecialization2", b =>
+                {
+                    b.Property<int>("Doctor1Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Specialization1Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("Doctor1Id", "Specialization1Id");
+
+                    b.HasIndex("Specialization1Id");
+
+                    b.ToTable("DoctorSpecializations2");
                 });
 
             modelBuilder.Entity("Core.Entities.Examination", b =>
@@ -911,6 +929,25 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("Specialization");
                 });
 
+            modelBuilder.Entity("Core.Entities.DoctorSpecialization2", b =>
+                {
+                    b.HasOne("Core.Entities.Doctor1", "Doctor")
+                        .WithMany("DoctorSpecializations2")
+                        .HasForeignKey("Doctor1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Specialization1", "Specialization")
+                        .WithMany()
+                        .HasForeignKey("Specialization1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Specialization");
+                });
+
             modelBuilder.Entity("Core.Entities.Examination", b =>
                 {
                     b.HasOne("Core.Entities.Doctor", "Doctor")
@@ -1016,7 +1053,7 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Core.Entities.Rating", b =>
                 {
                     b.HasOne("Core.Entities.Doctor1", "Doctor")
-                        .WithMany()
+                        .WithMany("Ratings")
                         .HasForeignKey("Doctor1Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1112,7 +1149,11 @@ namespace Infrastructure.Data.Migrations
 
                     b.Navigation("DoctorSpecializations");
 
+                    b.Navigation("DoctorSpecializations2");
+
                     b.Navigation("Offices");
+
+                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("Core.Entities.Identity.ApplicationRole", b =>

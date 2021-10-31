@@ -22,6 +22,8 @@ import { MapComponent } from './components/map/map.component';
 import { RatingComponent } from './components/rating/rating.component';
 import { RatingModule } from 'ngx-bootstrap/rating';
 import { HasRoleDirective } from './directives/has-role.directive';
+import { ImgInputComponent } from './components/img-input/img-input.component';
+import { MultipleSelectorComponent } from './components/multiple-selector/multiple-selector.component';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { HasRoleDirective } from './directives/has-role.directive';
      Date1InputComponent,
      MapComponent,
      RatingComponent,
-     HasRoleDirective
+     HasRoleDirective,
+     ImgInputComponent,
+     MultipleSelectorComponent
   ],
   imports: [
     CommonModule,
@@ -69,7 +73,9 @@ import { HasRoleDirective } from './directives/has-role.directive';
     BsDatepickerModule,
     RatingModule,
     RatingComponent,
-    HasRoleDirective
+    HasRoleDirective,
+    ImgInputComponent,
+    MultipleSelectorComponent
   ]
 
 })

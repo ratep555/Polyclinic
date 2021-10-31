@@ -48,9 +48,9 @@ namespace Infrastructure.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);   
 
-            /*  modelBuilder.Entity<DoctorSpecialization1>()
+              modelBuilder.Entity<DoctorSpecialization2>()
                 .HasKey(x => new { x.Doctor1Id, x.Specialization1Id }); 
- */
+ 
            /*  modelBuilder.Entity<Appointment>()
                 .HasKey(x => new { x.PatientId, x.ApplicationUserId }); */
 
@@ -61,6 +61,7 @@ namespace Infrastructure.Data
         public DbSet<Appointment1> Appointments1 { get; set; }
         public DbSet<Doctor1> Doctors1 { get; set; }
         public DbSet<DoctorSpecialization1> DoctorSpecializations { get; set; }
+        public DbSet<DoctorSpecialization2> DoctorSpecializations2 { get; set; }
         public DbSet<DoctorPublication> DoctorPublications { get; set; }
         public DbSet<DoctorProfessionalAssociation> DoctorProfessionalAssociations { get; set; }
         public DbSet<MedicalRecord> MedicalRecords { get; set; }

@@ -2,7 +2,7 @@
     <div class="card col-10 p-3">
         <div class="card-header bg-info text-light">
             <div class="col-12 d-none d-md-block col-md-6 pb-1">
-                <i class="fa fa-ambulance"></i> &nbsp; Medical Record No. {{medicalrecord.id}}
+                <i class="fa fa-ambulance"></i> &nbsp; Medical Record No. {{medicalrecord?.id}}
             </div>        
         </div>
         <div class="card-body">
@@ -15,7 +15,7 @@
                         </div>
                         <div class="col-9">
                             <input type="text" readonly="readonly"
-                            class="form-control" placeholder="{{medicalrecord.patient}}">
+                            class="form-control" placeholder="{{medicalrecord?.patient}}">
                         </div>
                     </div>
                     <div class="row my-1">
@@ -24,7 +24,7 @@
                         </div>
                         <div class="col-9">
                             <input type="text" class="form-control" readonly="readonly"
-                            placeholder="{{medicalrecord.doctor}}">
+                            placeholder="{{medicalrecord?.doctor}}">
                         </div>
                     </div>                    
                     <div class="row my-1">
@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-9">
                             <input type="text" class="form-control" readonly="readonly"
-                            placeholder="{{medicalrecord.created | date:'dd.MM.yyyy HH:mm'}}">
+                            placeholder="{{medicalrecord?.created | date:'dd.MM.yyyy HH:mm'}}">
                         </div>
                     </div>
                     <div class="row text-center my-1 mt-4 mb-2">
@@ -44,7 +44,7 @@
                     <div class="row my-1">
                         <div class="col-12">
                     <textarea name="" readonly="readonly"
-                    placeholder="{{medicalrecord.anamnesisDiagnosisTherapy}}" class="form-control" id="" cols="30" rows="20"></textarea>
+                    placeholder="{{medicalrecord?.anamnesisDiagnosisTherapy}}" class="form-control" id="" cols="30" rows="20"></textarea>
                         </div>
                     </div>
                 </div>

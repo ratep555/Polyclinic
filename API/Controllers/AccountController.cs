@@ -4,6 +4,7 @@ using AutoMapper;
 using Core.Dtos;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -55,8 +56,9 @@ namespace API.Controllers
             {
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user),
-                Email = user.Email
-            };
+                Email = user.Email,
+                RoleName = await _doctorService.GetRoleName(user.Id),
+                UserId = user.Id            };
         }
         
         [HttpPost("registerdoctor")]
@@ -81,9 +83,12 @@ namespace API.Controllers
             };
         }
 
+        // ovo koristiš za sada!
         [HttpPost("registerdoctor1")]
-        public async Task<ActionResult<UserDto>> RegisterDoctor1(RegisterDto registerDto)
+        public async Task<ActionResult<UserDto>> RegisterDoctor1(RegisterDoctorDto1 registerDto)
         {
+            if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
+
             var user = _mapper.Map<ApplicationUser>(registerDto);
             
             user.UserName = registerDto.Username.ToLower();
@@ -96,15 +101,42 @@ namespace API.Controllers
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
-            await _doctorService.CreateDoctor1(user.Id, user.LastName, user.FirstName);
+            await _doctorService.CreateDoctor1(user.Id, user.LastName, user.FirstName, registerDto);
 
-           return new UserDto
+           return NoContent(); /* new UserDto
             {
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user),
                 Email = user.Email
-            };
+            }; */
         }
+
+        // new method, attempting to implement multipleselectormodel
+        [HttpPost("registerdoctor2")]
+        public async Task<ActionResult<UserDto>> RegisterDoctor2(RegisterDoctorDto1 registerDto)
+        {
+            if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
+
+            var user = _mapper.Map<ApplicationUser>(registerDto);
+            
+            user.UserName = registerDto.Username.ToLower();
+
+            var result = await _userManager.CreateAsync(user, registerDto.Password);
+            
+            if (!result.Succeeded) return BadRequest(result.Errors);
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Doctor");
+
+            if (!roleResult.Succeeded) return BadRequest(result.Errors);
+
+            var doctor = _mapper.Map<Doctor1>(registerDto);
+
+            await _doctorService.CreateDoctor2(user.Id, doctor, user.LastName, user.FirstName);
+
+           return NoContent();
+        }
+
+    
 
         [HttpPost("registeremployee")]
         public async Task<ActionResult<DoctorToReturnDto>> RegisterEmployee(RegisterEmployeeDto registerEmployeeDto)
@@ -145,7 +177,9 @@ namespace API.Controllers
             {
                 Username = user.UserName,
                 Token = await _tokenService.CreateToken(user),
-                Email = user.Email
+                Email = user.Email,
+                RoleName = await _doctorService.GetRoleName(user.Id),
+                UserId = user.Id
             };
         }
 

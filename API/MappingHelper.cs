@@ -2,6 +2,7 @@ using AutoMapper;
 using Core.Entities;
 using Core.Dtos;
 using NetTopologySuite.Geometries;
+using System.Collections.Generic;
 
 namespace API
 {
@@ -30,10 +31,17 @@ namespace API
 
             #region 
             CreateMap<RegisterDoctorDto1, ApplicationUser>().ReverseMap();
+
+            CreateMap<RegisterDoctorDto1, ApplicationUser>().ReverseMap();
             CreateMap<Specialization1, SpecializationDto>().ReverseMap();
             CreateMap<Subspecialization1, SubspecializationDto>().ReverseMap();
-            CreateMap<ProfessionalAssociation, ProfessionalAssociationDto>().ReverseMap();
-            CreateMap<Publication1, PublicationDto>().ReverseMap();
+            CreateMap<ProfessionalAssociation, ProfessionalAssociationDto>()
+            .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
+            .ForMember(d => d.Name, o => o.MapFrom(s => s.Name));
+
+            CreateMap<Publication1, PublicationDto>()
+             .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
+            .ForMember(d => d.PublicationAuthorsTitleDate, o => o.MapFrom(s => s.PublicationAuthorsTitleDate));
 
             CreateMap<Office1, OfficeToReturnDto>()
             .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Doctor.Name))
@@ -83,10 +91,26 @@ namespace API
             .ForMember(d => d.Office, o => o.MapFrom(s => s.Office.Street))
             .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name));
 
+            CreateMap<RegisterDoctorDto1, Doctor1>()
+            .ForMember(x => x.DoctorSpecializations2, options => options.MapFrom(MapDoctorSpecialization2));
+
             #endregion
-
-
         }
+
+        private List<DoctorSpecialization2> MapDoctorSpecialization2(RegisterDoctorDto1 doctorDto, Doctor1 doctor)
+        {
+            var result = new List<DoctorSpecialization2>();
+
+            if (doctorDto.SpecializationsIds == null) { return result; }
+
+            foreach (var id in doctorDto.SpecializationsIds)
+            {
+                result.Add(new DoctorSpecialization2() { Specialization1Id = id });
+            }
+
+            return result;
+        }
+
     }
 }
 

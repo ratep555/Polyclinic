@@ -275,7 +275,7 @@ namespace Infrastructure.Services
 
             IQueryable<Appointment1> appointments = _context.Appointments1.Include(x => x.Office)
                     .ThenInclude(x => x.Doctor)
-                    .Where(x => x.Patient1Id == null && x.StartDateAndTimeOfAppointment > DateTime.Now)
+                    .Where(x => x.Patient1Id == null && x.StartDateAndTimeOfAppointment < DateTime.Now)
                     .AsQueryable().OrderByDescending(x => x.StartDateAndTimeOfAppointment);
             
             if (queryParameters.HasQuery())

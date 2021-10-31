@@ -1,6 +1,6 @@
-<div class="container-fluid" style="margin-top: 200px;">   
+<div class="container-fluid" style="margin-top: 200px; margin-bottom: 100px;">   
     <div class="d-flex justify-content-center mt-5">
-        <div class="col-3">
+        <div class="col-7">
             <form [formGroup]='registerForm' (ngSubmit)="registerForm.valid && onSubmit()">
                 <h2 class="text-center text-primary">Register as a Doctor</h2>
                 <hr>           
@@ -12,13 +12,39 @@
                     [label]='"Last Name"'></app-text-input>
                 <app-text-input [formControl]='registerForm.controls["email"]' 
                     [label]='"Email"'></app-text-input>
+                <app-date-input [formControl]='registerForm.controls["startedPracticing"]' 
+                    [label]='"Practicing From"'></app-date-input>
                 <app-text-input [formControl]='registerForm.controls["password"]' 
                     [label]='"Password"' [type]='"password"'>
                 </app-text-input>
                 <app-text-input [formControl]='registerForm.controls["confirmPassword"]' 
                     [label]='"Confirm Password"'
-                    [type]='"password"'></app-text-input>
-            
+                    [type]='"password"'></app-text-input> 
+
+                    <h4>Select the Specialization</h4>
+
+                    <app-multiple-selector *ngIf="nonSelectedSpecializations"
+                      [NonSelectedItems]="nonSelectedSpecializations"
+                      [SelectedItems]="selectedSpecializations"
+                    ></app-multiple-selector>
+                  
+                    <h4>Select the Movie Theaters</h4>
+                  
+                    <app-multiple-selector
+                      [NonSelectedItems]="nonSelectedMovieTheaters"
+                      [SelectedItems]="selectedMovieTheaters"
+                    ></app-multiple-selector>        
+                    
+                                <div class="form-group row">
+                        <div class="col-md-12">  
+                            <textarea type="text"
+                            placeholder="Resume"
+                            class="form-control"
+                            formControlName="resume"
+                            cols="30"
+                                rows="20"></textarea>
+                         </div>    
+                     </div>  
                 <div class="row" *ngIf="errors?.length > 0">
                     <ul class="text-danger">
                         <li *ngFor="let error of errors">

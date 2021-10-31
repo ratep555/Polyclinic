@@ -36,7 +36,8 @@ export class DoctorDetailComponent implements OnInit {
   }
 
   loadDoctor() {
-    return this.patientOfficesService.getDoctor(+this.activatedRoute.snapshot.paramMap.get('id')).subscribe(response => {
+    return this.patientOfficesService.getDoctor(+this.activatedRoute.snapshot.paramMap.get('id'))
+    .subscribe(response => {
     this.doctor = response;
     }, error => {
     console.log(error);
