@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IDoctor, IDoctorWithQualificationsAndOffices } from '../shared/models/doctor';
+import { IDoctor, IDoctorPutGetDto, IEditDoctorDto, IRegisterDoctorDto } from '../shared/models/doctor';
 import { IOffice } from '../shared/models/office';
 import { IProfessionalAssociation } from '../shared/models/professionalAssociation';
 import { IPublication } from '../shared/models/publication';
@@ -58,4 +58,21 @@ export class MyProfileService {
   getOfficesForDoctor(id: number) {
     return this.http.get<IOffice[]>(this.baseUrl + 'doctors1/offices1/' + id);
   }
+
+  putGetDoctor(id: number): Observable<IDoctorPutGetDto>{
+    return this.http.get<IDoctorPutGetDto>(this.baseUrl + `doctors1/appuserid1/` + id);
+  }
+
+  editDoctor(id: number, editDoctorDTO: IEditDoctorDto){
+    return this.http.put(this.baseUrl + `doctors1/editingdoctor/` + id, editDoctorDTO);
+  }
 }
+
+
+
+
+
+
+
+
+

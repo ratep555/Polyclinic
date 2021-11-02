@@ -30,9 +30,9 @@ namespace Core.Interfaces
         Task<string> GetRoleName(int userId);
         Task<List<Doctor1>> ShowListOfAllDoctors();
         Task<Doctor1> FindDoctorByApplicationUserId(int userId);
-
-
-
+        Task<Doctor1> FindDoctorByApplicationUserIdIncludingSpecialization(int userId);
+        Task<List<Specialization1>> GetNonSelectedSpecializations(List<int> ids);
+        Task Save();
 
 
     }

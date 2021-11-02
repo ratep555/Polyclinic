@@ -19,7 +19,10 @@ namespace Core.Dtos
         [DataType(DataType.Date)]
         public DateTime? StartedPracticing { get; set; }
 
-        public ICollection<DoctorSpecialization2> DoctorSpecializations2 { get; set; }
+        public List<SpecializationDto> Specializations { get; set; }
+        
+        // ovo ne treba, just in case ostavljaš
+      //  public ICollection<DoctorSpecialization2> DoctorSpecializations2 { get; set; }
 
     }
 }

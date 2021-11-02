@@ -80,7 +80,7 @@ namespace API
             .ForMember(d => d.Status, o => o.MapFrom(s => s.Status));
 
             CreateMap<Doctor1, Doctor1Dto>().ReverseMap();
-            
+                    
             CreateMap<Patient1, Patient1Dto>()
             .ForMember(d => d.PhoneNumber, o => o.MapFrom(s => s.ApplicationUser.PhoneNumber))
             .ForMember(d => d.Email, o => o.MapFrom(s => s.ApplicationUser.Email));
@@ -94,6 +94,13 @@ namespace API
             CreateMap<RegisterDoctorDto1, Doctor1>()
             .ForMember(x => x.DoctorSpecializations2, options => options.MapFrom(MapDoctorSpecialization2));
 
+            CreateMap<EditDoctor1Dto, Doctor1>()
+            .ForMember(x => x.DoctorSpecializations2, options => options.MapFrom(MapDoctorSpecialization3));
+
+             CreateMap<Doctor1, Doctor1Dto>()
+            .ForMember(d => d.Specializations, o => o.MapFrom(MapForSpecialization2));
+
+
             #endregion
         }
 
@@ -106,6 +113,37 @@ namespace API
             foreach (var id in doctorDto.SpecializationsIds)
             {
                 result.Add(new DoctorSpecialization2() { Specialization1Id = id });
+            }
+
+            return result;
+        }
+
+        private List<DoctorSpecialization2> MapDoctorSpecialization3(EditDoctor1Dto doctorDto, Doctor1 doctor)
+        {
+            var result = new List<DoctorSpecialization2>();
+
+            if (doctorDto.SpecializationsIds == null) { return result; }
+
+            foreach (var id in doctorDto.SpecializationsIds)
+            {
+                result.Add(new DoctorSpecialization2() { Specialization1Id = id });
+            }
+
+            return result;
+        }
+        
+        // ovo ne šljaka za sada
+        private List<SpecializationDto> MapForSpecialization2(Doctor1 doctor, Doctor1Dto doctorDto)
+        {
+            var result = new List<SpecializationDto>();
+
+            if (doctor.DoctorSpecializations2 != null)
+            {
+                foreach (var specialization in doctor.DoctorSpecializations2)
+                {
+                    result.Add(new SpecializationDto() { Id = specialization.Specialization1Id, 
+                    SpecializationName = specialization.Specialization.SpecializationName });
+                }
             }
 
             return result;

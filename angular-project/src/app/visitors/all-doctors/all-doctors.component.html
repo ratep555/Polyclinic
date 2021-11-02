@@ -42,7 +42,10 @@
                 </th>                                                                     
                 <th>
                     Average Rating
-                </th>                                                                                                                                                                                                                                                                                                                             
+                </th>       
+                <th>
+                  Number of Votes
+                </th>                                                                                                                                                                                                                                                                                                                      
                 <th>
                 </th>              
             </tr>
@@ -52,6 +55,7 @@
           <td>{{item.name}}</td>
           <td>{{item.startedPracticing | date:"dd.MM.yyyy"}}</td>
             <td>{{item.averageVote}}</td>
+            <td>{{item.count}}</td>
             <td>  
               <div class="text-center">
                 <button routerLink="/patient-offices/doctor/{{item.id}}" 

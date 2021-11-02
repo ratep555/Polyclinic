@@ -11,6 +11,7 @@ export interface IDoctor {
     resume: string;
     averageVote: number;
     userVote: number;
+    count: number;
     startedPracticing: Date;
 }
 
@@ -22,3 +23,30 @@ export interface IDoctorWithQualificationsAndOffices {
     publications: IPublication[];
     offices: IOffice[];
 }
+
+export interface IDoctorPutGetDto {
+    doctor: IDoctor;
+    selectedSpecializations: ISpecialization[];
+    nonSelectedSpecializations: ISpecialization[];
+
+}
+
+export interface IRegisterDoctorDto {
+    firstName: string;
+    lastName: string;
+    username: string;
+    email: string;
+    resume: string;
+    startedPracticing: Date;
+    specializationsIds: number[];
+}
+
+export interface IEditDoctorDto {
+    id: number;
+    applicationUserId: number;
+    resume: string;
+    specializationsIds: number[];
+}
+
+
+

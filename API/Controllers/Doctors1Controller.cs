@@ -145,6 +145,45 @@ namespace API.Controllers
             return Ok(doctorToReturn);
         }
 
+        [HttpGet("appuserid1/{id}")]
+        public async Task<ActionResult<DoctorPutGetDto>> GetDoctorByApplicationUserIdForEditing(int id)
+        {
+            var doctor = await _doctorService.FindDoctorById(id);
+
+            if (doctor == null) return NotFound();
+
+            var doctorToReturn =  _mapper.Map<Doctor1Dto>(doctor);
+
+            var specializationsSelectedIds = doctorToReturn.Specializations.Select(x => x.Id).ToList();
+
+            var nonSelectedSpecialisations = await _doctorService.GetNonSelectedSpecializations(specializationsSelectedIds);
+            
+            var nonSelectedSpecializationsDto = _mapper.Map<List<SpecializationDto>>(nonSelectedSpecialisations);
+
+            var response = new DoctorPutGetDto();
+            response.Doctor = doctorToReturn;
+            response.SelectedSpecializations = doctorToReturn.Specializations;
+            response.NonSelectedSpecializations = nonSelectedSpecializationsDto;
+
+            return response;
+        }
+
+        [HttpPut("editingdoctor/{id}")]
+        public async Task<ActionResult> UserUpdatingHisProfile(int id, EditDoctor1Dto editDoctorDto)
+        {
+            var doctor = await _doctorService.FindDoctorById(id);
+
+            if (doctor == null) return NotFound();
+
+            doctor =  _mapper.Map(editDoctorDto, doctor);
+
+            await _doctorService.Save();
+
+            return NoContent();
+        }
+          
+
+
         [HttpGet("specializations/{id}")]
         public async Task<ActionResult<List<SpecializationDto>>> GetSpecializationsForDoctor(int id)
         {
@@ -215,7 +254,7 @@ namespace API.Controllers
             return Ok(officeToReturn);
         }
 
-
+        [AllowAnonymous]
         [HttpGet("specializations1/{id}")]
         public async Task<ActionResult<List<SpecializationDto>>> GetSpecializationsForDoctorByUserid(int id)
         {

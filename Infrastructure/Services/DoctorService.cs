@@ -58,12 +58,20 @@ namespace Infrastructure.Services
 
         public async Task<Doctor1> FindDoctorById(int id)
         {
-            return await _context.Doctors1.Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await _context.Doctors1.Include(x => x.DoctorSpecializations2).ThenInclude(x => x.Specialization)
+            .Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Doctor1> FindDoctorByApplicationUserId(int userId)
         {
-            return await _context.Doctors1.Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+            return await _context.Doctors1
+            .Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
+        }
+
+        public async Task<Doctor1> FindDoctorByApplicationUserIdIncludingSpecialization(int userId)
+        {
+            return await _context.Doctors1.Include(x => x.DoctorSpecializations2).ThenInclude(x => x.Specialization)
+                .Where(x => x.ApplicationUserId == userId).FirstOrDefaultAsync();
         }
 
         public async Task<List<Specialization1>> GetAllSpecializationsForDoctor(int id)
@@ -83,7 +91,7 @@ namespace Infrastructure.Services
         {
             var doctor = await FindDoctorByApplicationUserId(userid);
 
-            var doctorSpecializations = await _context.DoctorSpecializations.
+            var doctorSpecializations = await _context.DoctorSpecializations2.
                                         Where(x => x.Doctor1Id == doctor.Id)
                                        .ToListAsync();
             
@@ -352,6 +360,16 @@ namespace Infrastructure.Services
         public async Task<List<Doctor1>> ShowListOfAllDoctors()
         {
             return await _context.Doctors1.ToListAsync();
+        }
+
+        public async Task<List<Specialization1>> GetNonSelectedSpecializations(List<int> ids)
+        {
+            return await _context.Specializations.Where(x => !ids.Contains(x.Id)).ToListAsync();
+        }
+
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
         }
 
     }
