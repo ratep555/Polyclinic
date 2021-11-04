@@ -141,6 +141,19 @@ export class PatientOfficesService {
   }
 
   getDoctor(id: number) {
+    const member = [...this.memberCache.values()]
+    // we need single array that we can use to find user, we will use reduce, imaš ga u skinet
+    // reduce ima previous i current value, hover over reduce
+    // previous value je array, we will aply callback to each element of the array
+    // we will concatenate array,[] is initial value
+    // as we call this function on each element of the array, we get result that contains x-number of members and
+    // then we will concatenate that on the array we have and which has initial value of []
+      .reduce((arr, elem) => arr.concat(elem.result), [])
+      .find((member: IDoctor) => member.id === id);
+
+    if (member) {
+      return of(member);
+    }
     return this.http.get<IDoctor>(this.baseUrl + 'doctors1/' + id);
   }
 

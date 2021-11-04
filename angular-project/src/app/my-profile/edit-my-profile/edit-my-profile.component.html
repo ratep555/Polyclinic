@@ -7,21 +7,29 @@
                  <input formControlName="id" id="id" class="form-control" >
                  <input formControlName="applicationUserId" class="form-control" >
  
-                <p>{{model?.name}}</p>      
+                <p>{{model?.name}}</p>     
+                
+                <app-img-input
+                (onImageSelected)="onImageSelected($event)">
+
+                </app-img-input>
+
              
          
 
              
                
 
-                    <h4>Select the Specialization</h4>
+                    <h4>Select Specialization(s)</h4>
 
                     <app-multiple-selector *ngIf="nonSelectedSpecializations"
                       [NonSelectedItems]="nonSelectedSpecializations"
                       [SelectedItems]="selectedSpecializations"
                     ></app-multiple-selector>
+                    <hr>
                                          
-                    
+                    <h4>Resume</h4>
+                  
                         <div class="form-group row">
                         <div class="col-md-12">  
                             <textarea type="text"

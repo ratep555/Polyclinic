@@ -94,6 +94,11 @@ export class VisitorsService {
     return this.http.get<IDoctor[]>(`${this.baseUrl}doctors1/filter`, {params, observe: 'response'});
   }
 
+  public filter1(values: any): Observable<any>{
+    const params = new HttpParams({fromObject: values});
+    return this.http.get<IDoctor[]>(`${this.baseUrl}doctors1/alldoctors`, {params, observe: 'response'});
+  }
+
   getSpecializations() {
     return this.http.get<ISpecialization[]>(this.baseUrl + 'patients1/specializations');
   }

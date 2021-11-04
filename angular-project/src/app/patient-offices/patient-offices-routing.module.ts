@@ -6,6 +6,7 @@ import { PatientOfficeDetailComponent } from './patient-office-detail/patient-of
 import { DoctorDetailComponent } from './doctor-detail/doctor-detail.component';
 import { OfficeInfoComponent } from './office-info/office-info.component';
 import { PatientOfficesTestComponent } from './patient-offices-test/patient-offices-test.component';
+import { DoctorDetailResolver } from '../core/resolvers/doctor-detail.resolver';
 
 const routes: Routes = [
   {path: '', component: PatientOfficesComponent},

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AccountService } from '../account/account.service';
@@ -25,6 +26,7 @@ export class MyProfileComponent implements OnInit {
   associations: IProfessionalAssociation[];
   publications: IPublication[];
   offices: IOffice[];
+  form: FormGroup;
   doctorWithQualificationsAndOffices: IDoctorWithQualificationsAndOffices;
 
   constructor(private accountService: AccountService,

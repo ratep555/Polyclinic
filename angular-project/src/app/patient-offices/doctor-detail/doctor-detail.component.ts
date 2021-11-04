@@ -24,10 +24,12 @@ export class DoctorDetailComponent implements OnInit {
   offices: IOffice[];
 
   constructor(private patientOfficesService: PatientOfficesService,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.loadDoctor();
+
     this.loadSpecializations();
     this.loadSubspecializations();
     this.loadProfessionalAssociations();

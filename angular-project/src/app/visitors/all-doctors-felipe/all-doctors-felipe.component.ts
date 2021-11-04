@@ -46,7 +46,10 @@ export class AllDoctorsFelipeComponent implements OnInit {
   filterDoctors(values: any){
     this.visitorsService.filter(values).subscribe((response: HttpResponse<IDoctor[]>) => {
       this.doctors = response.body;
-    });
+    }, error => {
+      console.log(error);
+    }
+    );
   }
 
   clearForm(){

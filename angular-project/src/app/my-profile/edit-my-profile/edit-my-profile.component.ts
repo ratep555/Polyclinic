@@ -63,6 +63,7 @@ createRegisterForm() {
     applicationUserId: [this.user.userId],
     resume: [null],
     specializationsIds: [null],
+    picture: ''
   });
 }
 
@@ -76,6 +77,10 @@ onSubmit() {
     console.log(error);
     this.errors = error.errors;
   });
+}
+
+onImageSelected(image){
+  this.registerForm.get('picture').setValue(image);
 }
 
 }

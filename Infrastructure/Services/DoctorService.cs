@@ -331,10 +331,10 @@ namespace Infrastructure.Services
                 .Where(x => x.Name.Contains(queryParameters.Query));
             }
 
-            if (queryParameters.SpecializationId != 0)
+           /*  if (queryParameters.SpecializationId.HasValue)
             {
                 doctors = doctors.Where(x => x.Id == doctorSpecialization.Doctor1Id);
-            }
+            } */
              return await doctors.ToListAsync();
 
         }
