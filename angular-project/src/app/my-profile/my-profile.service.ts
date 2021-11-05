@@ -66,6 +66,31 @@ export class MyProfileService {
   editDoctor(id: number, editDoctorDTO: IEditDoctorDto){
     return this.http.put(this.baseUrl + `doctors1/editingdoctor/` + id, editDoctorDTO);
   }
+
+  editDoctor1(id: number, editDoctorDTO: IEditDoctorDto){
+    const formData = this.BuildFormData(editDoctorDTO);
+    return this.http.put(this.baseUrl + `doctors1/editingdoctor1/` + id, formData);
+  }
+
+  private BuildFormData(doctor: IEditDoctorDto): FormData {
+    const formData = new FormData();
+    formData.append('id', JSON.stringify(doctor.id));
+
+    formData.append('applicationUserId', JSON.stringify(doctor.applicationUserId));
+
+    if (doctor.resume){
+    formData.append('resume', doctor.resume);
+    }
+
+    if (doctor.picture){
+      formData.append('picture', doctor.picture);
+    }
+
+    if (doctor.specializationsIds) {
+    formData.append('specializationsIds', JSON.stringify(doctor.specializationsIds));
+    }
+    return formData;
+  }
 }
 
 

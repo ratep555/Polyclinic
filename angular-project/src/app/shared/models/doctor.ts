@@ -13,6 +13,7 @@ export interface IDoctor {
     userVote: number;
     count: number;
     startedPracticing: Date;
+    picture: string;
 }
 
 export interface IDoctorWithQualificationsAndOffices {
@@ -46,6 +47,7 @@ export interface IEditDoctorDto {
     applicationUserId: number;
     resume: string;
     specializationsIds: number[];
+    picture: File;
 }
 
 

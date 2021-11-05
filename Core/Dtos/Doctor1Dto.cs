@@ -18,6 +18,8 @@ namespace Core.Dtos
         
         [DataType(DataType.Date)]
         public DateTime? StartedPracticing { get; set; }
+          public string Picture { get; set; }
+
 
         public List<SpecializationDto> Specializations { get; set; }
         

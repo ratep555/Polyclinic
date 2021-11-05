@@ -71,7 +71,7 @@ onSubmit() {
   const specializationsIds = this.selectedSpecializations.map(value => value.key);
   this.registerForm.get('specializationsIds').setValue(specializationsIds);
 
-  this.myprofileService.editDoctor(this.id, this.registerForm.value).subscribe(() => {
+  this.myprofileService.editDoctor1(this.id, this.registerForm.value).subscribe(() => {
     this.router.navigateByUrl('/myprofile');
   }, error => {
     console.log(error);

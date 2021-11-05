@@ -19,11 +19,16 @@ namespace API.Controllers
         private readonly IDoctorService _doctorService;
         private readonly IMapper _mapper;
         private readonly IRatingService _ratingService;
-        public Doctors1Controller(IDoctorService doctorService, IMapper mapper, IRatingService ratingService)
+        private readonly IFileStorageService _fileStorageService;
+        private string container = "doctors1";
+
+        public Doctors1Controller(IDoctorService doctorService, IMapper mapper, 
+        IRatingService ratingService, IFileStorageService fileStorageService)
         {
             _ratingService = ratingService;
             _doctorService = doctorService;
             _mapper = mapper;
+            _fileStorageService = fileStorageService;
         }
 
         [HttpGet("alldoctors")]
@@ -181,7 +186,33 @@ namespace API.Controllers
 
             return NoContent();
         }
-          
+
+        // ne zaboravi dodati u startup app.UseStaticFiles();
+        [HttpPut("editingdoctor1/{id}")]
+        public async Task<ActionResult> UserUpdatingHisProfile1(int id, [FromForm] EditDoctor1Dto editDoctorDto)
+        {
+            var doctor = await _doctorService.FindDoctorById(id);
+
+            if (doctor == null) return NotFound();
+
+            doctor =  _mapper.Map(editDoctorDto, doctor);
+
+             if (editDoctorDto.Picture != null)
+            {
+                doctor.Picture = await _fileStorageService.SaveFile(container, editDoctorDto.Picture);
+            }
+
+           /*  if (editDoctorDto.Picture != null)
+            {
+                doctor.Picture = await _fileStorageService.EditFile(container, editDoctorDto.Picture,
+                    doctor.Picture);
+            }
+ */
+            await _doctorService.Save();
+
+            return NoContent();
+        }
+
 
 
         [HttpGet("specializations/{id}")]

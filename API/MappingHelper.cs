@@ -72,33 +72,35 @@ namespace API
 
 
             CreateMap<Appointment1, AppointmentSingleDto>()
-            .ForMember(d => d.Office, o => o.MapFrom(s => s.Office.Street))
-            .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Office.Doctor.Name))
-            .ForMember(d => d.City, o => o.MapFrom(s => s.Office.City))
-            .ForMember(d => d.Country, o => o.MapFrom(s => s.Office.Country))
-            .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name))
-            .ForMember(d => d.Status, o => o.MapFrom(s => s.Status));
+                .ForMember(d => d.Office, o => o.MapFrom(s => s.Office.Street))
+                .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Office.Doctor.Name))
+                .ForMember(d => d.City, o => o.MapFrom(s => s.Office.City))
+                .ForMember(d => d.Country, o => o.MapFrom(s => s.Office.Country))
+                .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name))
+                .ForMember(d => d.Status, o => o.MapFrom(s => s.Status));
 
             CreateMap<Doctor1, Doctor1Dto>().ReverseMap();
                     
             CreateMap<Patient1, Patient1Dto>()
-            .ForMember(d => d.PhoneNumber, o => o.MapFrom(s => s.ApplicationUser.PhoneNumber))
-            .ForMember(d => d.Email, o => o.MapFrom(s => s.ApplicationUser.Email));
+                .ForMember(d => d.PhoneNumber, o => o.MapFrom(s => s.ApplicationUser.PhoneNumber))
+                .ForMember(d => d.Email, o => o.MapFrom(s => s.ApplicationUser.Email));
 
             CreateMap<MedicalRecordDto, MedicalRecord>().ReverseMap();
             CreateMap<MedicalRecord, MedicalRecordToReturnDto>()
-            .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Office.Doctor.Name))
-            .ForMember(d => d.Office, o => o.MapFrom(s => s.Office.Street))
-            .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name));
+                .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Office.Doctor.Name))
+                .ForMember(d => d.Office, o => o.MapFrom(s => s.Office.Street))
+                .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name));
 
             CreateMap<RegisterDoctorDto1, Doctor1>()
-            .ForMember(x => x.DoctorSpecializations2, options => options.MapFrom(MapDoctorSpecialization2));
+                .ForMember(x => x.Picture, options => options.Ignore())
+                .ForMember(x => x.DoctorSpecializations2, options => options.MapFrom(MapDoctorSpecialization2));
 
             CreateMap<EditDoctor1Dto, Doctor1>()
-            .ForMember(x => x.DoctorSpecializations2, options => options.MapFrom(MapDoctorSpecialization3));
+                .ForMember(x => x.Picture, options => options.Ignore())
+                .ForMember(x => x.DoctorSpecializations2, options => options.MapFrom(MapDoctorSpecialization3));
 
              CreateMap<Doctor1, Doctor1Dto>()
-            .ForMember(d => d.Specializations, o => o.MapFrom(MapForSpecialization2));
+                .ForMember(d => d.Specializations, o => o.MapFrom(MapForSpecialization2));
 
 
             #endregion

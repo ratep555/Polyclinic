@@ -17,6 +17,7 @@ namespace Core.Entities
 
         [DataType(DataType.Date)]
         public DateTime? StartedPracticing { get; set; }
+        public string Picture { get; set; }
         
         public ICollection<Office1> Offices { get; set; }
         public ICollection<Rating> Ratings { get; set; }       

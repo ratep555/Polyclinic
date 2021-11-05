@@ -10,6 +10,7 @@
                 <p>{{model?.name}}</p>     
                 
                 <app-img-input
+                [urlCurrentImage]="model?.picture"
                 (onImageSelected)="onImageSelected($event)">
 
                 </app-img-input>

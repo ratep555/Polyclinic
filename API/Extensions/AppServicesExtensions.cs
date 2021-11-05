@@ -31,6 +31,11 @@ namespace API.Extensions
             
             services.AddScoped<ITokenService, TokenService>();
 
+            // ove dvije dolje su za slike
+            // ne zaboravi dodati u startup app.UseStaticFiles();
+            services.AddScoped<IFileStorageService, InAppStorageService>();
+            services.AddHttpContextAccessor();
+
             services.AddDbContext<PolyclinicContext>(options =>
                options.UseSqlServer(
                    config.GetConnectionString("DefaultConnection"),
