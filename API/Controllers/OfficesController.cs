@@ -121,6 +121,16 @@ namespace API.Controllers
             return _mapper.Map<OfficeDto>(office);
         }
 
+        [AllowAnonymous]
+        [HttpGet("hospitals")]
+        public async Task<ActionResult<List<HospitalAffiliationDto>>> GetHospitals()
+        {
+            var hospitals = await _officeService.ShowHospitals();
+
+            return _mapper.Map<List<HospitalAffiliationDto>>(hospitals);
+
+        }
+
 
     }
 }

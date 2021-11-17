@@ -121,10 +121,71 @@ namespace Infrastructure.Services
             return specializations;
         }
 
-          public async Task<int> GetCountForOffices()
+        public async Task<int> GetCountForOffices()
         {
             return await _context.Offices.CountAsync();
         }
+
+        public async Task<List<Patient1>> GetAllDoctorPatients(int userId,
+             QueryParameters queryParameters)
+        {   
+            /* var office = await _context.Offices.Include(x => x.Doctor)
+                          .Where(x => x.Doctor.ApplicationUserId == userId && x.Id == queryParameters.OfficeId) 
+                          .ToListAsync();
+
+            IEnumerable<int> ids1 = office.Select(x => x.Id);
+ */
+            var medicalrecords = await _context.MedicalRecords.Include(x => x.Office).ThenInclude(x => x.Doctor)
+                            .Where(x => x.Office.Doctor.ApplicationUserId == userId).ToListAsync();
+
+            IEnumerable<int> ids = medicalrecords.Select(x => x.Patient1Id);
+
+           // IEnumerable<int> ids2 = medicalrecords.Where(x => x.Office1Id == queryParameters.OfficeId).Select(x => x.Patient1Id);
+
+            IQueryable<Patient1> patients =  _context.Patients1.Include(x => x.ApplicationUser)
+                            .Where(x => ids.Contains(x.Id))
+                            .AsQueryable().OrderBy(x => x.Name);
+
+            if (queryParameters.HasQuery())
+            {
+                patients = patients
+                .Where(x => x.Name.Contains(queryParameters.Query));
+            }
+
+           /*  if (queryParameters.OfficeId.HasValue)
+            {
+                patients = patients.Where(x => ids1.Contains(x.Id));
+            } 
+  */
+             patients = patients.Skip(queryParameters.PageCount * (queryParameters.Page - 1))
+                           .Take(queryParameters.PageCount);
+            
+            if (!string.IsNullOrEmpty(queryParameters.Sort))
+            {
+                switch (queryParameters.Sort)
+                {
+                    case "nameDesc":
+                        patients = patients.OrderByDescending(p => p.Name);
+                        break;
+                    default:
+                        patients = patients.OrderBy(n => n.Name);
+                        break;
+                }
+            }     
+            return await patients.ToListAsync();        
+        }
+
+        public async Task<int> GetCountForAllDoctorPatients(int userId)
+        {
+            var medicalrecords = await _context.MedicalRecords.Include(x => x.Office).ThenInclude(x => x.Doctor)
+                            .Where(x => x.Office.Doctor.ApplicationUserId == userId).ToListAsync();
+
+            IEnumerable<int> ids = medicalrecords.Select(x => x.Patient1Id);
+
+            return await _context.Patients1.Where(x => ids.Contains(x.Id)).CountAsync();
+        }
+
+
 
 
     }

@@ -5,6 +5,7 @@ import { MyParams } from '../shared/models/myparams';
 import { IPaginationForOffices } from '../shared/models/pagination';
 import { map } from 'rxjs/operators';
 import { INewOfficeToCreate, INewOfficeToCreateOrEdit, IOffice } from '../shared/models/office';
+import { IHospital } from '../shared/models/hospital';
 
 @Injectable({
   providedIn: 'root'
@@ -48,6 +49,10 @@ export class OfficesService {
 
   getOfficeById(id: number) {
     return this.http.get<IOffice>(`${this.baseUrl}offices/${id}`);
+  }
+
+  getHospitals() {
+    return this.http.get<IHospital[]>(this.baseUrl + 'offices/hospitals');
   }
 
 }

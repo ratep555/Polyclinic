@@ -14,6 +14,8 @@ namespace Core.Interfaces
         Task<Doctor1> FindDoctorById(int userId);
         Task<Office1> GetOfficeByIdAsync(int id);
         Task Save();
+        Task<List<HospitalAffiliation>> ShowHospitals();
+
 
 
         

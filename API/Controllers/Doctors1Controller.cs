@@ -197,7 +197,7 @@ namespace API.Controllers
 
             doctor =  _mapper.Map(editDoctorDto, doctor);
 
-             if (editDoctorDto.Picture != null)
+            if (editDoctorDto.Picture != null)
             {
                 doctor.Picture = await _fileStorageService.SaveFile(container, editDoctorDto.Picture);
             }

@@ -48,13 +48,37 @@ namespace API.Controllers
             (queryParameters.Page, queryParameters.PageCount, count, data));
         }
 
-        [HttpGet("specializations")]
-         public async Task<ActionResult<List<Specialization1>>> GetSpecializations()
+        [Authorize]
+        [HttpGet("yahoo")]
+        public async Task<ActionResult<Pagination<Patient1Dto>>> GetDoctorPatients(
+                [FromQuery] QueryParameters queryParameters)
         {
+            var userId = User.GetUserId();
 
+            var count = await _patient1Service.GetCountForAllDoctorPatients(userId);
+            var list = await _patient1Service.GetAllDoctorPatients(userId, queryParameters);
+
+            var data = _mapper.Map<IEnumerable<Patient1Dto>>(list);
+
+            return Ok(new Pagination<Patient1Dto>
+            (queryParameters.Page, queryParameters.PageCount, count, data));        
+        }
+
+        [HttpGet("specializations")]
+        public async Task<ActionResult<List<Specialization1>>> GetSpecializations()
+        {
             var list = await _patient1Service.GetSpecializationsAsync();
 
             return Ok(list);
         }
     }
 }
+
+
+
+
+
+
+
+
+

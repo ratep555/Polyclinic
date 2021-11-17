@@ -275,7 +275,8 @@ namespace Infrastructure.Services
 
                 if (item.RateSum.HasValue && item.RateSum > 0)
                 {
-                    item.AverageVote = await _context.Ratings.Where(x => x.Doctor1Id == item.Id).AverageAsync(x => x.Rate);
+                    item.AverageVote = await _context.Ratings.Where(x => x.Doctor1Id == item.Id)
+                                       .AverageAsync(x => x.Rate);
                 }
                 else
                 {

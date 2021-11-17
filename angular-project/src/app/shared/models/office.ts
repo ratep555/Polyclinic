@@ -22,6 +22,7 @@ export class INewOfficeToCreateOrEdit {
     description: string;
     latitude: number;
     longitude: number;
+    hospitalAffiliationId: number;
 }
 
 export interface INewOfficeToCreate {

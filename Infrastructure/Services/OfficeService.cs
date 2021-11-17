@@ -96,6 +96,11 @@ namespace Infrastructure.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<HospitalAffiliation>> ShowHospitals()
+        {
+            return await _context.HospitalAffiliations.Include(x => x.Doctor).ToListAsync();
+        }
+
 
     }
 }

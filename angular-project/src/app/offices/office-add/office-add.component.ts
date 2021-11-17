@@ -12,6 +12,7 @@ import { OfficesService } from '../offices.service';
 })
 export class OfficeAddComponent implements OnInit {
   officeForm: FormGroup;
+  hospitalList = [];
   errors: string[] = [];
   initialCoordinates: CoordinatesMap[] = [];
 
@@ -20,6 +21,9 @@ export class OfficeAddComponent implements OnInit {
               private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.officesService.getHospitals()
+    .subscribe(res => this.hospitalList = res as []);
+
     this.createOfficeForm();
   }
 
@@ -32,11 +36,15 @@ export class OfficeAddComponent implements OnInit {
       followUpExaminationFee: ['', [Validators.required]],
       description: ['', [Validators.required]],
       longitude: ['', [Validators.required]],
-      latitude: ['', [Validators.required]]
+      latitude: ['', [Validators.required]],
+      hospitalAffiliationId: [null]
     });
   }
 
   onSubmit() {
+    if (this.officeForm.get('hospitalAffiliationId') === undefined) {
+      this.officeForm.get('hospitalAffiliationId').setValue(null);
+    }
     this.officesService.createOffice(this.officeForm.value).subscribe(() => {
       this.resetForm(this.officeForm);
       this.router.navigateByUrl('offices');

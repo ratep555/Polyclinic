@@ -11,7 +11,7 @@ namespace Infrastructure.Data
         IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public PolyclinicContext(DbContextOptions<PolyclinicContext> options) : base(options)
-        {          
+        {           
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -64,6 +64,7 @@ namespace Infrastructure.Data
         public DbSet<DoctorSpecialization2> DoctorSpecializations2 { get; set; }
         public DbSet<DoctorPublication> DoctorPublications { get; set; }
         public DbSet<DoctorProfessionalAssociation> DoctorProfessionalAssociations { get; set; }
+        public DbSet<HospitalAffiliation> HospitalAffiliations { get; set; }
         public DbSet<MedicalRecord> MedicalRecords { get; set; }
         public DbSet<Office1> Offices { get; set; }
         public DbSet<Publication1> Publications { get; set; }

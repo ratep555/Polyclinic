@@ -58,7 +58,8 @@ namespace API.Controllers
                 Token = await _tokenService.CreateToken(user),
                 Email = user.Email,
                 RoleName = await _doctorService.GetRoleName(user.Id),
-                UserId = user.Id            };
+                UserId = user.Id            
+            };
         }
         
         [HttpPost("registerdoctor")]

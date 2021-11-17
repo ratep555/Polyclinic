@@ -85,6 +85,9 @@ namespace API
                 .ForMember(d => d.PhoneNumber, o => o.MapFrom(s => s.ApplicationUser.PhoneNumber))
                 .ForMember(d => d.Email, o => o.MapFrom(s => s.ApplicationUser.Email));
 
+            CreateMap<HospitalAffiliation, HospitalAffiliationDto>()
+                .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Doctor.Name));
+
             CreateMap<MedicalRecordDto, MedicalRecord>().ReverseMap();
             CreateMap<MedicalRecord, MedicalRecordToReturnDto>()
                 .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Office.Doctor.Name))

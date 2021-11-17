@@ -7,10 +7,12 @@ import { AppointmentEditComponent } from './appointment-edit/appointment-edit.co
 import { PatientDetailComponent } from './patient-detail/patient-detail.component';
 import { MedicalRecordDetailComponent } from './medical-record-detail/medical-record-detail.component';
 import { MedicalRecordAddComponent } from './medical-record-add/medical-record-add.component';
+import { ListPatientDoctorComponent } from './list-patient-doctor/list-patient-doctor.component';
 
 const routes: Routes = [
   {path: '', component: AppointmentsComponent},
   {path: 'addappointment', component: AppointmentAddComponent},
+  {path: 'listpatient', component: ListPatientDoctorComponent},
   {path: 'editappointment/:id', component: AppointmentEditComponent},
   {path: 'patient/:id', component: PatientDetailComponent},
   {path: 'record/:id', component: MedicalRecordDetailComponent},
