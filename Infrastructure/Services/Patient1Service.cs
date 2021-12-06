@@ -135,15 +135,18 @@ namespace Infrastructure.Services
 
             IEnumerable<int> ids1 = office.Select(x => x.Id);
  */
-            var medicalrecords = await _context.MedicalRecords.Include(x => x.Office).ThenInclude(x => x.Doctor)
-                            .Where(x => x.Office.Doctor.ApplicationUserId == userId).ToListAsync();
+            var medicalrecords = await _context.MedicalRecords1.Include(x => x.Appointment)
+                .ThenInclude(x => x.Office).ThenInclude(x => x.Doctor)
+                            .Where(x => x.Appointment.Office.Doctor.ApplicationUserId == userId).ToListAsync();
 
-            IEnumerable<int> ids = medicalrecords.Select(x => x.Patient1Id);
+            IEnumerable<int> ids = medicalrecords.Select(x => x.Appointment1Id);
 
-           // IEnumerable<int> ids2 = medicalrecords.Where(x => x.Office1Id == queryParameters.OfficeId).Select(x => x.Patient1Id);
+            var appointments = await _context.Appointments1.Where(x => ids.Contains(x.Id)).ToListAsync();
+
+            IEnumerable<int?> ids2 = appointments.Select(x => x.Patient1Id);
 
             IQueryable<Patient1> patients =  _context.Patients1.Include(x => x.ApplicationUser)
-                            .Where(x => ids.Contains(x.Id))
+                            .Where(x => ids2.Contains(x.Id))
                             .AsQueryable().OrderBy(x => x.Name);
 
             if (queryParameters.HasQuery())
@@ -177,12 +180,17 @@ namespace Infrastructure.Services
 
         public async Task<int> GetCountForAllDoctorPatients(int userId)
         {
-            var medicalrecords = await _context.MedicalRecords.Include(x => x.Office).ThenInclude(x => x.Doctor)
-                            .Where(x => x.Office.Doctor.ApplicationUserId == userId).ToListAsync();
+             var medicalrecords = await _context.MedicalRecords1.Include(x => x.Appointment)
+                .ThenInclude(x => x.Office).ThenInclude(x => x.Doctor)
+                            .Where(x => x.Appointment.Office.Doctor.ApplicationUserId == userId).ToListAsync();
 
-            IEnumerable<int> ids = medicalrecords.Select(x => x.Patient1Id);
+            IEnumerable<int> ids = medicalrecords.Select(x => x.Appointment1Id);
 
-            return await _context.Patients1.Where(x => ids.Contains(x.Id)).CountAsync();
+            var appointments = await _context.Appointments1.Where(x => ids.Contains(x.Id)).ToListAsync();
+
+            IEnumerable<int?> ids2 = appointments.Select(x => x.Patient1Id);
+
+            return await _context.Patients1.Where(x => ids2.Contains(x.Id)).CountAsync();
         }
 
 

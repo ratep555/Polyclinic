@@ -22,7 +22,8 @@ namespace Infrastructure.Services
         public async Task<List<Appointment1>> GetAppointmentsForDoctorWithSearchingAndPaging(QueryParameters queryParameters, 
             int userId)
         {
-            IQueryable<Appointment1> appointment = _context.Appointments1.Include(x => x.Patient)
+            IQueryable<Appointment1> appointment = _context.Appointments1.Include(x => x.MedicalRecord1)  
+                                                   .Include(x => x.Patient)
                                                    .Include(x => x.Office).ThenInclude(x => x.Doctor)
                                                    .Where(x => x.Office.Doctor.ApplicationUserId == userId)
                                                    .AsQueryable().OrderBy(x => x.StartDateAndTimeOfAppointment);
@@ -207,6 +208,9 @@ namespace Infrastructure.Services
 
         public async Task CreateAppointment(Appointment1 appointment)
         {
+            appointment.StartDateAndTimeOfAppointment = appointment.StartDateAndTimeOfAppointment.ToLocalTime();
+            appointment.EndDateAndTimeOfAppointment = appointment.EndDateAndTimeOfAppointment.ToLocalTime();
+
             _context.Appointments1.Add(appointment);
             await _context.SaveChangesAsync();
         }
@@ -225,6 +229,8 @@ namespace Infrastructure.Services
 
         public async Task UpdateAppointment(Appointment1 appointment)
         {
+            appointment.StartDateAndTimeOfAppointment = appointment.StartDateAndTimeOfAppointment.ToLocalTime();
+            appointment.EndDateAndTimeOfAppointment = appointment.EndDateAndTimeOfAppointment.ToLocalTime();
             
              _context.Entry(appointment).State = EntityState.Modified;        
              await _context.SaveChangesAsync();
@@ -275,7 +281,7 @@ namespace Infrastructure.Services
 
             IQueryable<Appointment1> appointments = _context.Appointments1.Include(x => x.Office)
                     .ThenInclude(x => x.Doctor)
-                    .Where(x => x.Patient1Id == null && x.StartDateAndTimeOfAppointment < DateTime.Now)
+                    .Where(x => x.Patient1Id == null && x.StartDateAndTimeOfAppointment > DateTime.Now)
                     .AsQueryable().OrderByDescending(x => x.StartDateAndTimeOfAppointment);
             
             if (queryParameters.HasQuery())

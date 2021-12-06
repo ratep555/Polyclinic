@@ -1,6 +1,6 @@
 import { IAppointment } from './appointment';
 import { IDoctor } from './doctor';
-import { IMedicalrecord } from './medicalrecord';
+import { IMedicalrecord, IMedicalrecord1 } from './medicalrecord';
 import { IOffice } from './office';
 import { IPatient } from './patient';
 import { ISpecialty } from './specialty';
@@ -31,6 +31,13 @@ export interface IPaginationForMedicalRecords {
     pageCount: number;
     count: number;
     data: IMedicalrecord[];
+  }
+
+export interface IPaginationForMedicalRecords1 {
+    page: number;
+    pageCount: number;
+    count: number;
+    data: IMedicalrecord1[];
   }
 
 export interface IPaginationForDoctors {

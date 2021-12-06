@@ -33,7 +33,7 @@ namespace Infrastructure.Data
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction); 
 
-               modelBuilder.Entity<MedicalRecord>()
+              /*   modelBuilder.Entity<MedicalRecord>()
                 .HasOne(s => s.Patient)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction); 
@@ -41,7 +41,7 @@ namespace Infrastructure.Data
               modelBuilder.Entity<MedicalRecord>()
                 .HasOne(s => s.Office)
                 .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);   
+                .OnDelete(DeleteBehavior.NoAction);     */
 
               modelBuilder.Entity<Rating>()
                 .HasOne(s => s.Patient)
@@ -54,18 +54,28 @@ namespace Infrastructure.Data
            /*  modelBuilder.Entity<Appointment>()
                 .HasKey(x => new { x.PatientId, x.ApplicationUserId }); */
 
+              modelBuilder.Entity<MedicalRecord1>(entity =>
+            {
+                entity.HasKey(z => z.Appointment1Id);
+                entity.HasOne(p => p.Appointment)
+                     .WithOne(a => a.MedicalRecord1)
+                     .HasForeignKey<MedicalRecord1>(a => a.Appointment1Id);
+            });
+
             base.OnModelCreating(modelBuilder);
         }
         // ovo je za novi
         #region 
         public DbSet<Appointment1> Appointments1 { get; set; }
+        public DbSet<Photo> Photos { get; set; }
         public DbSet<Doctor1> Doctors1 { get; set; }
         public DbSet<DoctorSpecialization1> DoctorSpecializations { get; set; }
         public DbSet<DoctorSpecialization2> DoctorSpecializations2 { get; set; }
         public DbSet<DoctorPublication> DoctorPublications { get; set; }
         public DbSet<DoctorProfessionalAssociation> DoctorProfessionalAssociations { get; set; }
         public DbSet<HospitalAffiliation> HospitalAffiliations { get; set; }
-        public DbSet<MedicalRecord> MedicalRecords { get; set; }
+       // public DbSet<MedicalRecord> MedicalRecords { get; set; }
+        public DbSet<MedicalRecord1> MedicalRecords1 { get; set; }
         public DbSet<Office1> Offices { get; set; }
         public DbSet<Publication1> Publications { get; set; }
         public DbSet<ProfessionalAssociation> ProfessionalAssociations { get; set; }

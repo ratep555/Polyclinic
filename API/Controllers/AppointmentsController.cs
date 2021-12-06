@@ -120,6 +120,9 @@ namespace API.Controllers
         public async Task<ActionResult<Appointment1Dto>> CreateAppointmentByDoctor([FromBody] Appointment1Dto appointmentDto)
         {
             var appointment = _mapper.Map<Appointment1>(appointmentDto);
+
+            // if (appointment.StartDateAndTimeOfAppointment < DateTime.Now || appointment.EndDateAndTimeOfAppointment < DateTime.Now)
+            // return BadRequest("Your appointment is not up to date!");
              
             //stavio si createappointment1 samo za probu jer ti ne daje točno vrijeme, ovako šljaka
            // await _appointmentService.CreateAppointment1(appointmentDto);

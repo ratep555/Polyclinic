@@ -7,7 +7,8 @@ namespace Core.Dtos
     {
         public int Id { get; set; }
         public int? Patient1Id { get; set; }     
-        public int Office1Id { get; set; }     
+        public int Office1Id { get; set; }   
+        public int RecordId { get; set; }   
         public string Doctor { get; set; }     
         public string Office { get; set; }     
         public string Patient { get; set; }     

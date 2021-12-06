@@ -24,6 +24,9 @@ import { RatingModule } from 'ngx-bootstrap/rating';
 import { HasRoleDirective } from './directives/has-role.directive';
 import { ImgInputComponent } from './components/img-input/img-input.component';
 import { MultipleSelectorComponent } from './components/multiple-selector/multiple-selector.component';
+import {NgxPrintModule} from 'ngx-print';
+import { TextaeraInputComponent } from './components/textaera-input/textaera-input.component';
+
 
 
 @NgModule({
@@ -37,7 +40,8 @@ import { MultipleSelectorComponent } from './components/multiple-selector/multip
      RatingComponent,
      HasRoleDirective,
      ImgInputComponent,
-     MultipleSelectorComponent
+     MultipleSelectorComponent,
+     TextaeraInputComponent,
   ],
   imports: [
     CommonModule,
@@ -53,7 +57,8 @@ import { MultipleSelectorComponent } from './components/multiple-selector/multip
     }),
     CarouselModule.forRoot(),
     BsDatepickerModule.forRoot(),
-    RatingModule.forRoot()
+    RatingModule.forRoot(),
+    NgxPrintModule
   ],
   exports: [
     PaginationModule,
@@ -61,6 +66,7 @@ import { MultipleSelectorComponent } from './components/multiple-selector/multip
     TabsModule,
     TypeaheadModule,
     BsDropdownModule,
+    NgxPrintModule,
     PagerComponent,
     CarouselModule,
     ReactiveFormsModule,

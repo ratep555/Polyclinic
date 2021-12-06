@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IMedicalrecord } from 'src/app/shared/models/medicalrecord';
+import { IMedicalrecord, IMedicalrecord1 } from 'src/app/shared/models/medicalrecord';
 import { AppointmentsService } from '../appointments.service';
 
 @Component({

@@ -49,7 +49,7 @@ namespace API.Controllers
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
-            await _patientService.CreatePatient1(user.Id, user.LastName, user.FirstName, registerDto.DateOfBirth);
+            await _patientService.CreatePatient1(user, registerDto);
 
 
             return new UserDto

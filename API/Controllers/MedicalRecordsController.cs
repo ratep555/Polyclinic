@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.ErrorHandling;
 using API.Extensions;
 using AutoMapper;
 using Core.Dtos;
@@ -40,7 +41,7 @@ namespace API.Controllers
             return Ok(patientToReturn);
         }
 
-        [HttpPost("{id}")]
+      /*   [HttpPost("{id}")]
         public async Task<ActionResult> CreateMedicalRecord(int id, [FromBody] MedicalRecordDto medicalRecordDto)
         {
             var medicalrecord = _mapper.Map<MedicalRecord>(medicalRecordDto);
@@ -51,7 +52,9 @@ namespace API.Controllers
             await _medicalRecordService.CreateMedicalRecord(medicalrecord);
            
             return NoContent();
-        }
+        } */
+
+       
 
         [HttpGet("records/{id}")]
          public async Task<ActionResult<Pagination<MedicalRecordToReturnDto>>> GetMedicalRecordsForPatient(
@@ -139,7 +142,32 @@ namespace API.Controllers
             return Ok(data);
         }
 
+        // ovo je za novi medicalrecord
 
+        [HttpPost("record1/{id}")]
+        public async Task<ActionResult> CreateMedicalRecord1(int id, [FromBody] MedicalRecordDto1 medicalRecordDto)
+        {
+            var medicalrecord = _mapper.Map<MedicalRecord1>(medicalRecordDto);
+
+            medicalrecord.Appointment1Id = id;
+            medicalrecord.Created = DateTime.Now;
+
+            await _medicalRecordService.CreateMedicalRecord1(medicalrecord);
+           
+            return NoContent();
+        }
+
+        [HttpPut("record1/{id}")]
+        public async Task<ActionResult> UpdateMedicalRecord1(int id, [FromBody] MedicalRecordDto1 medicalRecordDto)
+        {
+            var medicalrecord = _mapper.Map<MedicalRecord1>(medicalRecordDto);
+
+            if (id != medicalrecord.Appointment1Id) return BadRequest(new ServerResponse(400));
+
+            await _medicalRecordService.UpdateMedicalRecord(medicalrecord);
+           
+            return NoContent();
+        }
 
     }
 }

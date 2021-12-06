@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <a class="navbar-brand text-uppercase" style="margin-left: 40px;" [routerLink]="['/']" routerLinkActive="active" 
     [routerLinkActiveOptions]="{exact:true}">Home</a>
   
@@ -19,43 +19,43 @@
         <li class="nav-item">
           <a class="nav-link text-uppercase" routerLink="/visitors/felipe1" routerLinkActive="active" >Felipe1</a> 
         </li> 
-<!--   ovo možeš koristiti  <ng-container *ngIf="(currentUser$ | async) && (currentUser$ | async)?.roleName ==='Admin'">
- -->
           <li  class="nav-item">
             <a class="nav-link text-uppercase" routerLink="/patient-offices/test" routerLinkActive="active">Offices</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-uppercase" routerLink="/visitors/alldoctors" routerLinkActive="active" >Doctors</a> 
           </li> 
-        
         <li class="nav-item">
           <a class="nav-link text-uppercase"  routerLink="/visitors/allapointments" routerLinkActive="active">Appointments</a>  
         </li>  
-        <div class="dropdown" dropdown>
-          <a class="pero nav-link text-uppercase dropdown-toggle text-white" dropdownToggle (click)="false" 
-          routerLinkActive="active">Doctor</a>
-          <div class="dropdown-menu" *dropdownMenu>    
-              <a routerLink="/account/register-doctor" class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Register Doctor</a>
-              <a routerLink="/myprofile" class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> My Profile</a>
-              <a routerLink="/myprofile/edit" class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Edit Profile</a>
-              <a routerLink="/offices" class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Offices</a>
-              <a routerLink="/appointments" class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Appointments</a>
-              <a routerLink="/appointments/listpatient" class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> My Patients</a>
-              <a routerLink="/medicalrecords" class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Medical Records</a>
-                <div class="dropdown-divider"></div>
-              <a class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Logout</a>
-              <a class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Logout</a>
+        <ng-container *ngIf="(currentUser$ | async) && (currentUser$ | async)?.roleName ==='Doctor'">
+          <div class="dropdown" dropdown>
+            <a class="pero nav-link text-uppercase dropdown-toggle text-white" dropdownToggle (click)="false" 
+            routerLinkActive="active">Doctor</a>
+            <div class="dropdown-menu" *dropdownMenu>    
+                <a routerLink="/account/register-doctor" class="dropdown-item">
+                  <i class="fa fa-sign-out mr-3"></i> Register Doctor</a>
+                <a routerLink="/myprofile" class="dropdown-item">
+                  <i class="fa fa-sign-out mr-3"></i> My Profile</a>
+                <a routerLink="/myprofile/edit" class="dropdown-item">
+                  <i class="fa fa-sign-out mr-3"></i> Edit Profile</a>
+                <a routerLink="/offices" class="dropdown-item">
+                  <i class="fa fa-sign-out mr-3"></i> Offices</a>
+                <a routerLink="/appointments" class="dropdown-item">
+                  <i class="fa fa-sign-out mr-3"></i> Appointments</a>
+                <a routerLink="/appointments/listpatient" class="dropdown-item">
+                  <i class="fa fa-sign-out mr-3"></i> My Patients</a>
+                <a routerLink="/medicalrecords" class="dropdown-item">
+                  <i class="fa fa-sign-out mr-3"></i> Medical Records</a>
+                  <div class="dropdown-divider"></div>
+                <a class="dropdown-item">
+                  <i class="fa fa-sign-out mr-3"></i> Logout</a>
+                <a class="dropdown-item">
+                  <i class="fa fa-sign-out mr-3"></i> Logout</a>
+            </div>
           </div>
-        </div>
+        </ng-container>
+       
         <div class="dropdown" dropdown>
           <a class="pero nav-link text-uppercase dropdown-toggle text-white" dropdownToggle (click)="false" 
           routerLinkActive="active">Patient</a>
@@ -69,7 +69,7 @@
                 <a routerLink="/medicalrecords/patientrecords" class="dropdown-item">
                   <i class="fa fa-sign-out mr-3"></i> My Medical Records</a>
               <a class="dropdown-item">
-                <i class="fa fa-sign-out mr-3"></i> Logout</a>
+                <i class="fa fa-sign-out mr-3"></i> Charts</a>
                 <div class="dropdown-divider"></div>
               <a class="dropdown-item">
                 <i class="fa fa-sign-out mr-3"></i> Logout</a>

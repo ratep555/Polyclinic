@@ -4,6 +4,7 @@ export interface IAppointment {
     patientId: number;
     doctorId: number;
     officeId: number;
+    appointment1Id: number;
     patient: string;
     officeAddress: string;
     city: string;
@@ -19,6 +20,7 @@ export interface IAppointmentSingle {
     patient: string;
     patientId: number;
     officeId: number;
+    recordId: number;
     office: string;
     city: string;
     country: string;

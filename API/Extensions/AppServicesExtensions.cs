@@ -1,9 +1,11 @@
 using System.Linq;
 using API.ErrorHandling;
+using API.Interfaces;
 using API.Services;
 using AutoMapper;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Helpers;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +21,8 @@ namespace API.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, 
             IConfiguration config)
         {
+            services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+            services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<ISpecialtyService, SpecialtyService>();
             services.AddScoped<IDoctorService, DoctorService>();
             services.AddScoped<ISubmissionFormService, SubmissionFormService>();
@@ -28,7 +32,6 @@ namespace API.Extensions
             services.AddScoped<IPatient1Service, Patient1Service>();
             services.AddScoped<IMedicalRecordService, MedicalRecordService>();
             services.AddScoped<IRatingService, RatingService>();
-            
             services.AddScoped<ITokenService, TokenService>();
 
             // ove dvije dolje su za slike

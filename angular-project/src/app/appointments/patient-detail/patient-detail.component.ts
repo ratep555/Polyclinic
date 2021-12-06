@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IMedicalrecord } from 'src/app/shared/models/medicalrecord';
+import { IMedicalrecord, IMedicalrecord1 } from 'src/app/shared/models/medicalrecord';
 import { MyParams } from 'src/app/shared/models/myparams';
 import { IPatient } from 'src/app/shared/models/patient';
 import { AppointmentsService } from '../appointments.service';

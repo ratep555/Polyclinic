@@ -8,6 +8,7 @@ import { OfficesRoutingModule } from './offices-routing.module';
 import { FormOfficeComponent } from './form-office/form-office.component';
 import { AddOfficeComponent } from './add-office/add-office.component';
 import { EditOfficeComponent } from './edit-office/edit-office.component';
+import { AddOffice1Component } from './add-office1/add-office1.component';
 
 
 
@@ -18,7 +19,8 @@ import { EditOfficeComponent } from './edit-office/edit-office.component';
     OfficeEditComponent,
     FormOfficeComponent,
     AddOfficeComponent,
-    EditOfficeComponent
+    EditOfficeComponent,
+    AddOffice1Component
   ],
   imports: [
     CommonModule,

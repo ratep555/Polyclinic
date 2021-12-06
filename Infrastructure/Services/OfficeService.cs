@@ -49,7 +49,7 @@ namespace Infrastructure.Services
 
         public async Task<Office1> GetOfficeByIdAsync(int id)
         {
-            return await _context.Offices.Include(x => x.Doctor)        
+            return await _context.Offices.Include(x => x.Doctor).Include(x => x.Photo)       
                          .Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
@@ -99,6 +99,25 @@ namespace Infrastructure.Services
         public async Task<List<HospitalAffiliation>> ShowHospitals()
         {
             return await _context.HospitalAffiliations.Include(x => x.Doctor).ToListAsync();
+        }
+
+
+        // implementing photo functionality
+        public async Task SavePhoto(Photo photo)
+        {
+            _context.Photos.Add(photo);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Photo> FindPhotoById(int? photoId)
+        {
+            return await _context.Photos.FirstOrDefaultAsync(x => x.Id == photoId);
+        }
+
+        public async Task DeletePhoto(Photo photo)
+        {
+            _context.Photos.Remove(photo);
+            await _context.SaveChangesAsync();
         }
 
 

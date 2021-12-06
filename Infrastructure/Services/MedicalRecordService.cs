@@ -18,11 +18,30 @@ namespace Infrastructure.Services
             _context = context;
         }
 
-        public async Task CreateMedicalRecord(MedicalRecord medicalRecord)
+      /*   public async Task CreateMedicalRecord(MedicalRecord medicalRecord)
         {
+            medicalRecord.Created = medicalRecord.Created.ToLocalTime();
+
             _context.MedicalRecords.Add(medicalRecord);
             await _context.SaveChangesAsync();
+        } */
+        
+        public async Task CreateMedicalRecord1(MedicalRecord1 medicalRecord)
+        {
+           // medicalRecord.Created = medicalRecord.Created.ToLocalTime();
+
+            _context.MedicalRecords1.Add(medicalRecord);
+            await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateMedicalRecord(MedicalRecord1 record)
+        {
+            record.Created = record.Created.ToLocalTime();
+
+            _context.Entry(record).State = EntityState.Modified;        
+            await _context.SaveChangesAsync();
+        }
+
 
         public async Task<Doctor1> FindDoctorById(int userId)
         {
@@ -35,28 +54,28 @@ namespace Infrastructure.Services
             return await _context.Patients1.Include(x => x.ApplicationUser).Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<MedicalRecord> FindMedicalRecordById(int id)
+        public async Task<MedicalRecord1> FindMedicalRecordById(int id)
         {
-            return await _context.MedicalRecords.Include(x => x.Patient)
-                         .Include(x => x.Office).ThenInclude(x => x.Doctor)
-                         .Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await _context.MedicalRecords1.Include(x => x.Appointment).ThenInclude(x => x.Patient)
+                         .Include(x => x.Appointment).ThenInclude(x => x.Office).ThenInclude(x => x.Doctor)
+                         .Where(x => x.Appointment1Id == id).FirstOrDefaultAsync();
         }
        
-        public async Task<List<MedicalRecord>> GetMedicalRecordsForPatient(int id, int userId, 
+        public async Task<List<MedicalRecord1>> GetMedicalRecordsForPatient(int id, int userId, 
             QueryParameters queryParameters)
         {
             var doctor = await FindDoctorById(userId);
             // ovako dolje sa where najkraći kod
-            IQueryable<MedicalRecord> records = _context.MedicalRecords
-                                                .Include(x => x.Patient)
-                                                .Include(x => x.Office).ThenInclude(x => x.Doctor)
-                        .Where(x => x.Patient1Id == id && x.Office.Doctor.ApplicationUserId == userId)
+            IQueryable<MedicalRecord1> records = _context.MedicalRecords1
+            .Include(x => x.Appointment)
+            .ThenInclude(x => x.Office).ThenInclude(x => x.Doctor)
+            .Where(x => x.Appointment.Patient1Id == id && x.Appointment.Office.Doctor.ApplicationUserId == userId)
                                                 .AsQueryable().OrderBy(x => x.Created);
             
             if (queryParameters.HasQuery())
             {
                 records = records
-                .Where(x => x.Office.Street.Contains(queryParameters.Query));
+                .Where(x => x.Appointment.Office.Street.Contains(queryParameters.Query));
             }
 
             records = records.Skip(queryParameters.PageCount * (queryParameters.Page - 1))
@@ -86,33 +105,33 @@ namespace Infrastructure.Services
            
             IEnumerable<int> ids = offices.Select(x => x.Id).ToList();
 
-            return await _context.MedicalRecords.Where(x => x.Patient1Id == id && ids.Contains(x.Office1Id))
+            return await _context.MedicalRecords1.Include(x => x.Appointment).
+            Where(x => x.Appointment.Patient1Id == id && ids.Contains(x.Appointment.Office1Id))
                          .CountAsync();
         }
 
-        public async Task<List<MedicalRecord>> GetMedicalRecordsForAllDoctorPatients(int userId, 
+        public async Task<List<MedicalRecord1>> GetMedicalRecordsForAllDoctorPatients(int userId, 
             QueryParameters queryParameters)
         {       
-            IQueryable<MedicalRecord> records = _context.MedicalRecords
-                                                .Include(x => x.Patient)
-                                                .Include(x => x.Office).ThenInclude(x => x.Doctor)
-                                                .Where(x => x.Office.Doctor.ApplicationUserId == userId)
-                                                .AsQueryable().OrderByDescending(x => x.Created);
+            IQueryable<MedicalRecord1> records = _context.MedicalRecords1
+                .Include(x => x.Appointment).ThenInclude(x => x.Office).ThenInclude(x => x.Doctor)
+                .Include(x => x.Appointment).ThenInclude(x => x.Patient)
+                .Where(x => x.Appointment.Office.Doctor.ApplicationUserId == userId)
+                .AsQueryable().OrderByDescending(x => x.Created);
 
-            var office = await _context.Offices.Include(x => x.MedicalRecords).Include(x => x.Doctor)
+            var office = await _context.Offices.Include(x => x.Doctor)
                           .Where(x => x.Doctor.ApplicationUserId == userId && x.Id == queryParameters.OfficeId) 
                           .FirstOrDefaultAsync();
             
             if (queryParameters.HasQuery())
             {
                 records = records
-                .Where(x => x.Patient.Name.Contains(queryParameters.Query));
+                .Where(x => x.Appointment.Patient.Name.Contains(queryParameters.Query));
             }
 
             if (queryParameters.OfficeId.HasValue)
             {
-                records = records.Where(x => x.Office1Id == office.Id);
-
+                records = records.Where(x => x.Appointment.Office1Id == office.Id);
             }
 
             records = records.Skip(queryParameters.PageCount * (queryParameters.Page - 1))
@@ -135,8 +154,8 @@ namespace Infrastructure.Services
 
         public async Task<int> GetCountForMedicalRecordsForAllDoctorPatients(int userId)
         {
-            return await _context.MedicalRecords.Include(x => x.Office).ThenInclude(x => x.Doctor) 
-                         .Where(x => x.Office.Doctor.ApplicationUserId == userId)
+            return await _context.MedicalRecords1.Include(x => x.Appointment).ThenInclude(x => x.Office) 
+                         .Where(x => x.Appointment.Office.Doctor.ApplicationUserId == userId)
                          .CountAsync();
         }
 
@@ -146,27 +165,27 @@ namespace Infrastructure.Services
                          .Where(x => x.Doctor.ApplicationUserId == userId).ToListAsync();
         }
 
-        public async Task<List<MedicalRecord>> GetMedicalRecordsForAllPatientDoctors(int userId, 
+        public async Task<List<MedicalRecord1>> GetMedicalRecordsForAllPatientDoctors(int userId, 
             QueryParameters queryParameters)
         {       
-            IQueryable<MedicalRecord> records = _context.MedicalRecords
-                                                .Include(x => x.Patient)
-                                                .Include(x => x.Office).ThenInclude(x => x.Doctor)
-                                                .Where(x => x.Patient.ApplicationUserId == userId)
-                                                .AsQueryable().OrderByDescending(x => x.Created);
+            IQueryable<MedicalRecord1> records = _context.MedicalRecords1
+                    .Include(x => x.Appointment).ThenInclude(x => x.Patient)
+                    .Include(x => x.Appointment).ThenInclude(x => x.Office).ThenInclude(x => x.Doctor)
+                    .Where(x => x.Appointment.Patient.ApplicationUserId == userId)
+                    .AsQueryable().OrderByDescending(x => x.Created);
 
-            var office = await _context.Offices.Where(x => x.Id == queryParameters.OfficeId) 
+            var office = await _context.Offices.Include(x => x.Doctor).Where(x => x.Id == queryParameters.OfficeId) 
                          .FirstOrDefaultAsync();
             
             if (queryParameters.HasQuery())
             {
                 records = records
-                .Where(x => x.Office.Doctor.Name.Contains(queryParameters.Query));
+                .Where(x => x.Appointment.Office.Doctor.Name.Contains(queryParameters.Query));
             }
 
             if (queryParameters.OfficeId.HasValue)
             {
-                records = records.Where(x => x.Office1Id == office.Id);
+                records = records.Where(x => x.Appointment.Office1Id == office.Id);
             }
 
             records = records.Skip(queryParameters.PageCount * (queryParameters.Page - 1))
@@ -189,8 +208,8 @@ namespace Infrastructure.Services
 
         public async Task<int> GetCountForMedicalRecordsForAllPatientDoctors(int userId)
         {
-            return await _context.MedicalRecords.Include(x => x.Patient)
-                         .Where(x => x.Patient.ApplicationUserId == userId)
+            return await _context.MedicalRecords1.Include(x => x.Appointment).ThenInclude(x => x.Patient)
+                         .Where(x => x.Appointment.Patient.ApplicationUserId == userId)
                          .CountAsync();
         }
 

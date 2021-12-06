@@ -4,7 +4,7 @@ import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AccountService } from '../account/account.service';
 import { INewAppointmentToCreateOrEdit } from '../shared/models/appointment';
-import { IMedicalrecord, INewMedicalrecordToCreate } from '../shared/models/medicalrecord';
+import { IMedicalrecord, INewMedicalrecordToCreate, INewMedicalrecordToCreate1 } from '../shared/models/medicalrecord';
 import { MyParams } from '../shared/models/myparams';
 import { IOffice } from '../shared/models/office';
 import { IPaginationForAppointments, IPaginationForMedicalRecords, IPaginationForPatients } from '../shared/models/pagination';
@@ -106,6 +106,10 @@ export class AppointmentsService {
 
   getMedicalRecord(id: number) {
     return this.http.get<IMedicalrecord>(this.baseUrl + 'medicalRecords/singlerecord/' + id);
+  }
+
+  getMedicalRecordForEditing(id: number) {
+    return this.http.get<INewMedicalrecordToCreate1>(this.baseUrl + 'medicalRecords/singlerecord/' + id);
   }
 
   createMedicalRecord(values: any) {

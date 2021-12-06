@@ -5,6 +5,8 @@ import { MedicallRecordAddComponent } from './medicall-record-add/medicall-recor
 import { SharedModule } from '../shared/shared.module';
 import { MedicalRecordsRoutingModule } from './medical-records-routing.module';
 import { MedicalRecordPatientComponent } from './medical-record-patient/medical-record-patient.component';
+import { MedicalRecord1AddComponent } from './medical-record1-add/medical-record1-add.component';
+import { MedicalRecord1EditComponent } from './medical-record1-edit/medical-record1-edit.component';
 
 
 
@@ -12,7 +14,9 @@ import { MedicalRecordPatientComponent } from './medical-record-patient/medical-
   declarations: [
     MedicalRecordsComponent,
     MedicallRecordAddComponent,
-    MedicalRecordPatientComponent
+    MedicalRecordPatientComponent,
+    MedicalRecord1AddComponent,
+    MedicalRecord1EditComponent
   ],
   imports: [
     CommonModule,

@@ -444,12 +444,10 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Core.Entities.MedicalRecord", b =>
+            modelBuilder.Entity("Core.Entities.MedicalRecord1", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("Appointment1Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("AnamnesisDiagnosisTherapy")
                         .HasColumnType("nvarchar(max)");
@@ -457,24 +455,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Office1Id")
-                        .HasColumnType("int");
+                    b.HasKey("Appointment1Id");
 
-                    b.Property<int?>("Office1Id1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Patient1Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Office1Id");
-
-                    b.HasIndex("Office1Id1");
-
-                    b.HasIndex("Patient1Id");
-
-                    b.ToTable("MedicalRecords");
+                    b.ToTable("MedicalRecords1");
                 });
 
             modelBuilder.Entity("Core.Entities.Office1", b =>
@@ -508,6 +491,12 @@ namespace Infrastructure.Data.Migrations
                     b.Property<Point>("Location")
                         .HasColumnType("geography");
 
+                    b.Property<int?>("PhotoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Picture")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
@@ -516,6 +505,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("Doctor1Id");
 
                     b.HasIndex("HospitalAffiliationId");
+
+                    b.HasIndex("PhotoId");
 
                     b.ToTable("Offices");
                 });
@@ -565,16 +556,22 @@ namespace Infrastructure.Data.Migrations
                     b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Height")
+                    b.Property<string>("MBO")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Weight")
+                    b.Property<string>("Street")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -582,6 +579,24 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Patients1");
+                });
+
+            modelBuilder.Entity("Core.Entities.Photo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Photos");
                 });
 
             modelBuilder.Entity("Core.Entities.PrefferedTimeOfExamination", b =>
@@ -1042,27 +1057,15 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Core.Entities.MedicalRecord", b =>
+            modelBuilder.Entity("Core.Entities.MedicalRecord1", b =>
                 {
-                    b.HasOne("Core.Entities.Office1", "Office")
-                        .WithMany()
-                        .HasForeignKey("Office1Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.HasOne("Core.Entities.Appointment1", "Appointment")
+                        .WithOne("MedicalRecord1")
+                        .HasForeignKey("Core.Entities.MedicalRecord1", "Appointment1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.Office1", null)
-                        .WithMany("MedicalRecords")
-                        .HasForeignKey("Office1Id1");
-
-                    b.HasOne("Core.Entities.Patient1", "Patient")
-                        .WithMany()
-                        .HasForeignKey("Patient1Id")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Office");
-
-                    b.Navigation("Patient");
+                    b.Navigation("Appointment");
                 });
 
             modelBuilder.Entity("Core.Entities.Office1", b =>
@@ -1077,9 +1080,15 @@ namespace Infrastructure.Data.Migrations
                         .WithMany()
                         .HasForeignKey("HospitalAffiliationId");
 
+                    b.HasOne("Core.Entities.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
+
                     b.Navigation("Doctor");
 
                     b.Navigation("HospitalAffiliation");
+
+                    b.Navigation("Photo");
                 });
 
             modelBuilder.Entity("Core.Entities.Patient", b =>
@@ -1197,6 +1206,11 @@ namespace Infrastructure.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Core.Entities.Appointment1", b =>
+                {
+                    b.Navigation("MedicalRecord1");
+                });
+
             modelBuilder.Entity("Core.Entities.Doctor1", b =>
                 {
                     b.Navigation("DoctorProfessionalAssociations");
@@ -1218,8 +1232,6 @@ namespace Infrastructure.Data.Migrations
             modelBuilder.Entity("Core.Entities.Office1", b =>
                 {
                     b.Navigation("Appointments");
-
-                    b.Navigation("MedicalRecords");
                 });
 
             modelBuilder.Entity("Core.Entities.Patient1", b =>

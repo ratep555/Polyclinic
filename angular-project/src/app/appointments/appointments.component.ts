@@ -15,6 +15,7 @@ export class AppointmentsComponent implements OnInit {
   appointments: IAppointment[];
   myParams = new MyParams();
   totalCount: number;
+  currentDate: Date = new Date();
 
   sortOptions = [
     {name: 'Upcoming', value: 'city'},

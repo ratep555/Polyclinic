@@ -15,10 +15,10 @@ namespace Core.Interfaces
         Task<Office1> GetOfficeByIdAsync(int id);
         Task Save();
         Task<List<HospitalAffiliation>> ShowHospitals();
+        Task SavePhoto(Photo photo);
+        Task<Photo> FindPhotoById(int? photoId);
+        Task DeletePhoto(Photo photo);
 
-
-
-        
 
     }
 }

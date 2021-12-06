@@ -6,6 +6,8 @@ namespace Core.Dtos
     public class MedicalRecordToReturnDto
     {
         public int Id { get; set; }
+        public int Appointment1Id { get; set; }
+
         public string AnamnesisDiagnosisTherapy { get; set; }
 
         [DataType(DataType.Date)]

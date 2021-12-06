@@ -10,6 +10,8 @@ export interface IOffice {
     latitude: number;
     description: string;
     longitude: number;
+    picture: string;
+    photo: string;
 }
 
 export class INewOfficeToCreateOrEdit {
@@ -33,6 +35,19 @@ export interface INewOfficeToCreate {
     country: string;
     latitude: number;
     longitude: number;
+}
+
+export interface INewOfficeToCreate1 {
+    id: number;
+    initialExaminationFee: number;
+    followUpExaminationFee: number;
+    street: string;
+    city: string;
+    country: string;
+    description: string;
+    latitude: number;
+    longitude: number;
+    picture: File;
 }
 
 export interface INewOfficeToEdit {

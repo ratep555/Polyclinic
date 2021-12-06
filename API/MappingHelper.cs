@@ -52,13 +52,18 @@ namespace API
              .ForMember(x => x.Location, x => x.MapFrom(dto =>
                 geometryFactory.CreatePoint(new Coordinate(dto.Longitude, dto.Latitude))));
 
+            CreateMap<OfficeCreateDto, Office1>()
+            .ForMember(x => x.Picture, options => options.Ignore())
+             .ForMember(x => x.Location, x => x.MapFrom(dto =>
+                geometryFactory.CreatePoint(new Coordinate(dto.Longitude, dto.Latitude))));
+
           
 
             CreateMap<OfficeCreationDto, Office1>();
 
             CreateMap<Appointment1, Appointment1ToReturnDto>()
             .ForMember(d => d.OfficeAddress, o => o.MapFrom(s => s.Office.Street))
-            //.ForMember(d => d.OfficeId, o => o.MapFrom(s => s.Office.Street))
+            .ForMember(d => d.Appointment1Id, o => o.MapFrom(s => s.MedicalRecord1.Appointment1Id))
             .ForMember(d => d.City, o => o.MapFrom(s => s.Office.City))
             .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name))
             .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Office.Doctor.Name))
@@ -73,6 +78,7 @@ namespace API
 
             CreateMap<Appointment1, AppointmentSingleDto>()
                 .ForMember(d => d.Office, o => o.MapFrom(s => s.Office.Street))
+                .ForMember(d => d.RecordId, o => o.MapFrom(s => s.MedicalRecord1.Appointment1Id))
                 .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Office.Doctor.Name))
                 .ForMember(d => d.City, o => o.MapFrom(s => s.Office.City))
                 .ForMember(d => d.Country, o => o.MapFrom(s => s.Office.Country))
@@ -88,11 +94,19 @@ namespace API
             CreateMap<HospitalAffiliation, HospitalAffiliationDto>()
                 .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Doctor.Name));
 
-            CreateMap<MedicalRecordDto, MedicalRecord>().ReverseMap();
-            CreateMap<MedicalRecord, MedicalRecordToReturnDto>()
+           // CreateMap<MedicalRecordDto, MedicalRecord>().ReverseMap();
+
+            CreateMap<MedicalRecordDto1, MedicalRecord1>().ReverseMap();
+            
+          /*   CreateMap<MedicalRecord, MedicalRecordToReturnDto>()
                 .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Office.Doctor.Name))
                 .ForMember(d => d.Office, o => o.MapFrom(s => s.Office.Street))
-                .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name));
+                .ForMember(d => d.Patient, o => o.MapFrom(s => s.Patient.Name)); */
+
+            CreateMap<MedicalRecord1, MedicalRecordToReturnDto>()
+                .ForMember(d => d.Doctor, o => o.MapFrom(s => s.Appointment.Office.Doctor.Name))
+                .ForMember(d => d.Office, o => o.MapFrom(s => s.Appointment.Office.Street))
+                .ForMember(d => d.Patient, o => o.MapFrom(s => s.Appointment.Patient.Name));
 
             CreateMap<RegisterDoctorDto1, Doctor1>()
                 .ForMember(x => x.Picture, options => options.Ignore())
@@ -104,6 +118,9 @@ namespace API
 
              CreateMap<Doctor1, Doctor1Dto>()
                 .ForMember(d => d.Specializations, o => o.MapFrom(MapForSpecialization2));
+
+                CreateMap<Photo, PhotoDto>();
+
 
 
             #endregion

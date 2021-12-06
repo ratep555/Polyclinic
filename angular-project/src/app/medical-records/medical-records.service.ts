@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { IAppointment } from '../shared/models/appointment';
+import { INewMedicalrecordToCreate1 } from '../shared/models/medicalrecord';
 import { MyParams } from '../shared/models/myparams';
 import { IOffice } from '../shared/models/office';
 import { IPaginationForMedicalRecords } from '../shared/models/pagination';
@@ -11,6 +13,8 @@ import { IPaginationForMedicalRecords } from '../shared/models/pagination';
 })
 export class MedicalRecordsService {
   baseUrl = environment.apiUrl;
+  formData1: INewMedicalrecordToCreate1 = new INewMedicalrecordToCreate1();
+
 
   constructor(private http: HttpClient) { }
 
@@ -62,6 +66,18 @@ export class MedicalRecordsService {
 
   getAllOffices() {
     return this.http.get<IOffice[]>(this.baseUrl + 'medicalRecords/offices1');
+  }
+
+  createMedicalRecord1(values: any) {
+    return this.http.post(this.baseUrl + 'medicalrecords/record1/' + this.formData1.appointment1Id, values);
+  }
+
+  updateMedicalRecord(formData1) {
+    return this.http.put(this.baseUrl + 'medicalrecords/record1/' + formData1.appointment1Id, formData1);
+  }
+
+  getAppointment(id: number) {
+    return this.http.get<IAppointment>(this.baseUrl + 'medicalRecords/' + id);
   }
 }
 
