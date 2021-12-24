@@ -69,6 +69,7 @@ namespace Infrastructure.Data
         public DbSet<Appointment1> Appointments1 { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Doctor1> Doctors1 { get; set; }
+        public DbSet<Gender> Genders { get; set; }
         public DbSet<DoctorSpecialization1> DoctorSpecializations { get; set; }
         public DbSet<DoctorSpecialization2> DoctorSpecializations2 { get; set; }
         public DbSet<DoctorPublication> DoctorPublications { get; set; }

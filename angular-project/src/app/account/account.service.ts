@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { IGender } from '../shared/models/gender';
 import { MultipleSelectorModel } from '../shared/models/multiple-selector.model';
 import { ISpecialization } from '../shared/models/specialization';
 import { User } from '../shared/models/user';
@@ -40,6 +41,18 @@ export class AccountService {
     );
   }
 
+  registerPatient(formData) {
+    return this.http.post(this.baseUrl + 'account/register', formData).pipe(
+      map((user: User) => {
+        if (user) {
+          this.setCurrentUser(user);
+        }
+      })
+    );
+  }
+
+
+
   // ovo je originalna verzija koja šljaka
   registerDoctor(values: any) {
     return this.http.post(this.baseUrl + 'account/registerdoctor1', values).pipe(
@@ -64,6 +77,10 @@ export class AccountService {
 
   getSpecializations() {
     return this.http.get<ISpecialization[]>(this.baseUrl + 'doctors1/multiplemodel');
+  }
+
+  getGenders() {
+    return this.http.get<IGender[]>(this.baseUrl + 'patients1/genders');
   }
 
 

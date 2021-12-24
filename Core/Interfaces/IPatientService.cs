@@ -9,6 +9,8 @@ namespace Core.Interfaces
     public interface IPatientService
     {
         Task CreatePatient1(ApplicationUser user, RegisterDto registerDto);
+        Task<List<Gender>> GetGenders();
+
 
 
     }

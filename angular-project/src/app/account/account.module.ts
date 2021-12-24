@@ -5,6 +5,9 @@ import { LoginComponent } from './login/login.component';
 import { SharedModule } from '../shared/shared.module';
 import { AccountRoutingModule } from './account-routing.module';
 import { RegisterDoctorComponent } from './register-doctor/register-doctor.component';
+import { RegisterPatientComponent } from './register-patient/register-patient.component';
+import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
+import { EmailNotificationComponent } from './email-notification/email-notification.component';
 
 
 
@@ -12,7 +15,10 @@ import { RegisterDoctorComponent } from './register-doctor/register-doctor.compo
   declarations: [
     RegisterComponent,
     LoginComponent,
-    RegisterDoctorComponent
+    RegisterDoctorComponent,
+    RegisterPatientComponent,
+    EmailConfirmationComponent,
+    EmailNotificationComponent
   ],
   imports: [
     CommonModule,

@@ -11,8 +11,8 @@ using NetTopologySuite.Geometries;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(PolyclinicContext))]
-    [Migration("20211203210053_AddNewTble")]
-    partial class AddNewTble
+    [Migration("20211224192426_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -363,6 +363,21 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("Examinations");
                 });
 
+            modelBuilder.Entity("Core.Entities.Gender", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("GenderType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genders");
+                });
+
             modelBuilder.Entity("Core.Entities.HospitalAffiliation", b =>
                 {
                     b.Property<int>("Id")
@@ -567,6 +582,9 @@ namespace Infrastructure.Data.Migrations
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("GenderId")
+                        .HasColumnType("int");
+
                     b.Property<string>("MBO")
                         .HasColumnType("nvarchar(max)");
 
@@ -579,6 +597,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("GenderId");
 
                     b.ToTable("Patients1");
                 });
@@ -1112,7 +1132,15 @@ namespace Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Core.Entities.Gender", "Gender")
+                        .WithMany()
+                        .HasForeignKey("GenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Gender");
                 });
 
             modelBuilder.Entity("Core.Entities.Rating", b =>

@@ -31,8 +31,11 @@ namespace API.Extensions
             services.AddScoped<IAppointmentService, AppointmentService>();
             services.AddScoped<IPatient1Service, Patient1Service>();
             services.AddScoped<IMedicalRecordService, MedicalRecordService>();
+            services.AddScoped<IGenderService, GenderService>();
             services.AddScoped<IRatingService, RatingService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddTransient<IEmailService, EmailService>();
 
             // ove dvije dolje su za slike
             // ne zaboravi dodati u startup app.UseStaticFiles();

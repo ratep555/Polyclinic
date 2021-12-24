@@ -14,6 +14,8 @@ namespace Core.Interfaces
         Task<List<Specialization1>> GetSpecializationsAsync();
         Task<List<Patient1>> GetAllDoctorPatients(int userId, QueryParameters queryParameters);
         Task<int> GetCountForAllDoctorPatients(int userId);
+        Task<List<Gender>> GetGenders();
+
 
 
 

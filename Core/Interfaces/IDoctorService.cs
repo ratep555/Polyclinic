@@ -33,6 +33,8 @@ namespace Core.Interfaces
         Task<Doctor1> FindDoctorByApplicationUserIdIncludingSpecialization(int userId);
         Task<List<Specialization1>> GetNonSelectedSpecializations(List<int> ids);
         Task Save();
+        Task<List<Doctor1>> GetFelipesDoctors1(DoctorDto2 dto);
+        Task<List<Doctor1>> GetFelipesDoctors2(DoctorDto3 dto);
 
 
     }

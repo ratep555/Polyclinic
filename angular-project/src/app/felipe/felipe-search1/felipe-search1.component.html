@@ -1,0 +1,15 @@
+<div class="container" style="margin-top: 200px;">  
+    <form [formGroup]="form">
+      <div class="form-inline pull-left">
+        <input formControlName="name"
+        class="form-control mr-2" style="width: 300px;"  
+        placeholder="Search by movie">
+        <button (click)="clearForm()" class="btn btn-info my-2">
+            <i class="fa fa-search mr-1" aria-hidden="true"></i>
+            Clear</button>
+    </div>   
+      
+    </form>
+   
+    <app-felipe-list [doctors]="doctors"></app-felipe-list>
+      </div>

@@ -5,6 +5,8 @@ import { IDoctor } from 'src/app/shared/models/doctor';
 import { ISpecialization } from 'src/app/shared/models/specialization';
 import { VisitorsService } from 'src/app/visitors/visitors.service';
 import { FelipeService } from '../felipe.service';
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-felipe-search',
@@ -21,14 +23,14 @@ export class FelipeSearchComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private felipeService: FelipeService,
-              private visitorsService: VisitorsService) { }
+              private visitorsService: VisitorsService,
+              private location: Location) { }
 
 
   ngOnInit(): void {
 
     this.form = this.formBuilder.group({
-      query: '',
-      specializationId: 0,
+      query: ''
     });
 
     this.initialFormValues = this.form.value;
@@ -42,6 +44,10 @@ export class FelipeSearchComponent implements OnInit {
       this.form.valueChanges
       .subscribe(values => {
         this.filterDoctors(values);
+        this.writeParametersInURL();
+      },
+      error => {
+        console.log(error);
       });
     });
 
@@ -50,11 +56,25 @@ export class FelipeSearchComponent implements OnInit {
   filterDoctors(values: any){
     this.felipeService.filter(values).subscribe((response: HttpResponse<IDoctor[]>) => {
       this.doctors = response.body;
+    },
+    error => {
+      console.log(error);
     });
   }
 
   clearForm(){
 this.form.patchValue(this.initialFormValues);  }
+
+private writeParametersInURL(){
+  const queryStrings = [];
+  const formValues = this.form.value;
+
+  if (formValues.query){
+    queryStrings.push(`title=${formValues.query}`);
+  }
+
+  this.location.replaceState('doctors1/filter', queryStrings.join('&'));
+}
 
 
 }

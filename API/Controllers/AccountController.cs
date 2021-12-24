@@ -1,5 +1,7 @@
+using System.Text;
 using System.Threading.Tasks;
 using API.ErrorHandling;
+using API.Extensions;
 using AutoMapper;
 using Core.Dtos;
 using Core.Entities;
@@ -7,7 +9,9 @@ using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Controllers
 {
@@ -19,9 +23,13 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IEmailService _emailService;
+        private readonly IConfiguration _config;
+        private readonly IUserService _userService;
         public AccountController(UserManager<ApplicationUser> userManager, 
             SignInManager<ApplicationUser> signInManager, ITokenService tokenService, 
-            IMapper mapper, IDoctorService doctorService, IPatientService patientService)
+            IMapper mapper, IDoctorService doctorService, IPatientService patientService, 
+            IEmailService emailService, IConfiguration config, IUserService userService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -29,6 +37,9 @@ namespace API.Controllers
             _tokenService = tokenService;
             _doctorService = doctorService;
             _patientService = patientService;
+            _emailService = emailService;
+            _config = config;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -45,22 +56,37 @@ namespace API.Controllers
 
             if (!result.Succeeded) return BadRequest(new ServerResponse(400));
 
+            var confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var encodedEmailToken = Encoding.UTF8.GetBytes(confirmEmailToken);
+            var validEmailToken = WebEncoders.Base64UrlEncode(encodedEmailToken);
+
+            string url = 
+                    $"{_config["ApiAppUrl"]}/api/account/confirmemail?email={user.Email}&token={validEmailToken}";
+
+            await _emailService.SendEmailAsync(user.Email, 
+                "Confirm your email", $"<h1>Welcome to Auth Demo</h1>" +
+                $"<p>Please confirm your email by <a href='{url}'>Clicking here</a></p>");
+
             var roleResult = await _userManager.AddToRoleAsync(user, "Patient");
 
             if (!roleResult.Succeeded) return BadRequest(result.Errors);
 
             await _patientService.CreatePatient1(user, registerDto);
 
-
-            return new UserDto
-            {
-                Username = user.UserName,
-                Token = await _tokenService.CreateToken(user),
-                Email = user.Email,
-                RoleName = await _doctorService.GetRoleName(user.Id),
-                UserId = user.Id            
-            };
+            return Ok();
         }
+
+        [HttpGet("confirmemail")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string email, [FromQuery] string token)
+        {
+            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(token))
+                return NotFound();
+
+            await _userService.ConfirmEmailAsync(email, token);
+
+                return Redirect($"{_config["AngularAppUrl"]}/account/email-confirmation");
+        }
+
         
         [HttpPost("registerdoctor")]
         public async Task<ActionResult<DoctorToReturnDto>> RegisterDoctor(RegisterDoctorDto registerDoctorDto)
@@ -121,6 +147,7 @@ namespace API.Controllers
             var user = _mapper.Map<ApplicationUser>(registerDto);
             
             user.UserName = registerDto.Username.ToLower();
+            user.EmailConfirmed = true;
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
             
@@ -168,6 +195,9 @@ namespace API.Controllers
                 .FirstOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
 
             if (user == null) return BadRequest("Invalid request");
+
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+            return Unauthorized("Email is not confirmed");
 
             var result = await _signInManager
                 .CheckPasswordSignInAsync(user, loginDto.Password, false);

@@ -14,6 +14,12 @@
     <div class="collapse navbar-collapse" id="navbarNav" id="navbarSupportedContent" [collapse]="isCollapsed">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
+          <a class="nav-link text-uppercase" routerLink="/felipe/piki" routerLinkActive="active" >piki</a> 
+        </li> 
+        <li class="nav-item">
+          <a class="nav-link text-uppercase" routerLink="/felipe/piki1" routerLinkActive="active" >piki1</a> 
+        </li> 
+        <li class="nav-item">
           <a class="nav-link text-uppercase" routerLink="/felipe" routerLinkActive="active" >Felipe</a> 
         </li> 
         <li class="nav-item">
@@ -28,7 +34,7 @@
         <li class="nav-item">
           <a class="nav-link text-uppercase"  routerLink="/visitors/allapointments" routerLinkActive="active">Appointments</a>  
         </li>  
-        <ng-container *ngIf="(currentUser$ | async) && (currentUser$ | async)?.roleName ==='Doctor'">
+        <ng-container>
           <div class="dropdown" dropdown>
             <a class="pero nav-link text-uppercase dropdown-toggle text-white" dropdownToggle (click)="false" 
             routerLinkActive="active">Doctor</a>
@@ -47,9 +53,12 @@
                   <i class="fa fa-sign-out mr-3"></i> My Patients</a>
                 <a routerLink="/medicalrecords" class="dropdown-item">
                   <i class="fa fa-sign-out mr-3"></i> Medical Records</a>
+                <a routerLink="/account/email-confirmation" class="dropdown-item">
+                  <i class="fa fa-sign-out mr-3"></i>Email Confirmation</a>
                   <div class="dropdown-divider"></div>
                 <a class="dropdown-item">
                   <i class="fa fa-sign-out mr-3"></i> Logout</a>
+               
                 <a class="dropdown-item">
                   <i class="fa fa-sign-out mr-3"></i> Logout</a>
             </div>
@@ -87,6 +96,12 @@
               routerLink="/account/register"
               routerLinkActive="active"
               >Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link"
+              routerLink="/account/register-patient"
+              routerLinkActive="active"
+              >Register patient</a>
             </li>
             <li class="nav-item">
               <a class="nav-link"

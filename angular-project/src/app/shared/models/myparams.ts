@@ -4,6 +4,6 @@ export class MyParams {
     query: string;
     status: string;
     page = 1;
-    pageCount = 10;
+    pageCount = 2;
     sort = 'city';
 }

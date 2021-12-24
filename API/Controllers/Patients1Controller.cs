@@ -71,6 +71,17 @@ namespace API.Controllers
 
             return Ok(list);
         }
+
+        [HttpGet("genders")]
+        public async Task<ActionResult<IEnumerable<GenderDto>>> GetGenders()
+        {
+            var list = await _patient1Service.GetGenders();
+
+            var genders = _mapper.Map<IEnumerable<GenderDto>>(list);
+
+            return Ok(genders);        
+        }
+
     }
 }
 

@@ -193,6 +193,10 @@ namespace Infrastructure.Services
             return await _context.Patients1.Where(x => ids2.Contains(x.Id)).CountAsync();
         }
 
+        public async Task<List<Gender>> GetGenders()
+        {
+            return await _context.Genders.OrderBy(x => x.GenderType).ToListAsync();
+        }
 
 
 

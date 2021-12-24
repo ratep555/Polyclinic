@@ -121,6 +121,8 @@ namespace API
 
                 CreateMap<Photo, PhotoDto>();
 
+                CreateMap<Gender, GenderDto>().ReverseMap();
+
 
 
             #endregion

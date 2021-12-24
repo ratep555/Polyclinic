@@ -350,6 +350,32 @@ namespace API.Controllers
             return _mapper.Map<List<Doctor1Dto>>(list);
             
         }
+
+        [AllowAnonymous]
+        [HttpGet("filter2")]
+         public async Task<ActionResult<List<Doctor1Dto>>> GetFelipesDoctors2(
+            [FromQuery] DoctorDto2 dto)
+        {
+            var list = await _doctorService
+                .GetFelipesDoctors1(dto);
+
+            return _mapper.Map<List<Doctor1Dto>>(list);
+            
+        }
+
+        [HttpGet("filter3")]
+         public async Task<ActionResult<Pagination<Doctor1Dto>>> Filter3(
+            [FromQuery] DoctorDto3 dto)
+        {
+            var count = await _doctorService.GetCountForAllDoctors();
+            var list = await _doctorService
+                .GetFelipesDoctors2(dto);
+
+            var data = _mapper.Map<IEnumerable<Doctor1Dto>>(list);
+
+            return Ok(new Pagination<Doctor1Dto>
+            (dto.Page, dto.PageCount, count, data));
+        }
         
         [AllowAnonymous]
         [HttpGet("filter1")]

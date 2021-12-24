@@ -37,7 +37,8 @@ namespace Infrastructure.Data
                 FirstName = "Bob",
                 LastName = "Bobbity",
                 Email = "bob@test.com",
-                UserName = "admin"
+                UserName = "admin",
+                EmailConfirmed = true
             };
 
             await userManager.CreateAsync(admin, "Pa$$w0rd");               

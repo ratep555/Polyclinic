@@ -1,0 +1,57 @@
+<div class="container-fluid" style="margin-top: 200px;">   
+    <div class="d-flex justify-content-center mt-5">
+        <div class="col-3">
+            <form
+            [formGroup]="fg"
+            *ngFor="let fg of patientForms.controls"
+            (submit)="recordSubmit(fg)"
+          >                
+          <h2 class="text-center text-primary">Sign up</h2>
+                <hr>           
+                <app-text-input formControlName="username" 
+                    [label]='"Username"'></app-text-input>
+                <app-text-input formControlName="firstName" 
+                    [label]='"First Name"'></app-text-input>
+                <app-text-input formControlName="lastName" 
+                    [label]='"Last Name"'></app-text-input>
+                    <app-date-input formControlName="dateOfBirth" 
+                    [label]='"Date Of Birth"'></app-date-input>
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                          <select class="form-control" formControlName="genderId">
+                            <option value="0">--Select gender--</option>
+                            <option *ngFor="let gender of genderList" value="{{ gender.id }}">
+                              {{ gender.genderType }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    <app-text-input formControlName="country" 
+                    [label]='"Country"'></app-text-input>
+                    <app-text-input formControlName="city" 
+                    [label]='"City"'></app-text-input>
+                    <app-text-input formControlName="street"
+                    [label]='"Street"'></app-text-input>
+                    <app-text-input formControlName="phoneNumber"
+                    [label]='"Phone"'></app-text-input>
+
+          <label style="font-size: small;">Optional/Required for hospital appointment</label>
+          <app-text-input formControlName="mBO" [label]="'MBO - Id number of insured'"></app-text-input>
+
+          <app-text-input formControlName="email" 
+          [label]='"Email"'></app-text-input>
+                <app-text-input formControlName= "password" 
+                    [label]='"Password"' [type]='"password"'>
+                </app-text-input>
+                <app-text-input formControlName="confirmPassword" 
+                    [label]='"Confirm Password"'
+                    [type]='"password"'></app-text-input>
+            
+                <div class="form-group text-center">
+                    <button [disabled]='!patientForms.valid' class="btn btn-success mr-2" type="submit">Register</button>
+                </div>
+            </form>
+            </div>
+            </div>
+            </div>
+

@@ -340,6 +340,33 @@ namespace Infrastructure.Services
 
         }
 
+        public async Task<List<Doctor1>> GetFelipesDoctors1(DoctorDto2 dto)
+        {         
+            var doctors = _context.Doctors1.AsQueryable();
+
+             if (!string.IsNullOrEmpty(dto.Name))
+            {
+                doctors = doctors.Where(x => x.Name.Contains(dto.Name));
+            }
+             return await doctors.ToListAsync();
+
+        }
+        public async Task<List<Doctor1>> GetFelipesDoctors2(DoctorDto3 dto)
+        {         
+            var doctors = _context.Doctors1.AsQueryable();
+
+             if (!string.IsNullOrEmpty(dto.Name))
+            {
+                doctors = doctors.Where(x => x.Name.Contains(dto.Name));
+            }
+
+            doctors = doctors.Skip(dto.PageCount * (dto.Page - 1))
+                           .Take(dto.PageCount);
+
+            return await doctors.ToListAsync();
+
+        }
+
         public async Task<List<Specialization1>> GetAllSpecializations()
         {
             return await _context.Specializations.OrderBy(x => x.SpecializationName).ToListAsync();

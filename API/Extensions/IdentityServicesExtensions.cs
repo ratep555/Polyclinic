@@ -33,7 +33,7 @@ namespace API.Extensions
                 .AddRoleManager<RoleManager<ApplicationRole>>()
                 .AddSignInManager<SignInManager<ApplicationUser>>()
                 .AddRoleValidator<RoleValidator<ApplicationRole>>()
-                .AddEntityFrameworkStores<PolyclinicContext>();
+                .AddEntityFrameworkStores<PolyclinicContext>().AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => 
