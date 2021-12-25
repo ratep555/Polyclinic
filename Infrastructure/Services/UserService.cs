@@ -38,6 +38,23 @@ namespace Infrastructure.Services
             var result = await _userManager.ConfirmEmailAsync(user, normalToken);
         }
 
+        public async Task ForgotPasswordAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var validToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            string url = $"{_config["AngularAppUrl"]}/account/reset-password";
+
+            await _emailService.SendEmailAsync(email, "Reset Password", "<h1>Follow the instructions to reset your password</h1>" +
+                $"<p>To reset your password <a href='{url}'>Click here</a></p>");          
+        }
+
+
+
 
 
     }

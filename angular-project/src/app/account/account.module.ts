@@ -8,6 +8,8 @@ import { RegisterDoctorComponent } from './register-doctor/register-doctor.compo
 import { RegisterPatientComponent } from './register-patient/register-patient.component';
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
 import { EmailNotificationComponent } from './email-notification/email-notification.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
@@ -18,7 +20,9 @@ import { EmailNotificationComponent } from './email-notification/email-notificat
     RegisterDoctorComponent,
     RegisterPatientComponent,
     EmailConfirmationComponent,
-    EmailNotificationComponent
+    EmailNotificationComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     CommonModule,

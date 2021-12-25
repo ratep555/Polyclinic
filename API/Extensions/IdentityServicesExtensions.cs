@@ -35,7 +35,10 @@ namespace API.Extensions
                 .AddRoleValidator<RoleValidator<ApplicationRole>>()
                 .AddEntityFrameworkStores<PolyclinicContext>().AddDefaultTokenProviders();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                services.Configure<DataProtectionTokenProviderOptions>(opt =>
+                opt.TokenLifespan = TimeSpan.FromHours(2));
+
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => 
                 {
                     options.TokenValidationParameters = new TokenValidationParameters

@@ -2,8 +2,7 @@
     <div class="d-flex justify-content-center mt-5">
         <div class="col-3">
             <form [formGroup]='loginForm' (ngSubmit)="loginForm.valid && onSubmit()">
-                <h2 class="text-center text-primary">Login</h2>
-                <hr>           
+                <h2 class="zigi text-center text-primary">Login</h2>
                 <app-text-input [formControl]='loginForm.controls["username"]' 
                     [label]='"Username"'></app-text-input>
         
@@ -11,8 +10,9 @@
                     [label]='"Password"' [type]='"password"'>
                 </app-text-input>
                
-            
-               
+                <div class="miki text-primary text-center">
+                    <a [routerLink]="['/account/forgot-password']"> Forgot Password </a>
+                </div>
             
                 <div class="form-group text-center">
                     <button [disabled]='!loginForm.valid' class="btn btn-success mr-2" type="submit">Login</button>

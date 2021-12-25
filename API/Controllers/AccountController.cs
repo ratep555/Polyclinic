@@ -84,7 +84,7 @@ namespace API.Controllers
 
             await _userService.ConfirmEmailAsync(email, token);
 
-                return Redirect($"{_config["AngularAppUrl"]}/account/email-confirmation");
+            return Redirect($"{_config["AngularAppUrl"]}/account/email-confirmation");
         }
 
         
@@ -161,11 +161,10 @@ namespace API.Controllers
 
             await _doctorService.CreateDoctor2(user.Id, doctor, user.LastName, user.FirstName);
 
-           return NoContent();
+            return NoContent();
         }
 
     
-
         [HttpPost("registeremployee")]
         public async Task<ActionResult<DoctorToReturnDto>> RegisterEmployee(RegisterEmployeeDto registerEmployeeDto)
         {
@@ -212,6 +211,46 @@ namespace API.Controllers
                 RoleName = await _doctorService.GetRoleName(user.Id),
                 UserId = user.Id
             };
+        }
+
+        [HttpPost("forgotpassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
+        {
+            
+            if (string.IsNullOrEmpty(dto.Email)) return NotFound(new ServerResponse(404));
+
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+
+            if (user == null) return BadRequest(new ApiResponse(400));
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var validToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            string url = $"{_config["AngularAppUrl"]}/account/reset-password?email={dto.Email}&token={validToken}";
+
+            await _emailService.SendEmailAsync(dto.Email, "Reset Password", "<h1>Follow the instructions to reset your password</h1>" +
+                $"<p>To reset your password <a href='{url}'>Click here</a></p>");   
+
+            return Ok();
+        }
+
+        [HttpPost("resetpassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+        {
+            var user = await _userManager.FindByEmailAsync(dto.Email);
+
+            if (user == null) return NotFound(new ServerResponse(404));
+
+            var decodedToken = WebEncoders.Base64UrlDecode(dto.Token);
+            string normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var result = await _userManager.ResetPasswordAsync(user, normalToken, dto.Password);
+
+            if (result.Succeeded) return Ok();
+
+            return BadRequest(new ServerResponse(400));
         }
 
 

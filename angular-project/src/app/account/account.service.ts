@@ -4,8 +4,10 @@ import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { IForgotPassword } from '../shared/models/forgotpassword';
 import { IGender } from '../shared/models/gender';
 import { MultipleSelectorModel } from '../shared/models/multiple-selector.model';
+import { IResetPassword } from '../shared/models/resetpassword';
 import { ISpecialization } from '../shared/models/specialization';
 import { User } from '../shared/models/user';
 
@@ -16,6 +18,7 @@ export class AccountService {
   baseUrl = environment.apiUrl;
   private currentUserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentUserSource.asObservable();
+
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -73,6 +76,14 @@ export class AccountService {
         }
       })
     );
+  }
+
+  forgotPassword(forgotpassword: IForgotPassword) {
+    return this.http.post(this.baseUrl + 'account/forgotpassword', forgotpassword);
+  }
+
+  resetPassword(resetpassword: IResetPassword) {
+    return this.http.post(this.baseUrl + 'account/resetpassword', resetpassword);
   }
 
   getSpecializations() {
